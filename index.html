@@ -1,6 +1,4 @@
-from pathlib import Path
-
-final_html = r'''<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -59,7 +57,7 @@ final_html = r'''<!DOCTYPE html>
       background:
         linear-gradient(90deg,rgba(8,10,12,.97) 0%,rgba(8,10,12,.88) 46%,rgba(8,10,12,.62) 100%),
         linear-gradient(180deg,rgba(8,10,12,.18),rgba(8,10,12,.72)),
-        url("assets/6.jpg") center/cover no-repeat
+        url("https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&w=1800&q=88") center/cover no-repeat
     }
     .hero::before{content:"";position:absolute;width:620px;height:620px;right:-240px;top:80px;border-radius:50%;background:radial-gradient(circle,rgba(217,174,95,.13),transparent 68%);pointer-events:none}
     .hero-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:70px;align-items:center}
@@ -79,6 +77,7 @@ final_html = r'''<!DOCTYPE html>
     .hero-panel::before{content:"PRABHU A R";position:absolute;top:20px;right:22px;font-size:.62rem;letter-spacing:.18em;color:rgba(240,200,117,.55)}
     .profile-photo-wrap{width:126px;height:126px;border-radius:50%;padding:4px;background:linear-gradient(135deg,var(--gold-bright),rgba(240,200,117,.15));margin-bottom:22px;box-shadow:0 12px 35px rgba(0,0,0,.35)}
     .profile-photo{width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:50%;border:2px solid rgba(8,10,12,.8)}
+.profile-fallback{display:grid;place-items:center}.profile-fallback::after{content:"PRABHU A R";color:var(--gold-bright);font-weight:800;font-size:.72rem;letter-spacing:.12em;text-align:center}
     .panel-title{color:var(--gold-bright);text-transform:uppercase;letter-spacing:.14em;font-size:.72rem;font-weight:800;margin-bottom:22px}
     .hero-panel ul{list-style:none;display:grid;gap:15px}
     .hero-panel li{display:flex;gap:12px;color:#d8dcdf;font-size:.9rem}
@@ -216,15 +215,19 @@ final_html = r'''<!DOCTYPE html>
       .reveal{opacity:1;transform:none}
     }
   </style>
-</head>
+<style>
+      .project-image img{background:#11161a}
+      .project-image img[src^="https://images.unsplash.com"]{display:block}
+    </style>
+  </head>
 
 <body>
   <header class="navbar" id="navbar">
     <div class="container nav-inner">
-      <a href="#home" class="brand">PRABHU <span>A R</span></a>
+      <a href="#home" class="brand" data-home="true">PRABHU <span>A R</span></a>
       <button class="menu-toggle" id="menuToggle" aria-label="Open navigation"><i class="fa-solid fa-bars"></i></button>
       <ul class="nav-links" id="navLinks">
-        <li><a href="#home">Home</a></li>
+        <li><a href="#home" data-home="true">Home</a></li>
         <li><a href="#profile">Profile</a></li>
         <li><a href="#competencies">Competencies</a></li>
         <li><a href="#digital">Digital QS</a></li>
@@ -255,7 +258,7 @@ final_html = r'''<!DOCTYPE html>
 
         <aside class="hero-panel reveal">
           <div class="profile-photo-wrap">
-            <img class="profile-photo" src="assets/1777210120513.png" alt="Prabhu A R - Senior Quantity Surveyor">
+            <img class="profile-photo" src="assets/1777210120513.png" alt="Prabhu A R - Senior Quantity Surveyor" onerror="this.style.display='none';this.parentElement.classList.add('profile-fallback')">
           </div>
           <div class="panel-title">Professional Positioning</div>
           <ul>
@@ -457,12 +460,12 @@ final_html = r'''<!DOCTYPE html>
         </div>
 
         <div class="projects-grid">
-          <article class="project-card reveal"><div class="project-image"><img src="assets/1.jpg" alt="ADNOC BFN project environment" loading="lazy"></div><div class="project-number">PROJECT 01</div><h3>ADNOC BFN — BAB Far North Full Field Development</h3><div class="project-location">UAE · FEED / EPCM</div><p>Current EPCM quantity surveying and commercial support covering quantity verification, billing, payment certification, variations and multidisciplinary coordination.</p><div class="project-tags"><span>Quantity Verification</span><span>BOQ Validation</span><span>Payment Certification</span><span>Commercial Support</span></div></article>
-          <article class="project-card reveal"><div class="project-image"><img src="assets/2.jpg" alt="Qurayyah Expansion CCGT IPP project environment" loading="lazy"></div><div class="project-number">PROJECT 02</div><h3>Qurayyah Expansion CCGT IPP</h3><div class="project-location">Saudi Arabia · Power EPC</div><p>BOQ, BBS, MTO, subcontractor billing, client invoicing, PPCs, variation orders, rate analysis and quantity reconciliation.</p><div class="project-tags"><span>QTO / MTO / BBS</span><span>Billing Verification</span><span>Variations</span><span>Quantity Reconciliation</span></div></article>
-          <article class="project-card reveal"><div class="project-image"><img src="assets/3.jpg" alt="Hail and Ghasha project environment" loading="lazy"></div><div class="project-number">PROJECT 03</div><h3>Hail & Ghasha P2</h3><div class="project-location">UAE · Oil & Gas</div><p>International EPC project exposure within the wider GCC commercial and quantity surveying portfolio.</p><div class="project-tags"><span>Quantity Verification</span><span>Commercial Support</span><span>EPC Interface</span><span>Progress Measurement</span></div></article>
-          <article class="project-card reveal"><div class="project-image"><img src="assets/4.jpg" alt="NFE EPC-1 project environment" loading="lazy"></div><div class="project-number">PROJECT 04</div><h3>NFE EPC-1</h3><div class="project-location">Qatar · LNG / EPC</div><p>Project exposure through international EPC commercial and quantity surveying activities.</p><div class="project-tags"><span>QTO / MTO</span><span>Commercial Support</span><span>Quantity Control</span><span>EPC Coordination</span></div></article>
-          <article class="project-card reveal"><div class="project-image"><img src="assets/5.jpg" alt="Tanazib Gas Plant project environment" loading="lazy"></div><div class="project-number">PROJECT 05</div><h3>Tanazib Gas Plant</h3><div class="project-location">Saudi Arabia · Gas / Industrial</div><p>Gas plant project exposure within GCC quantity surveying and commercial delivery environments.</p><div class="project-tags"><span>Quantity Surveying</span><span>Cost Control</span><span>Billing Support</span><span>Commercial Coordination</span></div></article>
-          <article class="project-card reveal"><div class="project-image"><img src="assets/6.jpg" alt="Petronas RAPID refinery project environment" loading="lazy"></div><div class="project-number">PROJECT 06</div><h3>Petronas RAPID</h3><div class="project-location">Malaysia · Refinery / Petrochemical</div><p>International refinery and petrochemical project exposure covering pre- and post-contract commercial activities.</p><div class="project-tags"><span>Pre-Contract Support</span><span>Cost Estimation</span><span>Quantity Take-Offs</span><span>Post-Contract QS</span></div></article>
+          <article class="project-card reveal"><div class="project-image"><img src="https://images.unsplash.com/photo-1586864387967-d02ef85d93e8?auto=format&fit=crop&w=1400&q=85" alt="ADNOC BFN project environment" loading="lazy"></div><div class="project-number">PROJECT 01</div><h3>ADNOC BFN — BAB Far North Full Field Development</h3><div class="project-location">UAE · FEED / EPCM</div><p>Current EPCM quantity surveying and commercial support covering quantity verification, billing, payment certification, variations and multidisciplinary coordination.</p><div class="project-tags"><span>Quantity Verification</span><span>BOQ Validation</span><span>Payment Certification</span><span>Commercial Support</span></div></article>
+          <article class="project-card reveal"><div class="project-image"><img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1400&q=85" alt="Qurayyah Expansion CCGT IPP project environment" loading="lazy"></div><div class="project-number">PROJECT 02</div><h3>Qurayyah Expansion CCGT IPP</h3><div class="project-location">Saudi Arabia · Power EPC</div><p>BOQ, BBS, MTO, subcontractor billing, client invoicing, PPCs, variation orders, rate analysis and quantity reconciliation.</p><div class="project-tags"><span>QTO / MTO / BBS</span><span>Billing Verification</span><span>Variations</span><span>Quantity Reconciliation</span></div></article>
+          <article class="project-card reveal"><div class="project-image"><img src="https://images.unsplash.com/photo-1565610222536-ef125c59da2e?auto=format&fit=crop&w=1400&q=85" alt="Hail and Ghasha project environment" loading="lazy"></div><div class="project-number">PROJECT 03</div><h3>Hail & Ghasha P2</h3><div class="project-location">UAE · Oil & Gas</div><p>International EPC project exposure within the wider GCC commercial and quantity surveying portfolio.</p><div class="project-tags"><span>Quantity Verification</span><span>Commercial Support</span><span>EPC Interface</span><span>Progress Measurement</span></div></article>
+          <article class="project-card reveal"><div class="project-image"><img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1400&q=85" alt="NFE EPC-1 project environment" loading="lazy"></div><div class="project-number">PROJECT 04</div><h3>NFE EPC-1</h3><div class="project-location">Qatar · LNG / EPC</div><p>Project exposure through international EPC commercial and quantity surveying activities.</p><div class="project-tags"><span>QTO / MTO</span><span>Commercial Support</span><span>Quantity Control</span><span>EPC Coordination</span></div></article>
+          <article class="project-card reveal"><div class="project-image"><img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1400&q=85" alt="Tanazib Gas Plant project environment" loading="lazy"></div><div class="project-number">PROJECT 05</div><h3>Tanazib Gas Plant</h3><div class="project-location">Saudi Arabia · Gas / Industrial</div><p>Gas plant project exposure within GCC quantity surveying and commercial delivery environments.</p><div class="project-tags"><span>Quantity Surveying</span><span>Cost Control</span><span>Billing Support</span><span>Commercial Coordination</span></div></article>
+          <article class="project-card reveal"><div class="project-image"><img src="https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&w=1800&q=88" alt="Petronas RAPID refinery project environment" loading="lazy"></div><div class="project-number">PROJECT 06</div><h3>Petronas RAPID</h3><div class="project-location">Malaysia · Refinery / Petrochemical</div><p>International refinery and petrochemical project exposure covering pre- and post-contract commercial activities.</p><div class="project-tags"><span>Pre-Contract Support</span><span>Cost Estimation</span><span>Quantity Take-Offs</span><span>Post-Contract QS</span></div></article>
         </div>
       </div>
     </section>
@@ -512,7 +515,7 @@ final_html = r'''<!DOCTYPE html>
     const menuToggle=document.getElementById("menuToggle");
     const navLinks=document.getElementById("navLinks");
     const links=document.querySelectorAll(".nav-links a");
-    const sections=document.querySelectorAll("main section[id]");
+    const sections=document.querySelectorAll("main section[id], main > section.hero");
 
     menuToggle.addEventListener("click",()=>{
       navLinks.classList.toggle("open");
@@ -521,12 +524,32 @@ final_html = r'''<!DOCTYPE html>
       icon.classList.toggle("fa-xmark");
     });
 
-    links.forEach(link=>link.addEventListener("click",()=>{
+    links.forEach(link=>link.addEventListener("click",(event)=>{
+      event.preventDefault();
       navLinks.classList.remove("open");
       const icon=menuToggle.querySelector("i");
       icon.classList.add("fa-bars");
       icon.classList.remove("fa-xmark");
+
+      if(link.dataset.home === "true"){
+        window.scrollTo({top:0, behavior:"smooth"});
+        return;
+      }
+
+      const targetId=link.getAttribute("href");
+      const target=document.querySelector(targetId);
+      if(target){
+        target.scrollIntoView({behavior:"smooth", block:"start"});
+      }
     }));
+
+    // Brand/Home always returns to the absolute top.
+    document.querySelectorAll('[data-home="true"]').forEach(link=>{
+      link.addEventListener("click",(event)=>{
+        event.preventDefault();
+        window.scrollTo({top:0, behavior:"smooth"});
+      });
+    });
 
     window.addEventListener("scroll",()=>navbar.classList.toggle("scrolled",window.scrollY>20));
 
@@ -554,8 +577,4 @@ final_html = r'''<!DOCTYPE html>
     document.getElementById("year").textContent=new Date().getFullYear();
   </script>
 </body>
-</html>'''
-
-out = Path("/mnt/data/index_final_prabhu.html")
-out.write_text(final_html, encoding="utf-8")
-print(f"Created {out} — {len(final_html):,} characters")
+</html>
