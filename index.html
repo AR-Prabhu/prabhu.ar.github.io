@@ -16,8 +16,8 @@
 
 body{
     font-family:Arial, Helvetica, sans-serif;
-    background:#080b0d;
-    color:#e8edf2;
+    background:#0b0d0e;
+    color:#e8e8e8;
     line-height:1.6;
 }
 
@@ -27,19 +27,12 @@ a{
 }
 
 nav{
-    position:fixed;
+    position:sticky;
     top:0;
-    width:100%;
     z-index:1000;
-    background:rgba(8,11,13,.92);
-    backdrop-filter:blur(14px);
-    border-bottom:1px solid #22282d;
-}
-
-.nav-inner{
-    max-width:1200px;
-    margin:auto;
-    padding:18px 25px;
+    background:rgba(11,13,14,0.95);
+    border-bottom:1px solid #292d2f;
+    padding:18px 6%;
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -51,59 +44,57 @@ nav{
     letter-spacing:1px;
 }
 
-.logo span{
-    color:#d7ad63;
-}
-
-.nav-links{
+nav ul{
     display:flex;
     gap:28px;
+    list-style:none;
     font-size:14px;
-    color:#aeb8c1;
+    color:#bdbdbd;
 }
 
-.nav-links a:hover{
-    color:#d7ad63;
+nav ul li a:hover{
+    color:#d9b46a;
 }
 
 section{
-    max-width:1200px;
-    margin:auto;
-    padding:100px 25px;
+    padding:80px 7%;
 }
 
 .hero{
-    min-height:100vh;
-    display:grid;
-    grid-template-columns:1.5fr 1fr;
-    gap:50px;
+    min-height:90vh;
+    display:flex;
     align-items:center;
-    padding-top:130px;
+    background:
+    radial-gradient(circle at 80% 20%,rgba(217,180,106,.12),transparent 35%),
+    radial-gradient(circle at 10% 80%,rgba(60,120,130,.10),transparent 35%);
 }
 
-.eyebrow{
-    color:#d7ad63;
+.hero-content{
+    max-width:1000px;
+}
+
+.tag{
+    color:#d9b46a;
+    letter-spacing:3px;
     font-size:13px;
-    letter-spacing:2px;
-    text-transform:uppercase;
     margin-bottom:20px;
 }
 
 h1{
-    font-size:clamp(42px,6vw,76px);
-    line-height:1.02;
+    font-size:clamp(42px,7vw,78px);
+    line-height:1.05;
     margin-bottom:25px;
 }
 
 .hero h1 span{
-    color:#d7ad63;
+    color:#d9b46a;
 }
 
-.hero-text{
-    max-width:720px;
-    color:#9ba7b1;
-    font-size:18px;
-    margin-bottom:30px;
+.subtitle{
+    font-size:20px;
+    color:#b8bec2;
+    max-width:850px;
+    margin-bottom:35px;
 }
 
 .buttons{
@@ -114,15 +105,15 @@ h1{
 
 .btn{
     padding:13px 22px;
-    border:1px solid #3b444c;
-    border-radius:30px;
-    transition:.25s;
+    border:1px solid #555;
+    border-radius:6px;
+    display:inline-block;
 }
 
 .btn.primary{
-    background:#d7ad63;
+    background:#d9b46a;
     color:#111;
-    border-color:#d7ad63;
+    border-color:#d9b46a;
     font-weight:bold;
 }
 
@@ -130,134 +121,68 @@ h1{
     transform:translateY(-2px);
 }
 
-.hero-card{
-    background:linear-gradient(145deg,#171d21,#0e1215);
-    border:1px solid #30373d;
-    border-radius:25px;
-    padding:35px;
-    box-shadow:0 20px 60px rgba(0,0,0,.35);
-}
-
-.hero-card h2{
-    font-size:28px;
-    margin-bottom:8px;
-}
-
-.hero-card p{
-    color:#929da6;
-}
-
-.stats{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-    margin-top:30px;
-}
-
-.stat{
-    border:1px solid #30373d;
-    border-radius:15px;
-    padding:20px;
-}
-
-.stat strong{
-    display:block;
-    font-size:30px;
-    color:#d7ad63;
-}
-
-.stat small{
-    color:#89949d;
-}
-
 .section-title{
-    margin-bottom:45px;
+    color:#d9b46a;
+    letter-spacing:3px;
+    font-size:13px;
+    margin-bottom:10px;
 }
 
-.section-title .label{
-    color:#d7ad63;
-    text-transform:uppercase;
-    letter-spacing:2px;
-    font-size:12px;
-}
-
-.section-title h2{
-    font-size:42px;
-    margin-top:8px;
-}
-
-.section-title p{
-    color:#89949d;
-    max-width:700px;
-    margin-top:10px;
+h2{
+    font-size:38px;
+    margin-bottom:40px;
 }
 
 .grid{
     display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:18px;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
 }
 
 .card{
-    background:#101519;
-    border:1px solid #293138;
-    border-radius:18px;
-    padding:25px;
-    transition:.25s;
-}
-
-.card:hover{
-    transform:translateY(-4px);
-    border-color:#806a47;
+    background:#121617;
+    border:1px solid #292d2f;
+    padding:28px;
+    border-radius:12px;
 }
 
 .card h3{
-    margin-bottom:10px;
-    color:#f0f3f5;
+    color:#d9b46a;
+    margin-bottom:15px;
 }
 
-.card p{
-    color:#8e9aa4;
-    font-size:14px;
+.card ul{
+    padding-left:20px;
+    color:#b9bec0;
 }
 
-.tags{
-    display:flex;
-    flex-wrap:wrap;
-    gap:9px;
+.card li{
+    margin-bottom:7px;
 }
 
-.tag{
-    padding:8px 12px;
-    border:1px solid #39434b;
-    border-radius:20px;
-    color:#bbc4cb;
-    font-size:13px;
-}
-
-.workflow{
+.skills{
     display:grid;
-    grid-template-columns:repeat(5,1fr);
-    gap:10px;
-    margin-top:30px;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    border:1px solid #292d2f;
 }
 
-.step{
-    text-align:center;
-    padding:22px 10px;
-    background:#11171b;
-    border:1px solid #30383e;
-    border-radius:15px;
+.skill-box{
+    padding:30px;
+    border-right:1px solid #292d2f;
+    border-bottom:1px solid #292d2f;
 }
 
-.step strong{
-    display:block;
-    color:#d7ad63;
-    margin-bottom:6px;
+.skill-box h3{
+    color:#d9b46a;
+    margin-bottom:18px;
+}
+
+.skill-box p{
+    color:#b9bec0;
 }
 
 .timeline{
-    border-left:1px solid #454e55;
+    border-left:2px solid #d9b46a;
     padding-left:30px;
 }
 
@@ -268,95 +193,58 @@ h1{
 
 .job:before{
     content:"";
+    position:absolute;
     width:10px;
     height:10px;
-    background:#d7ad63;
+    background:#d9b46a;
     border-radius:50%;
-    position:absolute;
     left:-36px;
-    top:7px;
+    top:8px;
 }
 
 .job h3{
     font-size:21px;
 }
 
-.job .company{
-    color:#d7ad63;
-    margin:3px 0;
-}
-
 .job .date{
-    color:#68747d;
-    font-size:13px;
+    color:#d9b46a;
+    font-size:14px;
+    margin:5px 0 10px;
 }
 
 .job p{
-    color:#919da6;
-    margin-top:10px;
+    color:#b9bec0;
 }
 
-.highlight{
-    background:linear-gradient(135deg,#171c20,#0e1215);
-    border:1px solid #343b41;
-    border-radius:22px;
-    padding:40px;
+.contact{
+    text-align:center;
+    background:#101314;
 }
 
-.highlight h3{
-    color:#d7ad63;
-    font-size:26px;
-    margin-bottom:12px;
-}
-
-.highlight p{
-    color:#9aa5ae;
+.contact p{
+    color:#b9bec0;
+    margin:8px 0;
 }
 
 footer{
-    border-top:1px solid #252c31;
-    padding:45px 25px;
     text-align:center;
-    color:#737e87;
+    padding:30px;
+    color:#777;
+    border-top:1px solid #292d2f;
+    font-size:13px;
 }
 
-footer strong{
-    color:#d7ad63;
-}
-
-@media(max-width:850px){
-    .nav-links{
+@media(max-width:700px){
+    nav ul{
         display:none;
     }
 
-    .hero{
-        grid-template-columns:1fr;
-    }
-
-    .grid{
-        grid-template-columns:1fr 1fr;
-    }
-
-    .workflow{
-        grid-template-columns:1fr 1fr;
-    }
-}
-
-@media(max-width:550px){
     section{
-        padding:75px 18px;
+        padding:60px 5%;
     }
 
-    .grid{
-        grid-template-columns:1fr;
-    }
-
-    .workflow{
-        grid-template-columns:1fr;
-    }
-
-    .section-title h2{
-        font-size:32px;
+    h2{
+        font-size:30px;
     }
 }
 </style>
@@ -365,328 +253,375 @@ footer strong{
 <body>
 
 <nav>
-<div class="nav-inner">
-<div class="logo">PRABHU <span>A R</span></div>
+    <div class="logo">PRABHU A R</div>
 
-<div class="nav-links">
-<a href="#home">Home</a>
-<a href="#competencies">Competencies</a>
-<a href="#digital">Digital QS</a>
-<a href="#experience">Experience</a>
-<a href="#journey">Journey</a>
-<a href="#contact">Contact</a>
-</div>
-</div>
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#competencies">Core Competencies</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
 </nav>
+
+
+<!-- HERO -->
 
 <section class="hero" id="home">
 
-<div>
-<div class="eyebrow">Quantity Surveying / Commercial Management / Digital QS</div>
+<div class="hero-content">
+
+<div class="tag">
+QUANTITY SURVEYING / COMMERCIAL CONTROL / DIGITAL QS
+</div>
 
 <h1>
-Commercial clarity<br>
-for <span>complex projects.</span>
+Senior Quantity Surveyor<br>
+<span>Commercial & Digital QS</span>
 </h1>
 
-<p class="hero-text">
-Senior Quantity Surveyor and Commercial Professional with 13+ years of experience supporting EPC, EPCM and FEED projects across international project environments. Experienced in quantity surveying, commercial management, contract administration and engineering quantity verification.
+<p class="subtitle">
+13+ years of international experience in Quantity Surveying,
+Commercial Management and Contract Administration across EPC,
+EPCM, FEED and construction projects.
 </p>
 
 <div class="buttons">
-<a class="btn primary" href="https://www.linkedin.com/in/prabhu-a-r-2557811a4/" target="_blank">
-LinkedIn Profile
-</a>
-
-<a class="btn" href="#experience">Explore Experience</a>
-</div>
+<a class="btn primary" href="#experience">Explore Experience</a>
+<a class="btn" href="#contact">Contact Me</a>
 </div>
 
-<div class="hero-card">
-
-<div class="eyebrow">Professional Profile</div>
-
-<h2>Senior Quantity Surveyor</h2>
-
-<p>
-Quantity Surveying • Commercial Management • Contracts • EPC / EPCM
-</p>
-
-<div class="stats">
-
-<div class="stat">
-<strong>13+</strong>
-<small>Years Experience</small>
-</div>
-
-<div class="stat">
-<strong>EPC</strong>
-<small>Project Environment</small>
-</div>
-
-<div class="stat">
-<strong>QTO</strong>
-<small>Commercial Quantity Control</small>
-</div>
-
-<div class="stat">
-<strong>Digital</strong>
-<small>QS Workflow</small>
-</div>
-
-</div>
 </div>
 
 </section>
 
 
-<section id="competencies">
-
-<div class="section-title">
-<div class="label">Core Competencies</div>
-<h2>Commercial & Quantity Surveying</h2>
-<p>
-A practical combination of engineering quantity verification, commercial control and contract administration.
-</p>
-</div>
-
-<div class="grid">
-
-<div class="card">
-<h3>Quantity Surveying</h3>
-<p>QTO, MTO, BOQ, BBS, measurement, quantity verification and reconciliation.</p>
-</div>
-
-<div class="card">
-<h3>Commercial Management</h3>
-<p>Cost estimation, cost control, payment certification, commercial reporting and forecasting.</p>
-</div>
-
-<div class="card">
-<h3>Contract Administration</h3>
-<p>Contract compliance, FIDIC principles, variations, change management and commercial documentation.</p>
-</div>
-
-<div class="card">
-<h3>Subcontract Management</h3>
-<p>Billing verification, subcontract administration, payment review and commercial coordination.</p>
-</div>
-
-<div class="card">
-<h3>Claims & Variations</h3>
-<p>Variation assessment, change orders, claims support and commercial risk identification.</p>
-</div>
-
-<div class="card">
-<h3>Project Controls</h3>
-<p>Integration with engineering, procurement, planning, construction and project controls teams.</p>
-</div>
-
-</div>
-</section>
-
-
-<section id="digital">
-
-<div class="section-title">
-<div class="label">Digital QS</div>
-<h2>From Measurement to Digital Workflow</h2>
-<p>
-Using modern software and structured workflows to improve speed, consistency and quantity control.
-</p>
-</div>
-
-<div class="workflow">
-
-<div class="step">
-<strong>01</strong>
-QTO
-</div>
-
-<div class="step">
-<strong>02</strong>
-MTO
-</div>
-
-<div class="step">
-<strong>03</strong>
-BOQ
-</div>
-
-<div class="step">
-<strong>04</strong>
-Cost / Commercial
-</div>
-
-<div class="step">
-<strong>05</strong>
-Reporting
-</div>
-
-</div>
-
-<br><br>
-
-<div class="grid">
-
-<div class="card">
-<h3>Bluebeam Revu</h3>
-<p>Digital drawing review, measurement, quantity take-off and markup workflows.</p>
-</div>
-
-<div class="card">
-<h3>Navisworks</h3>
-<p>Model-based quantity review, model interrogation and multidisciplinary coordination support.</p>
-</div>
-
-<div class="card">
-<h3>Advanced Excel</h3>
-<p>Formula-driven quantity calculations, reconciliation, reporting and structured commercial analysis.</p>
-</div>
-
-<div class="card">
-<h3>BBS Automation</h3>
-<p>Exploring automated bar shape calculations, BS shape codes and reinforcement quantity workflows.</p>
-</div>
-
-<div class="card">
-<h3>AI-Assisted QS</h3>
-<p>Developing practical AI-assisted workflows for faster quantity and commercial analysis.</p>
-</div>
-
-<div class="card">
-<h3>BIM Direction</h3>
-<p>Building knowledge around model-based quantity extraction and digital construction workflows.</p>
-</div>
-
-</div>
-</section>
-
+<!-- ABOUT -->
 
 <section>
 
-<div class="section-title">
-<div class="label">Technology Stack</div>
-<h2>Tools I Work With</h2>
+<div class="section-title">PROFESSIONAL PROFILE</div>
+
+<h2>Commercial focus beyond measurement.</h2>
+
+<div class="card">
+
+<p>
+Senior Quantity Surveyor and Commercial professional with extensive
+experience supporting EPC, EPCM and FEED projects through quantity
+verification, cost management, subcontract administration, payment
+certification, variation assessment and commercial reporting.
+</p>
+
+<br>
+
+<p>
+Experienced in working with engineering, procurement, construction,
+planning and project controls teams to ensure accurate quantities,
+contract compliance and commercially sound project outcomes.
+</p>
+
 </div>
 
-<div class="tags">
-
-<span class="tag">Advanced Microsoft Excel</span>
-<span class="tag">Bluebeam Revu</span>
-<span class="tag">Navisworks</span>
-<span class="tag">AutoCAD</span>
-<span class="tag">Oracle Fusion ERP</span>
-<span class="tag">Wrench ERP</span>
-<span class="tag">QTO</span>
-<span class="tag">MTO</span>
-<span class="tag">BOQ</span>
-<span class="tag">BBS</span>
-<span class="tag">FIDIC</span>
-<span class="tag">Commercial Control</span>
-<span class="tag">Cost Estimation</span>
-<span class="tag">Contract Administration</span>
-
-</div>
 </section>
 
 
-<section id="experience">
+<!-- CORE COMPETENCIES -->
 
-<div class="section-title">
-<div class="label">Professional Experience</div>
-<h2>Experience Across Project Environments</h2>
+<section id="competencies">
+
+<div class="section-title">CORE COMPETENCIES</div>
+
+<h2>Commercial & Quantity Surveying Expertise</h2>
+
+<div class="skills">
+
+<div class="skill-box">
+<h3>Quantity Surveying</h3>
 <p>
-International experience across EPCM, EPC contractor and project delivery environments.
+Quantity Take-Offs (QTO), Material Take-Offs (MTO),
+BOQ Preparation, BBS, Engineering Quantity Verification,
+Progress Measurement and Reconciliation.
 </p>
 </div>
+
+<div class="skill-box">
+<h3>Commercial Management</h3>
+<p>
+Cost Estimation, Cost Control, Budget Monitoring,
+Cost Forecasting, Commercial Reporting and
+Contractor Payment Verification.
+</p>
+</div>
+
+<div class="skill-box">
+<h3>Contracts & Claims</h3>
+<p>
+Contract Administration, FIDIC Contract Principles,
+Variations, Change Orders, Claims Support,
+Commercial Compliance and Contractual Awareness.
+</p>
+</div>
+
+<div class="skill-box">
+<h3>Subcontract Management</h3>
+<p>
+Subcontract Administration, Interim Payment Applications,
+Payment Certification, Final Account Support,
+Commercial Documentation and Contractor Coordination.
+</p>
+</div>
+
+<div class="skill-box">
+<h3>Tender & Procurement</h3>
+<p>
+Tendering, Tender Evaluation, Bid Analysis,
+Procurement Commercial Support and
+Value Engineering.
+</p>
+</div>
+
+<div class="skill-box">
+<h3>Project Lifecycle</h3>
+<p>
+FEED, Detailed Engineering, Procurement,
+Construction and EPC/EPCM Project Commercial Support.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- DIGITAL TOOLS -->
+
+<section>
+
+<div class="section-title">DIGITAL QS</div>
+
+<h2>Technology-enabled quantity surveying</h2>
+
+<div class="grid">
+
+<div class="card">
+<h3>Quantity & Measurement</h3>
+<ul>
+<li>Bluebeam Revu</li>
+<li>Navisworks Manage</li>
+<li>AutoCAD</li>
+<li>Engineering Drawing Review</li>
+<li>Digital QTO / MTO</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Commercial Systems</h3>
+<ul>
+<li>Oracle Fusion ERP</li>
+<li>Wrench ERP</li>
+<li>Advanced Microsoft Excel</li>
+<li>Commercial Reporting</li>
+<li>Payment & Quantity Reconciliation</li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Digital Workflow</h3>
+<ul>
+<li>AI-assisted Quantity Surveying</li>
+<li>Digital Measurement Workflows</li>
+<li>Model-based Quantity Verification</li>
+<li>Data Analysis</li>
+<li>Commercial Documentation</li>
+</ul>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- EXPERIENCE -->
+
+<section id="experience">
+
+<div class="section-title">PROFESSIONAL EXPERIENCE</div>
+
+<h2>International QS Experience</h2>
 
 <div class="timeline">
 
 <div class="job">
-<h3>Senior Quantity Surveyor / Commercial</h3>
-<div class="company">Kent PLC – EPCM | UAE</div>
-<div class="date">2026 – Present</div>
+
+<h3>Senior Quantity Surveyor / Commercial – EPCM</h3>
+
+<div class="date">2026 – Present | UAE</div>
+
 <p>
-Supporting client-side EPCM commercial activities including contractor quantity verification, JMS review, QTO, BBS verification, BOQ alignment, commercial assessment and engineering quantity reconciliation for ADNOC project works.
+Supporting EPCM commercial and quantity verification activities
+for major energy projects, including contractor quantity submissions,
+JMS verification, BOQ alignment, engineering quantity checks,
+payment measurement and commercial discussions.
 </p>
+
 </div>
+
 
 <div class="job">
-<h3>Senior / Quantity Surveyor</h3>
-<div class="company">HEISCO – Saudi Arabia</div>
-<div class="date">Previous International Experience</div>
+
+<h3>Senior / Quantity Surveyor – Oil & Gas</h3>
+
+<div class="date">Previous GCC Experience | Saudi Arabia</div>
+
 <p>
-Quantity surveying and commercial support for major construction and power project environments including measurement, billing, claims, variations, subcontractor quantities and commercial documentation.
+Quantity surveying and commercial support for major oil & gas and
+power projects, covering QTO, MTO, BOQ, subcontractor billing,
+progress measurement, payment applications, variations and
+commercial documentation.
 </p>
+
 </div>
+
 
 <div class="job">
-<h3>Quantity Surveying / Commercial Roles</h3>
-<div class="company">International Project Experience</div>
-<div class="date">UAE • Saudi Arabia • Qatar • Bahrain • Malaysia • India</div>
+
+<h3>Quantity Surveying & Commercial Roles</h3>
+
+<div class="date">International Experience | GCC / Malaysia / India</div>
+
 <p>
-Progressive experience across oil & gas, petrochemical, power, infrastructure and industrial construction environments.
+Progressive experience across construction, infrastructure,
+industrial, petrochemical and energy projects with exposure to
+pre-contract and post-contract quantity surveying functions.
 </p>
+
 </div>
 
 </div>
+
 </section>
 
 
-<section id="journey">
+<!-- PROJECT EXPOSURE -->
 
-<div class="section-title">
-<div class="label">Global Journey</div>
-<h2>International Project Exposure</h2>
-</div>
+<section id="projects">
+
+<div class="section-title">PROJECT & CLIENT EXPOSURE</div>
+
+<h2>Energy, EPC & Infrastructure</h2>
 
 <div class="grid">
 
 <div class="card">
-<h3>UAE</h3>
-<p>EPC / EPCM and major oil & gas project environment.</p>
+<h3>EPC / EPCM</h3>
+<ul>
+<li>EPC Commercial Support</li>
+<li>EPCM Quantity Verification</li>
+<li>FEED & Engineering Support</li>
+<li>Construction Phase Commercial Control</li>
+</ul>
 </div>
 
 <div class="card">
-<h3>Saudi Arabia</h3>
-<p>Power and major industrial construction experience.</p>
+<h3>Oil & Gas / Petrochemical</h3>
+<ul>
+<li>Process & Piping Works</li>
+<li>Civil & Structural Works</li>
+<li>Mechanical Works</li>
+<li>Underground Services</li>
+</ul>
 </div>
 
 <div class="card">
-<h3>Qatar</h3>
-<p>International project and commercial exposure.</p>
-</div>
-
-<div class="card">
-<h3>Bahrain</h3>
-<p>Regional construction and project experience.</p>
-</div>
-
-<div class="card">
-<h3>Malaysia</h3>
-<p>International engineering and construction exposure.</p>
-</div>
-
-<div class="card">
-<h3>India</h3>
-<p>Foundation of quantity surveying and construction experience.</p>
+<h3>Client / Contractor Interface</h3>
+<ul>
+<li>Contractor Submission Review</li>
+<li>JMS / Quantity Verification</li>
+<li>Commercial Clarifications</li>
+<li>Dispute & Claim Support</li>
+</ul>
 </div>
 
 </div>
+
 </section>
 
+
+<!-- COMMERCIAL APPROACH -->
 
 <section>
 
-<div class="highlight">
+<div class="section-title">COMMERCIAL APPROACH</div>
 
-<div class="eyebrow">Commercial Mindset</div>
+<h2>From quantities to commercial decisions.</h2>
 
-<h3>Measurement is the foundation. Commercial thinking creates value.</h3>
+<div class="grid">
+
+<div class="card">
+<h3>Measure</h3>
+<p>
+Accurate QTO, MTO, BOQ and engineering quantity verification
+using drawings, specifications and digital tools.
+</p>
+</div>
+
+<div class="card">
+<h3>Verify</h3>
+<p>
+Review contractor submissions against approved drawings,
+BOQ requirements, contract provisions and project records.
+</p>
+</div>
+
+<div class="card">
+<h3>Assess</h3>
+<p>
+Evaluate variations, changes, commercial impacts and
+support informed project-level commercial decisions.
+</p>
+</div>
+
+<div class="card">
+<h3>Control</h3>
+<p>
+Support cost control, payment certification, commercial
+reporting and contract compliance throughout the project lifecycle.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- PROFESSIONAL DEVELOPMENT -->
+
+<section>
+
+<div class="section-title">PROFESSIONAL DEVELOPMENT</div>
+
+<h2>Continuous professional growth</h2>
+
+<div class="card">
+
+<h3>RICS / MRICS Pathway</h3>
 
 <p>
-My focus is to connect engineering quantities, contractual requirements and commercial outcomes — from QTO and BOQ through measurement, payment, variations, claims and final commercial assessment.
+Currently progressing towards professional development through
+the RICS pathway, with continued focus on Quantity Surveying,
+Commercial Management, Contract Practice and professional
+competence.
+</p>
+
+<br>
+
+<h3>Future Focus</h3>
+
+<p>
+Advanced commercial management, contract administration,
+claims, digital quantity surveying, BIM-enabled measurement
+and AI-assisted QS workflows.
 </p>
 
 </div>
@@ -694,22 +629,33 @@ My focus is to connect engineering quantities, contractual requirements and comm
 </section>
 
 
-<section id="contact">
+<!-- CONTACT -->
 
-<div class="section-title">
-<div class="label">Connect</div>
-<h2>Let's Connect</h2>
-<p>
-For professional opportunities, Quantity Surveying, Commercial Management and Digital QS discussions.
-</p>
-</div>
+<section class="contact" id="contact">
 
-<div class="buttons">
+<div class="section-title">CONTACT</div>
+
+<h2>Let's connect.</h2>
+
+<p><strong>Prabhu A R</strong></p>
+
+<p>Senior Quantity Surveyor | Commercial Professional</p>
+
+<p>UAE | GCC | International Projects</p>
+
+<br>
+
+<div class="buttons" style="justify-content:center;">
 
 <a class="btn primary"
-href="https://www.linkedin.com/in/prabhu-a-r-2557811a4/"
+href="https://www.linkedin.com/"
 target="_blank">
-Connect on LinkedIn
+LinkedIn
+</a>
+
+<a class="btn"
+href="mailto:your-email@example.com">
+Email
 </a>
 
 </div>
@@ -719,13 +665,7 @@ Connect on LinkedIn
 
 <footer>
 
-<p>
-<strong>PRABHU A R</strong> · Senior Quantity Surveyor · Commercial & Digital QS
-</p>
-
-<p style="margin-top:8px;">
-EPC / EPCM · Quantity Surveying · Commercial Management · Digital QS
-</p>
+© 2026 Prabhu A R | Senior Quantity Surveyor | Commercial & Digital QS
 
 </footer>
 
