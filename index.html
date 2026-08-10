@@ -524,36 +524,54 @@
       icon.classList.toggle("fa-xmark");
     });
 
+    // Single, reliable navigation handler. Home is treated as a special case.
     links.forEach(link=>link.addEventListener("click",(event)=>{
       event.preventDefault();
+      event.stopPropagation();
+
       navLinks.classList.remove("open");
       const icon=menuToggle.querySelector("i");
       icon.classList.add("fa-bars");
       icon.classList.remove("fa-xmark");
 
       if(link.dataset.home === "true"){
-        window.scrollTo({top:0, behavior:"smooth"});
+        // Force the browser to the very top of the document.
+        history.replaceState(null, "", window.location.pathname + "#home");
+        window.scrollTo({top:0, left:0, behavior:"smooth"});
+        links.forEach(item=>item.classList.remove("active"));
+        link.classList.add("active");
         return;
       }
 
       const targetId=link.getAttribute("href");
       const target=document.querySelector(targetId);
       if(target){
+        history.replaceState(null, "", targetId);
         target.scrollIntoView({behavior:"smooth", block:"start"});
       }
     }));
 
-    // Brand/Home always returns to the absolute top.
-    document.querySelectorAll('[data-home="true"]').forEach(link=>{
-      link.addEventListener("click",(event)=>{
-        event.preventDefault();
-        window.scrollTo({top:0, behavior:"smooth"});
-      });
-    });
+    // If the page is at the top, Home must remain active.
+    function setHomeActive(){
+      if(window.scrollY <= 80){
+        links.forEach(item=>item.classList.remove("active"));
+        const homeLink=document.querySelector('.nav-links a[data-home="true"]');
+        if(homeLink) homeLink.classList.add("active");
+      }
+    }
 
-    window.addEventListener("scroll",()=>navbar.classList.toggle("scrolled",window.scrollY>20));
+    window.addEventListener("scroll",()=>{
+      navbar.classList.toggle("scrolled",window.scrollY>20);
+      setHomeActive();
+    });
+    window.addEventListener("load",setHomeActive);
+    setHomeActive();
 
     const sectionObserver=new IntersectionObserver(entries=>{
+      if(window.scrollY <= 80){
+        setHomeActive();
+        return;
+      }
       entries.forEach(entry=>{
         if(entry.isIntersecting){
           links.forEach(link=>link.classList.remove("active"));
