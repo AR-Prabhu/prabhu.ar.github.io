@@ -197,9 +197,9 @@ section{
 
     background:
         linear-gradient(90deg,
-        rgba(5,8,9,.96) 0%,
-        rgba(5,8,9,.87) 48%,
-        rgba(5,8,9,.70) 100%),
+        rgba(4,18,36,.94) 0%,
+        rgba(5,22,43,.84) 48%,
+        rgba(7,29,55,.68) 100%),
         url("assets/1.jpg") center/cover no-repeat;
 }
 
@@ -379,7 +379,7 @@ Commercial/EPCM/Digital QS = secondary professional branding.
 
 .stats{
     padding:38px 0;
-    background:#0c0f10;
+    background:#081a32;
     border-top:1px solid var(--border-soft);
     border-bottom:1px solid var(--border-soft);
 }
@@ -491,8 +491,8 @@ Commercial/EPCM/Digital QS = secondary professional branding.
     background:
         linear-gradient(
         180deg,
-        #0b0e0f,
-        #080a0b
+        #0a1f3a,
+        #071426
         );
 }
 
@@ -810,7 +810,7 @@ Commercial/EPCM/Digital QS = secondary professional branding.
         rgba(231,184,95,.08),
         transparent 35%
         ),
-        #0d1011;
+        #0b1b33;
 }
 
 .contact-name{
@@ -1035,6 +1035,181 @@ footer{background:#050f1d;border-top:1px solid rgba(100,130,160,.22);}
 .tag{font-size:11px;padding:6px 10px;}
 .section-description{font-size:17px;line-height:1.7;}
 @media(max-width:600px){.project-content h3{font-size:18px;}.project-content p{font-size:13px;}.tag{font-size:10px;padding:5px 9px;}}
+
+
+
+/* =========================================================
+   FINAL CORPORATE NAVY / FIDIC-STYLE VISUAL OVERRIDES
+   ========================================================= */
+
+body{
+    background:#071426 !important;
+    color:#d9e2ec;
+}
+
+.navbar{
+    background:rgba(4,15,30,.97) !important;
+    border-bottom:1px solid rgba(130,160,195,.24) !important;
+}
+
+.nav-links a{color:#cbd7e5;}
+.nav-links a:hover,
+.nav-links a.active{color:#ffc95c;}
+
+.hero{
+    background:
+        linear-gradient(90deg,
+            rgba(4,18,36,.94) 0%,
+            rgba(5,22,43,.84) 48%,
+            rgba(7,29,55,.68) 100%),
+        url("assets/1.jpg") center/cover no-repeat !important;
+}
+
+.hero::after{
+    background:
+        radial-gradient(circle at 78% 38%,
+            rgba(244,185,66,.10),
+            transparent 32%) !important;
+}
+
+.position-card{
+    background:rgba(9,28,53,.88) !important;
+    border-color:rgba(125,157,194,.30) !important;
+}
+
+.stats{
+    background:#081a32 !important;
+    border-color:rgba(125,157,194,.22) !important;
+}
+
+.professional-statement{
+    background:linear-gradient(90deg,
+        rgba(244,185,66,.08),
+        rgba(10,31,57,.55),
+        transparent) !important;
+}
+
+.competency-card,
+.digital-card,
+.project-card,
+.industry-card,
+.highlight{
+    background:#0b1b33 !important;
+    border-color:rgba(125,157,194,.24) !important;
+}
+
+.competency-card:hover,
+.digital-card:hover,
+.project-card:hover,
+.industry-card:hover{
+    background:#102744 !important;
+    border-color:rgba(244,185,66,.42) !important;
+}
+
+.digital-section{
+    background:linear-gradient(180deg,#0a1f3a,#071426) !important;
+}
+
+.project-content p,
+.digital-card p,
+.industry-card p,
+.highlight p{
+    color:#a8b9cc;
+}
+
+.project-location,
+.section-label,
+.project-number,
+.timeline-date,
+.stat-number,
+.industry-card i,
+.highlight i,
+.hero-branding,
+.contact-role{
+    color:#f4b942 !important;
+}
+
+.tag{
+    color:#dce6f0 !important;
+    background:rgba(244,185,66,.045) !important;
+    border-color:rgba(244,185,66,.30) !important;
+}
+
+.development-box{
+    background:linear-gradient(135deg,
+        rgba(244,185,66,.08),
+        rgba(11,27,51,.72)) !important;
+    border-color:rgba(244,185,66,.28) !important;
+}
+
+.contact-box{
+    background:
+        radial-gradient(circle at 82% 18%,
+            rgba(244,185,66,.09),
+            transparent 34%),
+        #0b1b33 !important;
+    border-color:rgba(125,157,194,.25) !important;
+}
+
+.contact-information{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:14px 28px;
+    margin:26px 0 28px;
+    padding:22px 0;
+    border-top:1px solid rgba(125,157,194,.18);
+    border-bottom:1px solid rgba(125,157,194,.18);
+}
+
+.contact-info-item{
+    display:flex;
+    align-items:flex-start;
+    gap:11px;
+    color:#cbd7e5;
+    font-size:14px;
+    line-height:1.55;
+}
+
+.contact-info-item i{
+    width:18px;
+    flex:0 0 18px;
+    margin-top:3px;
+    color:#f4b942;
+}
+
+.contact-info-item a{
+    color:#dce6f0;
+    text-decoration:none;
+}
+
+.contact-info-item a:hover{
+    color:#ffc95c;
+}
+
+.passport-note{
+    color:#9fb1c5;
+}
+
+footer{
+    background:#050f1d !important;
+    border-top-color:rgba(125,157,194,.20) !important;
+}
+
+.project-content h3{font-size:20px;}
+.project-location{font-size:12px;}
+.project-content p{font-size:14px;line-height:1.65;}
+.tag{font-size:11px;padding:6px 10px;}
+.section-description{font-size:17px;line-height:1.7;}
+
+@media(max-width:700px){
+    .contact-information{grid-template-columns:1fr;gap:12px;}
+}
+
+@media(max-width:600px){
+    .project-content h3{font-size:18px;}
+    .project-content p{font-size:13px;}
+    .tag{font-size:10px;padding:5px 9px;}
+}
 
 </style>
 </head>
@@ -2212,6 +2387,33 @@ footer{background:#050f1d;border-top:1px solid rgba(100,130,160,.22);}
 
             <div class="contact-location">
                 Abu Dhabi, United Arab Emirates · GCC · International Projects
+            </div>
+
+            <div class="contact-information">
+                <div class="contact-info-item">
+                    <i class="fa-solid fa-envelope"></i>
+                    <a href="mailto:arprabhu511@gmail.com">arprabhu511@gmail.com</a>
+                </div>
+
+                <div class="contact-info-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <a href="tel:+971501053602">+971 50 105 3602</a>
+                </div>
+
+                <div class="contact-info-item">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>Abu Dhabi, United Arab Emirates</span>
+                </div>
+
+                <div class="contact-info-item">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                    <a href="https://www.linkedin.com/in/prabhuar-2557811a4" target="_blank" rel="noopener">linkedin.com/in/prabhuar-2557811a4</a>
+                </div>
+
+                <div class="contact-info-item passport-note">
+                    <i class="fa-solid fa-passport"></i>
+                    <span>Passport details available on request</span>
+                </div>
             </div>
 
 
