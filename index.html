@@ -34,17 +34,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     --bg-soft:#0b1b33;
     --card:#0b1b33;
     --card-hover:#102442;
-
     --gold:#f4b942;
     --gold-light:#ffc95c;
-
     --white:#f5f7fa;
     --text:#d9e2ec;
     --muted:#9fb1c5;
-
     --border:rgba(244,185,66,.28);
     --border-soft:rgba(120,150,180,.22);
-
     --max:1180px;
 }
 
@@ -1002,6 +998,43 @@ footer{
         flex-direction:column;
     }
 }
+
+
+/* =========================================================
+   FINAL FIDIC-STYLE DARK NAVY THEME
+   ========================================================= */
+body{background:radial-gradient(circle at 75% 15%,rgba(35,75,120,.28),transparent 38%),linear-gradient(135deg,#06101f 0%,#081a32 50%,#071426 100%);color:var(--white);}
+.navbar{background:rgba(5,17,34,.96);border-bottom:1px solid rgba(100,130,160,.25);}
+.nav-links a{color:#c7d2df;}
+.nav-links a:hover,.nav-links a.active{color:var(--gold-light);}
+.hero{background:linear-gradient(90deg,rgba(5,16,30,.96) 0%,rgba(6,20,38,.88) 48%,rgba(7,25,48,.72) 100%),url("assets/1.jpg") center/cover no-repeat;}
+.hero::after{background:radial-gradient(circle at 75% 40%,rgba(244,185,66,.08),transparent 30%);}
+.position-card{background:rgba(11,27,51,.86);border:1px solid rgba(100,130,160,.30);}
+.stats{background:#08172b;border-top:1px solid rgba(100,130,160,.22);border-bottom:1px solid rgba(100,130,160,.22);}
+.professional-statement{background:linear-gradient(90deg,rgba(244,185,66,.08),rgba(10,29,52,.35),transparent);}
+.competency-card{background:#0b1b33;border:1px solid rgba(100,130,160,.25);}
+.competency-card:hover{background:#102442;border-color:rgba(244,185,66,.45);}
+.digital-section{background:linear-gradient(180deg,#0a1a30,#071426);}
+.digital-card{background:#0b1b33;border:1px solid rgba(100,130,160,.25);}
+.project-card{background:#0b1b33;border:1px solid rgba(100,130,160,.25);}
+.project-card:hover{background:#102442;border-color:rgba(244,185,66,.45);}
+.project-content p{color:#9fb1c5;}
+.project-location{color:var(--gold);}
+.tag{color:#d8e2ec;border:1px solid rgba(244,185,66,.32);background:rgba(244,185,66,.04);}
+.industry-card{background:#0b1b33;border:1px solid rgba(100,130,160,.25);}
+.industry-card:hover{background:#102442;border-color:rgba(244,185,66,.40);}
+.highlight{background:#0b1b33;border:1px solid rgba(100,130,160,.25);}
+.development-box{background:linear-gradient(135deg,rgba(244,185,66,.08),rgba(11,27,51,.65));border:1px solid rgba(244,185,66,.30);}
+.contact-box{background:radial-gradient(circle at 80% 20%,rgba(244,185,66,.08),transparent 35%),#0b1b33;border:1px solid rgba(100,130,160,.25);}
+footer{background:#050f1d;border-top:1px solid rgba(100,130,160,.22);}
+.hero-branding,.timeline-project,.contact-role{color:var(--gold-light);}
+.section-label,.project-number,.project-location,.timeline-date,.stat-number,.icon-box,.industry-card i,.highlight i{color:var(--gold);}
+.project-content h3{font-size:20px;}
+.project-location{font-size:12px;}
+.project-content p{font-size:14px;line-height:1.65;}
+.tag{font-size:11px;padding:6px 10px;}
+.section-description{font-size:17px;line-height:1.7;}
+@media(max-width:600px){.project-content h3{font-size:18px;}.project-content p{font-size:13px;}.tag{font-size:10px;padding:5px 9px;}}
 
 </style>
 </head>
