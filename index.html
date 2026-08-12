@@ -3,1212 +3,1640 @@
 <head>
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
 <title>Prabhu A R | Senior Quantity Surveyor | Commercial Controls | EPC & EPCM</title>
 
 <meta name="description"
-content="Prabhu A R – Senior Quantity Surveyor with 13+ years of international experience across EPC, EPCM and FEED projects in Oil & Gas, Petrochemical, Power and Infrastructure.">
+      content="Prabhu A R — Senior Quantity Surveyor with 13+ years of international experience across EPC, EPCM and FEED projects in Oil & Gas, Petrochemical, Power and Infrastructure.">
 
 <meta name="keywords"
-content="Senior Quantity Surveyor, Quantity Surveyor, Commercial Controls, EPC, EPCM, FEED, Digital QS, ADNOC, Oil and Gas, Cost Control, Contract Administration">
+      content="Senior Quantity Surveyor, Commercial Manager, EPC, EPCM, FEED, Quantity Surveying, Commercial Controls, Oil and Gas, ADNOC, FIDIC, Claims, Cost Control, Digital QS">
 
 <meta name="author" content="Prabhu A R">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap"
+      rel="stylesheet">
 
 <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
 
 /* =========================================================
-   GLOBAL
+   01. ROOT / GLOBAL
 ========================================================= */
 
-:root{
-    --bg:#071426;
-    --bg-soft:#0b1b33;
-    --card:#0b1b33;
-    --card-hover:#102442;
-    --gold:#f4b942;
-    --gold-light:#ffc95c;
-    --white:#f5f7fa;
-    --text:#d9e2ec;
-    --muted:#9fb1c5;
-    --border:rgba(244,185,66,.28);
-    --border-soft:rgba(120,150,180,.22);
-    --max:1180px;
+:root {
+    --navy-950: #020a14;
+    --navy-900: #061426;
+    --navy-850: #081a30;
+    --navy-800: #0b2039;
+    --navy-750: #102943;
+
+    --gold: #f4b942;
+    --gold-light: #ffd36b;
+    --gold-dark: #b98720;
+
+    --white: #f5f8fc;
+    --text: #dce7f4;
+    --muted: #9eb0c5;
+
+    --line: rgba(244,185,66,.25);
+    --line-blue: rgba(118,161,204,.25);
+
+    --card: rgba(11,32,57,.78);
+
+    --max-width: 1280px;
+
+    --radius: 12px;
+
+    --shadow:
+        0 20px 60px rgba(0,0,0,.28);
 }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    scroll-behavior:smooth;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-html{
-    scroll-behavior:smooth;
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 82px;
 }
 
-body{
-    background:var(--bg);
-    color:var(--white);
-    font-family:"Inter",Arial,sans-serif;
-    line-height:1.7;
-    overflow-x:hidden;
+body {
+    font-family: "Inter", sans-serif;
+    background: var(--navy-950);
+    color: var(--text);
+    line-height: 1.65;
+    overflow-x: hidden;
 }
 
-a{
-    color:inherit;
-    text-decoration:none;
+a {
+    color: inherit;
+    text-decoration: none;
 }
 
-img{
-    max-width:100%;
-    display:block;
+img {
+    max-width: 100%;
+    display: block;
 }
 
-.container{
-    width:min(var(--max),92%);
-    margin:auto;
+button {
+    font-family: inherit;
 }
 
-section{
-    padding:110px 0;
-    scroll-margin-top:80px;
+.container {
+    width: min(92%, var(--max-width));
+    margin: auto;
 }
 
-.section-label{
-    color:var(--gold);
-    font-size:12px;
-    font-weight:700;
-    letter-spacing:2.5px;
-    text-transform:uppercase;
-    margin-bottom:12px;
+.section {
+    padding: 105px 0;
 }
 
-.section-title{
-    font-family:"Manrope",sans-serif;
-    font-size:clamp(34px,4vw,54px);
-    line-height:1.08;
-    letter-spacing:-1.5px;
-    margin-bottom:20px;
+.section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    color: var(--gold);
+
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    margin-bottom: 14px;
 }
 
-.section-intro{
-    color:var(--text);
-    max-width:760px;
-    font-size:16px;
+.section-label::before {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+}
+
+.section-title {
+    font-family: "Manrope", sans-serif;
+
+    font-size: clamp(32px, 3.2vw, 48px);
+    line-height: 1.12;
+
+    color: var(--white);
+
+    letter-spacing: -1.5px;
+
+    margin-bottom: 16px;
+}
+
+.section-description {
+    max-width: 760px;
+
+    color: var(--muted);
+
+    font-size: 15px;
+    line-height: 1.75;
 }
 
 
 /* =========================================================
-   NAVIGATION
+   02. HEADER
 ========================================================= */
 
-.navbar{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    z-index:1000;
-    background:rgba(8,10,11,.82);
-    backdrop-filter:blur(16px);
-    border-bottom:1px solid rgba(255,255,255,.06);
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 76px;
+
+    z-index: 1000;
+
+    background: rgba(2,10,20,.88);
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    border-bottom: 1px solid rgba(255,255,255,.07);
+
+    transition: .3s ease;
 }
 
-.nav-inner{
-    width:min(var(--max),92%);
-    height:72px;
-    margin:auto;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
+header.scrolled {
+    background: rgba(2,10,20,.97);
+    box-shadow: 0 8px 35px rgba(0,0,0,.25);
 }
 
-.logo{
-    font-family:"Manrope",sans-serif;
-    font-size:19px;
-    font-weight:800;
-    letter-spacing:1px;
+.navbar {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.logo span{
-    color:var(--gold);
+.logo {
+    font-family: "Manrope", sans-serif;
+
+    font-size: 18px;
+    font-weight: 800;
+
+    letter-spacing: .5px;
+
+    color: var(--white);
 }
 
-.nav-links{
-    display:flex;
-    align-items:center;
-    gap:30px;
+.logo span {
+    color: var(--gold);
 }
 
-.nav-links a{
-    color:#c7cccd;
-    font-size:13px;
-    font-weight:600;
-    position:relative;
-    padding:26px 0;
-    transition:.25s ease;
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 27px;
+}
+
+.nav-links a {
+    position: relative;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    color: #c6d2df;
+
+    transition: .25s ease;
+}
+
+.nav-links a::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    bottom: -9px;
+
+    width: 0;
+    height: 2px;
+
+    background: var(--gold);
+
+    transition: .25s ease;
 }
 
 .nav-links a:hover,
-.nav-links a.active{
-    color:var(--gold-light);
+.nav-links a.active {
+    color: var(--gold-light);
 }
 
-.nav-links a.active::after{
-    content:"";
-    position:absolute;
-    bottom:17px;
-    left:0;
-    width:100%;
-    height:2px;
-    background:var(--gold);
+.nav-links a.active::after,
+.nav-links a:hover::after {
+    width: 100%;
 }
 
-.menu-btn{
-    display:none;
-    border:1px solid var(--border-soft);
-    background:transparent;
-    color:white;
-    padding:8px 11px;
-    border-radius:7px;
-    cursor:pointer;
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
+.nav-button {
+    padding: 9px 14px;
 
-/* =========================================================
-   HERO
-========================================================= */
+    border: 1px solid var(--gold);
+    border-radius: 5px;
 
-.hero{
-    min-height:100vh;
-    padding-top:72px;
-    display:flex;
-    align-items:center;
-    position:relative;
-    overflow:hidden;
+    color: var(--gold-light);
 
-    background:
-        linear-gradient(90deg,
-        rgba(4,18,36,.94) 0%,
-        rgba(5,22,43,.84) 48%,
-        rgba(7,29,55,.68) 100%),
-        url("assets/1.jpg") center/cover no-repeat;
+    font-size: 11px;
+    font-weight: 700;
+
+    transition: .25s ease;
 }
 
-.hero::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:
-        radial-gradient(circle at 75% 40%,
-        rgba(231,184,95,.08),
-        transparent 30%);
-    pointer-events:none;
+.nav-button:hover {
+    background: var(--gold);
+    color: #07111d;
 }
 
-.hero-grid{
-    position:relative;
-    z-index:2;
-    display:grid;
-    grid-template-columns:1.35fr .65fr;
-    gap:70px;
-    align-items:center;
-}
+.menu-btn {
+    display: none;
 
-.hero-content{
-    max-width:780px;
-}
+    background: transparent;
+    border: 0;
 
-/*
-IMPORTANT:
-Main title deliberately controlled.
-Senior QS = strongest hierarchy.
-Commercial/EPCM/Digital QS = secondary professional branding.
-*/
+    color: white;
 
-.hero-kicker{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    color:var(--gold);
-    font-size:12px;
-    font-weight:700;
-    letter-spacing:2.4px;
-    text-transform:uppercase;
-    margin-bottom:24px;
-}
+    font-size: 22px;
 
-.hero-kicker::before{
-    content:"";
-    width:28px;
-    height:1px;
-    background:var(--gold);
-}
-
-.hero h1{
-    font-family:"Manrope",sans-serif;
-    font-size:clamp(52px,6vw,82px);
-    line-height:.98;
-    letter-spacing:-3px;
-    font-weight:800;
-    margin-bottom:18px;
-}
-
-/* Professional secondary headline */
-.hero-branding{
-    display:block;
-    color:var(--gold-light);
-    font-family:"Manrope",sans-serif;
-    font-size:clamp(25px,3vw,42px);
-    line-height:1.12;
-    font-weight:700;
-    letter-spacing:-1px;
-    max-width:720px;
-}
-
-.hero-description{
-    margin-top:28px;
-    max-width:720px;
-    color:#bfc7c9;
-    font-size:16px;
-    line-height:1.8;
-}
-
-.hero-buttons{
-    display:flex;
-    gap:12px;
-    flex-wrap:wrap;
-    margin-top:32px;
-}
-
-.btn{
-    display:inline-flex;
-    align-items:center;
-    gap:9px;
-    padding:12px 19px;
-    border-radius:7px;
-    font-size:13px;
-    font-weight:700;
-    transition:.25s ease;
-    border:1px solid var(--border);
-}
-
-.btn-primary{
-    background:var(--gold);
-    color:#0a0c0d;
-}
-
-.btn-primary:hover{
-    background:var(--gold-light);
-    transform:translateY(-2px);
-}
-
-.btn-outline{
-    background:rgba(255,255,255,.025);
-    color:white;
-}
-
-.btn-outline:hover{
-    border-color:var(--gold);
-    color:var(--gold-light);
-    transform:translateY(-2px);
+    cursor: pointer;
 }
 
 
 /* =========================================================
-   HERO PROFILE CARD
+   03. HERO
 ========================================================= */
 
-.position-card{
-    background:rgba(17,20,21,.72);
-    border:1px solid rgba(255,255,255,.13);
-    border-radius:18px;
-    padding:28px;
-    backdrop-filter:blur(14px);
-    box-shadow:0 25px 70px rgba(0,0,0,.35);
+.hero {
+    position: relative;
+
+    min-height: 790px;
+    height: 100vh;
+
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+
+    background: var(--navy-950);
 }
 
-.profile-photo{
-    width:94px;
-    height:94px;
-    object-fit:cover;
-    border-radius:50%;
-    border:3px solid var(--gold);
-    margin-bottom:22px;
-    background:#eee;
+.hero-slides {
+    position: absolute;
+    inset: 0;
+
+    z-index: 0;
 }
 
-.card-label{
-    color:var(--gold);
-    font-size:10px;
-    font-weight:800;
-    letter-spacing:2px;
-    text-transform:uppercase;
-    margin-bottom:15px;
+.hero-slide {
+    position: absolute;
+    inset: 0;
+
+    background-position: center;
+    background-size: cover;
+
+    opacity: 0;
+
+    transform: scale(1.04);
+
+    transition:
+        opacity 2s ease,
+        transform 15s linear;
 }
 
-.position-list{
-    list-style:none;
+.hero-slide.active {
+    opacity: 1;
+    transform: scale(1.12);
 }
 
-.position-list li{
-    display:flex;
-    gap:10px;
-    color:#d4d9da;
-    font-size:13px;
-    margin-bottom:12px;
-}
+.hero-overlay {
+    position: absolute;
+    inset: 0;
 
-.position-list i{
-    color:var(--gold);
-    margin-top:5px;
-}
-
-
-/* =========================================================
-   STATS
-========================================================= */
-
-.stats{
-    padding:38px 0;
-    background:#081a32;
-    border-top:1px solid var(--border-soft);
-    border-bottom:1px solid var(--border-soft);
-}
-
-.stats-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-}
-
-.stat{
-    padding:8px 25px;
-    border-right:1px solid var(--border-soft);
-}
-
-.stat:last-child{
-    border-right:none;
-}
-
-.stat-number{
-    font-family:"Manrope",sans-serif;
-    font-size:30px;
-    font-weight:800;
-    color:var(--gold-light);
-}
-
-.stat-label{
-    color:var(--muted);
-    font-size:12px;
-    margin-top:4px;
-}
-
-
-/* =========================================================
-   PROFESSIONAL STATEMENT
-========================================================= */
-
-.professional-statement{
-    margin-top:45px;
-    padding:30px 34px;
-    border-left:2px solid var(--gold);
-    background:linear-gradient(
-        90deg,
-        rgba(231,184,95,.07),
-        transparent
-    );
-}
-
-.professional-statement p{
-    color:#d8ddde;
-    font-size:18px;
-    max-width:930px;
-}
-
-
-/* =========================================================
-   COMPETENCIES
-========================================================= */
-
-.competencies-grid{
-    margin-top:55px;
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:18px;
-}
-
-.competency-card{
-    background:var(--card);
-    border:1px solid var(--border-soft);
-    padding:28px;
-    border-radius:13px;
-    transition:.3s ease;
-}
-
-.competency-card:hover{
-    transform:translateY(-5px);
-    border-color:var(--border);
-    background:var(--card-hover);
-}
-
-.icon-box{
-    width:42px;
-    height:42px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:var(--gold);
-    border:1px solid var(--border);
-    border-radius:8px;
-    margin-bottom:20px;
-}
-
-.competency-card h3{
-    font-family:"Manrope",sans-serif;
-    font-size:17px;
-    margin-bottom:10px;
-}
-
-.competency-card p{
-    color:var(--muted);
-    font-size:13px;
-}
-
-
-/* =========================================================
-   DIGITAL QS
-========================================================= */
-
-.digital-section{
     background:
         linear-gradient(
-        180deg,
-        #0a1f3a,
-        #071426
+            90deg,
+            rgba(2,10,20,.97) 0%,
+            rgba(2,10,20,.88) 38%,
+            rgba(2,10,20,.60) 67%,
+            rgba(2,10,20,.78) 100%
+        );
+
+    z-index: 1;
+}
+
+.hero-overlay::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(2,10,20,.25),
+            rgba(2,10,20,.35) 55%,
+            rgba(2,10,20,.98)
         );
 }
 
-.digital-grid{
-    margin-top:55px;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:22px;
+.hero-content {
+    position: relative;
+
+    z-index: 3;
+
+    width: min(92%, var(--max-width));
+
+    margin: auto;
+
+    padding-top: 50px;
+
+    display: grid;
+    grid-template-columns: 1.15fr .75fr;
+
+    gap: 70px;
+
+    align-items: center;
 }
 
-.digital-card{
-    padding:32px;
-    background:var(--card);
-    border:1px solid var(--border-soft);
-    border-radius:14px;
+.hero-left {
+    max-width: 780px;
 }
 
-.digital-card h3{
-    font-family:"Manrope",sans-serif;
-    font-size:20px;
-    margin-bottom:16px;
+.hero-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    color: var(--gold-light);
+
+    font-size: 11px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    margin-bottom: 25px;
 }
 
-.digital-card p{
-    color:var(--muted);
-    font-size:14px;
-    margin-bottom:20px;
+.hero-label::before {
+    content: "";
+
+    width: 32px;
+    height: 1px;
+
+    background: var(--gold);
 }
 
-.tool-list{
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
+.hero h1 {
+    font-family: "Manrope", sans-serif;
+
+    font-size: clamp(48px, 5vw, 76px);
+
+    line-height: .98;
+
+    letter-spacing: -3px;
+
+    color: white;
+
+    margin-bottom: 22px;
 }
 
-.tool{
-    border:1px solid var(--border);
-    color:#d5d8d8;
-    padding:7px 11px;
-    border-radius:20px;
-    font-size:11px;
+.hero h1 span {
+    display: block;
+
+    color: var(--gold-light);
+
+    font-size: clamp(26px, 2.5vw, 37px);
+
+    line-height: 1.18;
+
+    letter-spacing: -1px;
+
+    margin-top: 20px;
 }
 
+.hero-description {
+    max-width: 720px;
 
-/* =========================================================
-   EXPERIENCE TIMELINE
-========================================================= */
+    color: #c8d8e9;
 
-.timeline{
-    margin-top:60px;
-    position:relative;
+    font-size: 15px;
+
+    line-height: 1.75;
+
+    margin-bottom: 28px;
 }
 
-.timeline::before{
-    content:"";
-    position:absolute;
-    left:9px;
-    top:0;
-    bottom:0;
-    width:1px;
-    background:linear-gradient(
-        var(--gold),
-        rgba(231,184,95,.05)
-    );
+.hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-.timeline-item{
-    position:relative;
-    padding-left:48px;
-    margin-bottom:55px;
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    padding: 12px 18px;
+
+    border-radius: 5px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    border: 1px solid var(--line);
+
+    transition: .3s ease;
 }
 
-.timeline-dot{
-    position:absolute;
-    left:0;
-    top:7px;
-    width:19px;
-    height:19px;
-    border-radius:50%;
-    background:var(--bg);
-    border:2px solid var(--gold);
+.btn-primary {
+    background: var(--gold);
+    color: #07111d;
+
+    border-color: var(--gold);
 }
 
-.timeline-date{
-    color:var(--gold);
-    font-size:12px;
-    font-weight:700;
-    letter-spacing:1.4px;
-    text-transform:uppercase;
-    margin-bottom:8px;
+.btn-primary:hover {
+    background: var(--gold-light);
+
+    transform: translateY(-2px);
 }
 
-.timeline h3{
-    font-family:"Manrope",sans-serif;
-    font-size:23px;
-    margin-bottom:4px;
+.btn-outline {
+    color: white;
+
+    background: rgba(5,17,30,.45);
+
+    border-color: rgba(244,185,66,.45);
 }
 
-.timeline-company{
-    color:#bfc5c7;
-    font-size:14px;
-    margin-bottom:15px;
-}
+.btn-outline:hover {
+    background: rgba(244,185,66,.12);
 
-.timeline-project{
-    color:var(--gold-light);
-    font-size:13px;
-    font-weight:600;
-    margin-bottom:15px;
-}
+    border-color: var(--gold);
 
-.timeline ul{
-    padding-left:18px;
-    color:var(--muted);
-    font-size:14px;
-}
-
-.timeline li{
-    margin-bottom:8px;
-}
-
-
-/* =========================================================
-   PROJECTS
-========================================================= */
-
-.projects-grid{
-    margin-top:55px;
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:16px;
-}
-
-.project-card{
-    background:var(--card);
-    border:1px solid var(--border-soft);
-    border-radius:14px;
-    overflow:hidden;
-    transition:.35s ease;
-}
-
-.project-card:hover{
-    transform:translateY(-6px);
-    border-color:var(--border);
-}
-
-.project-image{
-    width:100%;
-    height:190px;
-    object-fit:cover;
-}
-
-.project-content{
-    padding:23px;
-}
-
-.project-number{
-    color:var(--gold);
-    font-size:10px;
-    font-weight:800;
-    letter-spacing:2px;
-    margin-bottom:12px;
-}
-
-.project-card h3{
-    font-family:"Manrope",sans-serif;
-    font-size:17px;
-    line-height:1.35;
-    margin-bottom:7px;
-}
-
-.project-location{
-    color:var(--gold);
-    font-size:10px;
-    font-weight:700;
-    letter-spacing:1px;
-    text-transform:uppercase;
-    margin-bottom:16px;
-}
-
-.project-content p{
-    color:var(--muted);
-    font-size:12px;
-    margin-bottom:15px;
-}
-
-.tags{
-    display:flex;
-    flex-wrap:wrap;
-    gap:6px;
-}
-
-.tag{
-    color:#cdd2d3;
-    border:1px solid rgba(231,184,95,.25);
-    border-radius:20px;
-    padding:5px 8px;
-    font-size:9px;
+    transform: translateY(-2px);
 }
 
 
 /* =========================================================
-   INDUSTRY
+   HERO PROFESSIONAL CARD
 ========================================================= */
 
-.industry-grid{
-    margin-top:50px;
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:14px;
-}
+.position-card {
+    max-width: 420px;
 
-.industry-card{
-    min-height:150px;
-    padding:25px;
-    border:1px solid var(--border-soft);
-    background:#0d1011;
-    border-radius:12px;
-}
+    margin-left: auto;
 
-.industry-card i{
-    color:var(--gold);
-    font-size:23px;
-    margin-bottom:20px;
-}
+    padding: 28px;
 
-.industry-card h3{
-    font-family:"Manrope",sans-serif;
-    font-size:15px;
-    margin-bottom:7px;
-}
-
-.industry-card p{
-    color:var(--muted);
-    font-size:12px;
-}
-
-
-/* =========================================================
-   HIGHLIGHTS
-========================================================= */
-
-.highlights{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:18px;
-    margin-top:50px;
-}
-
-.highlight{
-    padding:26px;
-    border:1px solid var(--border-soft);
-    border-radius:12px;
-    background:var(--card);
-}
-
-.highlight i{
-    color:var(--gold);
-    margin-right:8px;
-}
-
-.highlight h3{
-    display:inline;
-    font-size:16px;
-}
-
-.highlight p{
-    margin-top:10px;
-    color:var(--muted);
-    font-size:13px;
-}
-
-
-/* =========================================================
-   PROFESSIONAL DEVELOPMENT
-========================================================= */
-
-.development-box{
-    margin-top:45px;
-    padding:35px;
-    border:1px solid var(--border);
-    border-radius:14px;
     background:
         linear-gradient(
-        135deg,
-        rgba(231,184,95,.07),
-        rgba(255,255,255,.015)
+            145deg,
+            rgba(12,35,61,.92),
+            rgba(5,17,30,.88)
+        );
+
+    border: 1px solid rgba(244,185,66,.45);
+
+    border-radius: 15px;
+
+    box-shadow: var(--shadow);
+
+    backdrop-filter: blur(15px);
+
+    animation: cardFloat 6s ease-in-out infinite;
+}
+
+@keyframes cardFloat {
+    0%,100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.profile-photo {
+    width: 86px;
+    height: 86px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 2px solid var(--gold);
+
+    margin-bottom: 22px;
+}
+
+.card-label {
+    color: var(--gold);
+
+    font-size: 10px;
+
+    letter-spacing: 1.8px;
+
+    font-weight: 800;
+
+    margin-bottom: 18px;
+}
+
+.position-list {
+    list-style: none;
+
+    display: grid;
+    gap: 13px;
+}
+
+.position-list li {
+    display: flex;
+    gap: 10px;
+
+    color: #d9e5f2;
+
+    font-size: 13px;
+
+    line-height: 1.5;
+}
+
+.position-list i {
+    color: var(--gold);
+
+    margin-top: 4px;
+}
+
+
+/* HERO PROJECT INDICATOR */
+
+.hero-project {
+    position: absolute;
+
+    right: 34px;
+    bottom: 28px;
+
+    z-index: 5;
+
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    color: rgba(255,255,255,.8);
+
+    font-size: 11px;
+}
+
+.hero-project-number {
+    color: var(--gold);
+
+    font-weight: 800;
+
+    letter-spacing: 1px;
+}
+
+.hero-project-name {
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   04. STATS
+========================================================= */
+
+.stats {
+    position: relative;
+
+    z-index: 5;
+
+    margin-top: -1px;
+
+    background: #071a31;
+
+    border-top: 1px solid rgba(244,185,66,.12);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+}
+
+.stats-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+}
+
+.stat {
+    min-height: 130px;
+
+    padding: 25px 30px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    border-right: 1px solid rgba(255,255,255,.10);
+}
+
+.stat:last-child {
+    border-right: 0;
+}
+
+.stat-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 4px;
+}
+
+.stat i {
+    color: var(--gold);
+
+    font-size: 23px;
+}
+
+.stat strong {
+    color: var(--gold-light);
+
+    font-family: "Manrope", sans-serif;
+
+    font-size: 24px;
+
+    line-height: 1.2;
+}
+
+.stat span {
+    color: #d5e0ec;
+
+    font-size: 11px;
+}
+
+.stat small {
+    color: var(--muted);
+
+    font-size: 10px;
+
+    margin-top: 4px;
+}
+
+
+/* =========================================================
+   05. PROFILE
+========================================================= */
+
+.profile {
+    background:
+        linear-gradient(
+            180deg,
+            #061426,
+            #071a31
         );
 }
 
-.development-box h3{
-    font-family:"Manrope",sans-serif;
-    font-size:22px;
-    margin-bottom:10px;
-}
+.statement {
+    margin-top: 30px;
 
-.development-box p{
-    color:var(--muted);
-    max-width:800px;
+    padding: 25px 30px;
+
+    border-left: 2px solid var(--gold);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(244,185,66,.08),
+            transparent
+        );
+
+    color: #dce8f5;
+
+    font-size: 15px;
+
+    max-width: 950px;
 }
 
 
 /* =========================================================
-   CONTACT
+   06. COMPETENCIES
 ========================================================= */
 
-.contact-box{
-    margin-top:45px;
-    padding:50px;
-    border:1px solid var(--border-soft);
-    border-radius:16px;
+.competencies {
+    background: #071a31;
+}
+
+.competency-grid {
+    margin-top: 38px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 14px;
+}
+
+.competency-card {
+    padding: 24px;
+
     background:
-        radial-gradient(
-        circle at 80% 20%,
-        rgba(231,184,95,.08),
-        transparent 35%
-        ),
-        #0b1b33;
+        linear-gradient(
+            145deg,
+            rgba(14,39,68,.85),
+            rgba(7,23,41,.95)
+        );
+
+    border: 1px solid var(--line-blue);
+
+    border-radius: 9px;
+
+    transition: .3s ease;
 }
 
-.contact-name{
-    font-family:"Manrope",sans-serif;
-    font-size:30px;
-    font-weight:800;
+.competency-card:hover {
+    transform: translateY(-5px);
+
+    border-color: rgba(244,185,66,.55);
+
+    box-shadow:
+        0 15px 35px rgba(0,0,0,.18);
 }
 
-.contact-role{
-    color:var(--gold-light);
-    margin:5px 0 20px;
+.icon-box {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--line);
+
+    border-radius: 6px;
+
+    color: var(--gold);
+
+    margin-bottom: 16px;
 }
 
-.contact-location{
-    color:var(--muted);
-    margin-bottom:25px;
+.competency-card h3 {
+    color: var(--white);
+
+    font-family: "Manrope", sans-serif;
+
+    font-size: 15px;
+
+    margin-bottom: 8px;
 }
 
-.contact-buttons{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
+.competency-card p {
+    color: var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.65;
 }
 
 
 /* =========================================================
-   FOOTER
+   07. DIGITAL QS
 ========================================================= */
 
-footer{
-    padding:30px 0;
-    border-top:1px solid var(--border-soft);
-    color:#6f7779;
-    font-size:11px;
+.digital {
+    background:
+        linear-gradient(
+            180deg,
+            #071a31,
+            #081e37
+        );
 }
 
-.footer-inner{
-    display:flex;
-    justify-content:space-between;
-    gap:20px;
+.digital-grid {
+    margin-top: 35px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 14px;
+}
+
+.digital-card {
+    padding: 26px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(13,39,68,.9),
+            rgba(7,22,40,.95)
+        );
+
+    border: 1px solid var(--line-blue);
+
+    border-radius: 10px;
+}
+
+.digital-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    color: white;
+
+    font-size: 16px;
+
+    margin-bottom: 12px;
+}
+
+.digital-card h3 i {
+    color: var(--gold);
+}
+
+.digital-card p {
+    color: var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.7;
+
+    margin-bottom: 15px;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 7px;
+}
+
+.tag {
+    padding: 5px 9px;
+
+    border: 1px solid rgba(244,185,66,.35);
+
+    border-radius: 20px;
+
+    color: #dfe8f3;
+
+    font-size: 9px;
+
+    background: rgba(244,185,66,.025);
 }
 
 
 /* =========================================================
-   REVEAL ANIMATION
+   08. EXPERIENCE TIMELINE
 ========================================================= */
 
-.reveal{
-    opacity:0;
-    transform:translateY(25px);
-    transition:opacity .7s ease, transform .7s ease;
+.experience {
+    background: #061426;
 }
 
-.reveal.visible{
-    opacity:1;
-    transform:translateY(0);
+.timeline {
+    position: relative;
+
+    max-width: 950px;
+
+    margin: 50px auto 0;
+}
+
+.timeline::before {
+    content: "";
+
+    position: absolute;
+
+    left: 10px;
+    top: 0;
+    bottom: 0;
+
+    width: 1px;
+
+    background:
+        linear-gradient(
+            180deg,
+            var(--gold),
+            rgba(244,185,66,.12)
+        );
+}
+
+.timeline-item {
+    position: relative;
+
+    padding-left: 48px;
+
+    margin-bottom: 48px;
+}
+
+.timeline-dot {
+    position: absolute;
+
+    left: 4px;
+    top: 5px;
+
+    width: 13px;
+    height: 13px;
+
+    border-radius: 50%;
+
+    background: var(--navy-900);
+
+    border: 2px solid var(--gold);
+
+    box-shadow:
+        0 0 0 5px rgba(244,185,66,.06);
+}
+
+.timeline-date {
+    color: var(--gold);
+
+    font-size: 10px;
+
+    letter-spacing: 1px;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    margin-bottom: 7px;
+}
+
+.timeline-item h3 {
+    color: white;
+
+    font-family: "Manrope", sans-serif;
+
+    font-size: 19px;
+
+    margin-bottom: 3px;
+}
+
+.company {
+    color: #b8c9da;
+
+    font-size: 12px;
+
+    margin-bottom: 5px;
+}
+
+.project-line {
+    color: var(--gold-light);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    margin-bottom: 12px;
+}
+
+.timeline-item ul {
+    padding-left: 16px;
+}
+
+.timeline-item li {
+    color: var(--muted);
+
+    font-size: 12px;
+
+    margin-bottom: 5px;
 }
 
 
 /* =========================================================
-   RESPONSIVE
+   09. PROJECTS
 ========================================================= */
 
-@media(max-width:900px){
-
-    .nav-links{
-        position:absolute;
-        top:72px;
-        left:0;
-        width:100%;
-        display:none;
-        flex-direction:column;
-        align-items:flex-start;
-        gap:0;
-        padding:10px 4%;
-        background:#090b0c;
-        border-bottom:1px solid var(--border-soft);
-    }
-
-    .nav-links.open{
-        display:flex;
-    }
-
-    .nav-links a{
-        width:100%;
-        padding:14px 0;
-    }
-
-    .nav-links a.active::after{
-        display:none;
-    }
-
-    .menu-btn{
-        display:block;
-    }
-
-    .hero-grid{
-        grid-template-columns:1fr;
-        gap:45px;
-    }
-
-    .hero{
-        padding-top:120px;
-        padding-bottom:80px;
-    }
-
-    .position-card{
-        max-width:500px;
-    }
-
-    .stats-grid{
-        grid-template-columns:repeat(2,1fr);
-        row-gap:25px;
-    }
-
-    .stat:nth-child(2){
-        border-right:none;
-    }
-
-    .competencies-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .projects-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
-
-    .industry-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
+.projects {
+    background: #071a31;
 }
 
-@media(max-width:600px){
+.project-grid {
+    margin-top: 38px;
 
-    section{
-        padding:80px 0;
-    }
+    display: grid;
 
-    .hero h1{
-        font-size:48px;
-        letter-spacing:-2px;
-    }
+    grid-template-columns:
+        repeat(3, 1fr);
 
-    .hero-branding{
-        font-size:25px;
-        line-height:1.2;
-    }
+    gap: 14px;
+}
 
-    .hero-description{
-        font-size:14px;
-    }
+.project-card {
+    overflow: hidden;
 
-    .stats-grid,
-    .competencies-grid,
-    .digital-grid,
-    .projects-grid,
-    .industry-grid,
-    .highlights{
-        grid-template-columns:1fr;
-    }
+    background:
+        linear-gradient(
+            145deg,
+            #0c2440,
+            #07182c
+        );
 
-    .stat{
-        border-right:none;
-        border-bottom:1px solid var(--border-soft);
-        padding-bottom:18px;
-    }
+    border: 1px solid var(--line-blue);
 
-    .stat:last-child{
-        border-bottom:none;
-    }
+    border-radius: 11px;
 
-    .professional-statement{
-        padding:22px;
-    }
+    transition: .35s ease;
+}
 
-    .professional-statement p{
-        font-size:15px;
-    }
+.project-card:hover {
+    transform: translateY(-7px);
 
-    .contact-box{
-        padding:30px 22px;
-    }
+    border-color: rgba(244,185,66,.55);
 
-    .footer-inner{
-        flex-direction:column;
-    }
+    box-shadow:
+        0 20px 45px rgba(0,0,0,.25);
+}
+
+.project-image {
+    height: 210px;
+
+    overflow: hidden;
+}
+
+.project-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition: transform .7s ease;
+}
+
+.project-card:hover .project-image img {
+    transform: scale(1.06);
+}
+
+.project-content {
+    padding: 22px;
+}
+
+.project-number {
+    color: var(--gold);
+
+    font-size: 9px;
+
+    letter-spacing: 1.5px;
+
+    font-weight: 800;
+
+    margin-bottom: 10px;
+}
+
+.project-content h3 {
+    font-family: "Manrope", sans-serif;
+
+    font-size: 18px;
+
+    color: white;
+
+    line-height: 1.35;
+
+    margin-bottom: 5px;
+}
+
+.project-location {
+    color: var(--gold-light);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: .5px;
+
+    text-transform: uppercase;
+
+    margin-bottom: 14px;
+}
+
+.project-content p {
+    color: var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.7;
+
+    margin-bottom: 14px;
 }
 
 
 /* =========================================================
-   FINAL FIDIC-STYLE DARK NAVY THEME
-   ========================================================= */
-body{background:radial-gradient(circle at 75% 15%,rgba(35,75,120,.28),transparent 38%),linear-gradient(135deg,#06101f 0%,#081a32 50%,#071426 100%);color:var(--white);}
-.navbar{background:rgba(5,17,34,.96);border-bottom:1px solid rgba(100,130,160,.25);}
-.nav-links a{color:#c7d2df;}
-.nav-links a:hover,.nav-links a.active{color:var(--gold-light);}
-.hero{background:linear-gradient(90deg,rgba(5,16,30,.96) 0%,rgba(6,20,38,.88) 48%,rgba(7,25,48,.72) 100%),url("assets/1.jpg") center/cover no-repeat;}
-.hero::after{background:radial-gradient(circle at 75% 40%,rgba(244,185,66,.08),transparent 30%);}
-.position-card{background:rgba(11,27,51,.86);border:1px solid rgba(100,130,160,.30);}
-.stats{background:#08172b;border-top:1px solid rgba(100,130,160,.22);border-bottom:1px solid rgba(100,130,160,.22);}
-.professional-statement{background:linear-gradient(90deg,rgba(244,185,66,.08),rgba(10,29,52,.35),transparent);}
-.competency-card{background:#0b1b33;border:1px solid rgba(100,130,160,.25);}
-.competency-card:hover{background:#102442;border-color:rgba(244,185,66,.45);}
-.digital-section{background:linear-gradient(180deg,#0a1a30,#071426);}
-.digital-card{background:#0b1b33;border:1px solid rgba(100,130,160,.25);}
-.project-card{background:#0b1b33;border:1px solid rgba(100,130,160,.25);}
-.project-card:hover{background:#102442;border-color:rgba(244,185,66,.45);}
-.project-content p{color:#9fb1c5;}
-.project-location{color:var(--gold);}
-.tag{color:#d8e2ec;border:1px solid rgba(244,185,66,.32);background:rgba(244,185,66,.04);}
-.industry-card{background:#0b1b33;border:1px solid rgba(100,130,160,.25);}
-.industry-card:hover{background:#102442;border-color:rgba(244,185,66,.40);}
-.highlight{background:#0b1b33;border:1px solid rgba(100,130,160,.25);}
-.development-box{background:linear-gradient(135deg,rgba(244,185,66,.08),rgba(11,27,51,.65));border:1px solid rgba(244,185,66,.30);}
-.contact-box{background:radial-gradient(circle at 80% 20%,rgba(244,185,66,.08),transparent 35%),#0b1b33;border:1px solid rgba(100,130,160,.25);}
-footer{background:#050f1d;border-top:1px solid rgba(100,130,160,.22);}
-.hero-branding,.timeline-project,.contact-role{color:var(--gold-light);}
-.section-label,.project-number,.project-location,.timeline-date,.stat-number,.icon-box,.industry-card i,.highlight i{color:var(--gold);}
-.project-content h3{font-size:20px;}
-.project-location{font-size:12px;}
-.project-content p{font-size:14px;line-height:1.65;}
-.tag{font-size:11px;padding:6px 10px;}
-.section-description{font-size:17px;line-height:1.7;}
-@media(max-width:600px){.project-content h3{font-size:18px;}.project-content p{font-size:13px;}.tag{font-size:10px;padding:5px 9px;}}
+   10. COMMERCIAL APPROACH
+========================================================= */
 
+.commercial {
+    background: #061426;
+}
+
+.commercial-grid {
+    margin-top: 40px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 14px;
+}
+
+.commercial-card {
+    padding: 26px;
+
+    border: 1px solid var(--line-blue);
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(12,35,61,.8),
+            rgba(6,20,36,.9)
+        );
+}
+
+.commercial-card h3 {
+    color: white;
+
+    font-size: 17px;
+
+    margin-bottom: 8px;
+
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.commercial-card i {
+    color: var(--gold);
+}
+
+.commercial-card p {
+    color: var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.7;
+}
 
 
 /* =========================================================
-   FINAL CORPORATE NAVY / FIDIC-STYLE VISUAL OVERRIDES
-   ========================================================= */
+   11. CONTRACT / CLAIMS HIGHLIGHT
+========================================================= */
 
-body{
-    background:#071426 !important;
-    color:#d9e2ec;
-}
+.contract-strip {
+    margin-top: 40px;
 
-.navbar{
-    background:rgba(4,15,30,.97) !important;
-    border-bottom:1px solid rgba(130,160,195,.24) !important;
-}
+    padding: 28px;
 
-.nav-links a{color:#cbd7e5;}
-.nav-links a:hover,
-.nav-links a.active{color:#ffc95c;}
+    border: 1px solid rgba(244,185,66,.35);
 
-.hero{
+    border-radius: 10px;
+
     background:
-        linear-gradient(90deg,
-            rgba(4,18,36,.94) 0%,
-            rgba(5,22,43,.84) 48%,
-            rgba(7,29,55,.68) 100%),
-        url("assets/1.jpg") center/cover no-repeat !important;
-}
-
-.hero::after{
-    background:
-        radial-gradient(circle at 78% 38%,
-            rgba(244,185,66,.10),
-            transparent 32%) !important;
-}
-
-.position-card{
-    background:rgba(9,28,53,.88) !important;
-    border-color:rgba(125,157,194,.30) !important;
-}
-
-.stats{
-    background:#081a32 !important;
-    border-color:rgba(125,157,194,.22) !important;
-}
-
-.professional-statement{
-    background:linear-gradient(90deg,
-        rgba(244,185,66,.08),
-        rgba(10,31,57,.55),
-        transparent) !important;
-}
-
-.competency-card,
-.digital-card,
-.project-card,
-.industry-card,
-.highlight{
-    background:#0b1b33 !important;
-    border-color:rgba(125,157,194,.24) !important;
-}
-
-.competency-card:hover,
-.digital-card:hover,
-.project-card:hover,
-.industry-card:hover{
-    background:#102744 !important;
-    border-color:rgba(244,185,66,.42) !important;
-}
-
-.digital-section{
-    background:linear-gradient(180deg,#0a1f3a,#071426) !important;
-}
-
-.project-content p,
-.digital-card p,
-.industry-card p,
-.highlight p{
-    color:#a8b9cc;
-}
-
-.project-location,
-.section-label,
-.project-number,
-.timeline-date,
-.stat-number,
-.industry-card i,
-.highlight i,
-.hero-branding,
-.contact-role{
-    color:#f4b942 !important;
-}
-
-.tag{
-    color:#dce6f0 !important;
-    background:rgba(244,185,66,.045) !important;
-    border-color:rgba(244,185,66,.30) !important;
-}
-
-.development-box{
-    background:linear-gradient(135deg,
-        rgba(244,185,66,.08),
-        rgba(11,27,51,.72)) !important;
-    border-color:rgba(244,185,66,.28) !important;
-}
-
-.contact-box{
-    background:
-        radial-gradient(circle at 82% 18%,
+        linear-gradient(
+            90deg,
             rgba(244,185,66,.09),
-            transparent 34%),
-        #0b1b33 !important;
-    border-color:rgba(125,157,194,.25) !important;
+            rgba(10,30,52,.5)
+        );
 }
 
-.contact-information{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:14px 28px;
-    margin:26px 0 28px;
-    padding:22px 0;
-    border-top:1px solid rgba(125,157,194,.18);
-    border-bottom:1px solid rgba(125,157,194,.18);
+.contract-strip h3 {
+    color: var(--gold-light);
+
+    font-family: "Manrope", sans-serif;
+
+    font-size: 18px;
+
+    margin-bottom: 15px;
 }
 
-.contact-info-item{
-    display:flex;
-    align-items:flex-start;
-    gap:11px;
-    color:#cbd7e5;
-    font-size:14px;
-    line-height:1.55;
+.contract-tags {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 9px;
 }
 
-.contact-info-item i{
-    width:18px;
-    flex:0 0 18px;
-    margin-top:3px;
-    color:#f4b942;
+.contract-tag {
+    padding: 7px 12px;
+
+    border: 1px solid rgba(244,185,66,.32);
+
+    border-radius: 20px;
+
+    color: #dce8f4;
+
+    font-size: 10px;
 }
 
-.contact-info-item a{
-    color:#dce6f0;
-    text-decoration:none;
+
+/* =========================================================
+   12. PROFESSIONAL DEVELOPMENT
+========================================================= */
+
+.development {
+    background: #071a31;
 }
 
-.contact-info-item a:hover{
-    color:#ffc95c;
+.development-card {
+    max-width: 900px;
+
+    margin-top: 35px;
+
+    padding: 28px;
+
+    border: 1px solid rgba(244,185,66,.35);
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(14,38,65,.8),
+            rgba(7,21,38,.9)
+        );
 }
 
-.passport-note{
-    color:#9fb1c5;
+.development-card h3 {
+    color: white;
+
+    font-size: 17px;
+
+    margin-bottom: 7px;
 }
 
-footer{
-    background:#050f1d !important;
-    border-top-color:rgba(125,157,194,.20) !important;
+.development-card p {
+    color: var(--muted);
+
+    font-size: 12px;
 }
 
-.project-content h3{font-size:20px;}
-.project-location{font-size:12px;}
-.project-content p{font-size:14px;line-height:1.65;}
-.tag{font-size:11px;padding:6px 10px;}
-.section-description{font-size:17px;line-height:1.7;}
 
-@media(max-width:700px){
-    .contact-information{grid-template-columns:1fr;gap:12px;}
+/* =========================================================
+   13. CONTACT
+========================================================= */
+
+.contact {
+    background:
+        linear-gradient(
+            180deg,
+            #071a31,
+            #020a14
+        );
 }
 
-@media(max-width:600px){
-    .project-content h3{font-size:18px;}
-    .project-content p{font-size:13px;}
-    .tag{font-size:10px;padding:5px 9px;}
+.contact-card {
+    margin-top: 35px;
+
+    padding: 32px;
+
+    border: 1px solid var(--line-blue);
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(19,42,68,.9),
+            rgba(6,20,35,.95)
+        );
+}
+
+.contact-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 30px;
+
+    padding-bottom: 25px;
+
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.contact-name {
+    color: white;
+
+    font-family: "Manrope", sans-serif;
+
+    font-size: 21px;
+
+    font-weight: 800;
+}
+
+.contact-role {
+    color: var(--gold);
+
+    font-size: 11px;
+
+    margin-top: 4px;
+}
+
+.contact-location {
+    color: var(--muted);
+
+    font-size: 11px;
+
+    margin-top: 10px;
+}
+
+.contact-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 15px;
+
+    padding: 25px 0;
+
+    border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.contact-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color: #d6e3f0;
+
+    font-size: 12px;
+}
+
+.contact-item i {
+    color: var(--gold);
+
+    width: 18px;
+}
+
+.contact-item a:hover {
+    color: var(--gold-light);
+}
+
+.contact-buttons {
+    display: flex;
+
+    gap: 9px;
+
+    flex-wrap: wrap;
+
+    margin-top: 22px;
+}
+
+
+/* =========================================================
+   14. FOOTER
+========================================================= */
+
+footer {
+    padding: 25px 0;
+
+    background: #020811;
+
+    border-top: 1px solid rgba(255,255,255,.06);
+
+    color: #71859a;
+
+    font-size: 10px;
+}
+
+.footer-inner {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+.footer-inner span:last-child {
+    color: var(--gold-dark);
+}
+
+
+/* =========================================================
+   15. SCROLL REVEAL
+========================================================= */
+
+.reveal {
+    opacity: 0;
+
+    transform: translateY(25px);
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease;
+}
+
+.reveal.visible {
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+
+/* =========================================================
+   16. RESPONSIVE
+========================================================= */
+
+@media (max-width: 1050px) {
+
+    .nav-links {
+        gap: 18px;
+    }
+
+    .hero-content {
+        grid-template-columns: 1fr .7fr;
+
+        gap: 35px;
+    }
+
+    .position-card {
+        padding: 23px;
+    }
+
+    .project-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .competency-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 820px) {
+
+    header {
+        height: 68px;
+    }
+
+    .nav-links {
+        position: fixed;
+
+        top: 68px;
+        left: 0;
+        right: 0;
+
+        display: none;
+
+        flex-direction: column;
+        align-items: flex-start;
+
+        padding: 25px;
+
+        background: rgba(3,12,23,.98);
+
+        border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .nav-links.open {
+        display: flex;
+    }
+
+    .nav-actions {
+        display: none;
+    }
+
+    .menu-btn {
+        display: block;
+    }
+
+    .hero {
+        min-height: 900px;
+        height: auto;
+
+        padding: 120px 0 70px;
+    }
+
+    .hero-content {
+        grid-template-columns: 1fr;
+
+        gap: 40px;
+    }
+
+    .hero-left {
+        max-width: 700px;
+    }
+
+    .position-card {
+        margin: 0;
+
+        max-width: 500px;
+    }
+
+    .hero-project {
+        position: relative;
+
+        right: auto;
+        bottom: auto;
+
+        margin-top: 25px;
+
+        padding-left: 4%;
+    }
+
+    .stats-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+    .stat:nth-child(2) {
+        border-right: 0;
+    }
+
+    .stat:nth-child(-n+2) {
+        border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .container {
+        width: 90%;
+    }
+
+    .section {
+        padding: 75px 0;
+    }
+
+    .hero {
+        min-height: auto;
+
+        padding-top: 110px;
+    }
+
+    .hero h1 {
+        font-size: 46px;
+
+        letter-spacing: -2px;
+    }
+
+    .hero h1 span {
+        font-size: 25px;
+    }
+
+    .hero-description {
+        font-size: 13px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat {
+        border-right: 0;
+
+        border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .stat:last-child {
+        border-bottom: 0;
+    }
+
+    .competency-grid,
+    .digital-grid,
+    .project-grid,
+    .commercial-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .project-image {
+        height: 220px;
+    }
+
+    .contact-header {
+        flex-direction: column;
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+    }
 }
 
 </style>
@@ -1217,87 +1645,174 @@ footer{
 
 <body>
 
+
 <!-- =========================================================
-     NAVIGATION
+     HEADER
 ========================================================= -->
 
-<nav class="navbar">
+<header id="header">
 
-    <div class="nav-inner">
+    <div class="container navbar">
 
         <a href="#home" class="logo">
             PRABHU <span>A R</span>
         </a>
 
-        <button class="menu-btn" id="menuBtn">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-
-        <div class="nav-links" id="navLinks">
+        <nav class="nav-links" id="navLinks">
 
             <a href="#home" class="active">Home</a>
+
             <a href="#profile">Profile</a>
+
             <a href="#competencies">Competencies</a>
+
             <a href="#digital">Digital QS</a>
+
             <a href="#experience">Experience</a>
+
             <a href="#projects">Projects</a>
+
             <a href="#contact">Contact</a>
+
+        </nav>
+
+        <div class="nav-actions">
+
+            <a href="assets/Prabhu-A-R-CV.pdf"
+               class="nav-button"
+               download>
+
+                <i class="fa-solid fa-download"></i>
+                Download CV
+
+            </a>
+
+            <a href="https://www.linkedin.com/in/prabhuar-2557811a4"
+               target="_blank"
+               class="nav-button">
+
+                <i class="fa-brands fa-linkedin-in"></i>
+                LinkedIn
+
+            </a>
 
         </div>
 
+        <button class="menu-btn" id="menuBtn">
+
+            <i class="fa-solid fa-bars"></i>
+
+        </button>
+
     </div>
 
-</nav>
+</header>
 
 
 <!-- =========================================================
-     HOME
+     HOME / HERO
 ========================================================= -->
 
 <section class="hero" id="home">
 
-    <div class="container hero-grid">
 
-        <div class="hero-content reveal">
+    <!--
+        6 PROJECT IMAGES
 
-            <div class="hero-kicker">
+        15 seconds per image.
+        Images must exist inside /assets/
+    -->
+
+    <div class="hero-slides">
+
+        <div class="hero-slide active"
+             style="background-image:url('assets/1.jpg');">
+        </div>
+
+        <div class="hero-slide"
+             style="background-image:url('assets/2.jpg');">
+        </div>
+
+        <div class="hero-slide"
+             style="background-image:url('assets/3.jpg');">
+        </div>
+
+        <div class="hero-slide"
+             style="background-image:url('assets/4.jpg');">
+        </div>
+
+        <div class="hero-slide"
+             style="background-image:url('assets/5.jpg');">
+        </div>
+
+        <div class="hero-slide"
+             style="background-image:url('assets/6.jpg');">
+        </div>
+
+    </div>
+
+
+    <div class="hero-overlay"></div>
+
+
+    <div class="hero-content">
+
+        <div class="hero-left reveal">
+
+            <div class="hero-label">
                 Quantity Surveying / Commercial Controls / EPC & EPCM
             </div>
 
+
             <h1>
+
                 Senior Quantity Surveyor
+
+                <span>
+                    Commercial Controls | EPC & EPCM Projects | Digital QS
+                </span>
+
             </h1>
 
-            <div class="hero-branding">
-                Commercial Controls | EPC & EPCM Projects | Digital QS
-            </div>
 
             <p class="hero-description">
-                13+ years of international experience across EPC, EPCM and FEED
-                projects, supporting quantity verification, commercial management,
-                cost control, contract administration and project controls across
-                major energy and infrastructure developments.
+
+                13+ years of international experience across EPC, EPCM and
+                FEED projects, supporting quantity verification, commercial
+                management, cost control, contract administration and project
+                controls across major energy and infrastructure developments.
+
             </p>
+
 
             <div class="hero-buttons">
 
-                <a href="#experience" class="btn btn-primary">
+                <a href="#experience"
+                   class="btn btn-primary">
+
                     <i class="fa-solid fa-arrow-down"></i>
                     Explore Experience
+
                 </a>
 
+
                 <a href="assets/Prabhu-A-R-CV.pdf"
-                   class="btn btn-outline"
-                   download>
-                    <i class="fa-solid fa-file-arrow-down"></i>
+                   download
+                   class="btn btn-outline">
+
+                    <i class="fa-solid fa-file-pdf"></i>
                     Download CV
+
                 </a>
+
 
                 <a href="https://www.linkedin.com/in/prabhuar-2557811a4"
                    target="_blank"
                    class="btn btn-outline">
+
                     <i class="fa-brands fa-linkedin-in"></i>
                     LinkedIn
+
                 </a>
 
             </div>
@@ -1305,43 +1820,70 @@ footer{
         </div>
 
 
+        <!-- PROFESSIONAL POSITIONING -->
+
         <div class="position-card reveal">
 
-            <img
-                src="assets/1777210120513.png"
-                alt="Prabhu A R"
-                class="profile-photo"
-            >
+            <img src="assets/1777210120513.png"
+                 alt="Prabhu A R"
+                 class="profile-photo">
+
 
             <div class="card-label">
-                Professional Positioning
+                PROFESSIONAL POSITIONING
             </div>
+
 
             <ul class="position-list">
 
                 <li>
                     <i class="fa-solid fa-check"></i>
-                    Senior-level Quantity Surveying & Commercial Management
+                    <span>
+                        Senior-level Quantity Surveying &
+                        Commercial Management
+                    </span>
                 </li>
+
 
                 <li>
                     <i class="fa-solid fa-check"></i>
-                    EPC / EPCM / FEED project delivery exposure
+                    <span>
+                        EPC / EPCM / FEED project delivery exposure
+                    </span>
                 </li>
+
 
                 <li>
                     <i class="fa-solid fa-check"></i>
-                    ADNOC project commercial interface
+                    <span>
+                        ADNOC project commercial interface
+                    </span>
                 </li>
+
 
                 <li>
                     <i class="fa-solid fa-check"></i>
-                    Quantity verification, payment certification & variations
+                    <span>
+                        Quantity verification, payment certification
+                        & variations
+                    </span>
                 </li>
+
 
                 <li>
                     <i class="fa-solid fa-check"></i>
-                    Digital measurement and quantity workflows
+                    <span>
+                        Digital measurement and quantity workflows
+                    </span>
+                </li>
+
+
+                <li>
+                    <i class="fa-solid fa-check"></i>
+                    <span>
+                        Cost control, commercial reporting &
+                        contract administration
+                    </span>
                 </li>
 
             </ul>
@@ -1350,73 +1892,154 @@ footer{
 
     </div>
 
+
+    <!-- LIVE PROJECT INDICATOR -->
+
+    <div class="hero-project">
+
+        <span class="hero-project-number"
+              id="heroProjectNumber">
+            01 / 06
+        </span>
+
+        <span class="hero-project-name"
+              id="heroProjectName">
+            ADNOC BFN — UAE
+        </span>
+
+    </div>
+
+
 </section>
+
 
 
 <!-- =========================================================
      STATS
 ========================================================= -->
 
-<div class="stats">
+<section class="stats">
 
     <div class="container stats-grid">
 
         <div class="stat">
-            <div class="stat-number">13+</div>
-            <div class="stat-label">Years International Experience</div>
+
+            <div class="stat-top">
+
+                <i class="fa-solid fa-briefcase"></i>
+
+                <strong>13+</strong>
+
+            </div>
+
+            <span>Years Experience</span>
+
+            <small>
+                International QS & Commercial
+            </small>
+
         </div>
 
-        <div class="stat">
-            <div class="stat-number">6</div>
-            <div class="stat-label">Countries Project Exposure</div>
-        </div>
 
         <div class="stat">
-            <div class="stat-number">EPC / EPCM / FEED</div>
-            <div class="stat-label">Project Lifecycle Exposure</div>
+
+            <div class="stat-top">
+
+                <i class="fa-solid fa-globe"></i>
+
+                <strong>6</strong>
+
+            </div>
+
+            <span>Countries Exposure</span>
+
+            <small>
+                UAE, KSA, Qatar, Malaysia,
+                India & Bahrain
+            </small>
+
         </div>
 
+
         <div class="stat">
-            <div class="stat-number">4</div>
-            <div class="stat-label">Core Industry Sectors</div>
+
+            <div class="stat-top">
+
+                <i class="fa-solid fa-building"></i>
+
+                <strong style="font-size:20px;">
+                    EPC / EPCM / FEED
+                </strong>
+
+            </div>
+
+            <span>Project Lifecycle Exposure</span>
+
+            <small>
+                Pre-Contract → Execution → Closeout
+            </small>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-top">
+
+                <i class="fa-solid fa-industry"></i>
+
+                <strong>4</strong>
+
+            </div>
+
+            <span>Industry Sectors</span>
+
+            <small>
+                Oil & Gas, Petrochemical,
+                Power & Infrastructure
+            </small>
+
         </div>
 
     </div>
 
-</div>
+</section>
+
 
 
 <!-- =========================================================
      PROFILE
 ========================================================= -->
 
-<section id="profile">
+<section class="section profile" id="profile">
 
     <div class="container">
 
-        <div class="section-label reveal">
+        <div class="section-label">
             Professional Profile
         </div>
 
-        <h2 class="section-title reveal">
+
+        <h2 class="section-title">
             Commercial focus beyond measurement.
         </h2>
 
-        <p class="section-intro reveal">
-            Senior Quantity Surveyor with international experience in Quantity
-            Surveying, Commercial Management, Contract Administration, Cost
-            Control and Project Controls across EPC, EPCM and FEED environments.
+
+        <p class="section-description">
+
+            Senior Quantity Surveyor with international experience in
+            Quantity Surveying, Commercial Management, Contract Administration,
+            Cost Control and Project Controls across EPC, EPCM and FEED
+            environments.
+
         </p>
 
 
-        <div class="professional-statement reveal">
+        <div class="statement">
 
-            <p>
-                Supporting EPC, EPCM and FEED projects through quantity
-                verification, commercial controls, contract administration,
-                progress measurement, variation assessment and digital QS
-                workflows.
-            </p>
+            Supporting EPC, EPCM and FEED projects through quantity verification,
+            commercial controls, contract administration, progress measurement,
+            variation assessment, payment certification and digital QS workflows.
 
         </div>
 
@@ -1425,101 +2048,180 @@ footer{
 </section>
 
 
+
 <!-- =========================================================
-     COMPETENCIES
+     CORE COMPETENCIES
 ========================================================= -->
 
-<section id="competencies">
+<section class="section competencies" id="competencies">
 
     <div class="container">
 
-        <div class="section-label reveal">
+        <div class="section-label">
             Core Competencies
         </div>
 
-        <h2 class="section-title reveal">
+
+        <h2 class="section-title">
             Commercial & Quantity Surveying Expertise
         </h2>
 
-        <p class="section-intro reveal">
+
+        <p class="section-description">
+
             A practical commercial skillset covering pre-contract support,
-            project execution, payment certification, variations and
-            quantity control.
+            project execution, payment certification, variations, claims
+            and quantity control.
+
         </p>
 
 
-        <div class="competencies-grid">
+        <div class="competency-grid">
+
 
             <div class="competency-card reveal">
+
                 <div class="icon-box">
                     <i class="fa-solid fa-ruler-combined"></i>
                 </div>
+
                 <h3>Quantity Surveying</h3>
+
                 <p>
                     QTO, MTO, BOQ, BBS, engineering quantity verification,
-                    progress measurement and quantity reconciliation.
+                    progress measurement, reconciliation and quantity take-offs.
                 </p>
+
             </div>
 
 
             <div class="competency-card reveal">
+
                 <div class="icon-box">
                     <i class="fa-solid fa-chart-line"></i>
                 </div>
+
                 <h3>Commercial Management</h3>
+
                 <p>
                     Cost estimation, cost control, budget monitoring,
-                    commercial reporting and payment verification.
+                    forecasting, commercial reporting and payment verification.
                 </p>
+
             </div>
 
 
             <div class="competency-card reveal">
+
                 <div class="icon-box">
                     <i class="fa-solid fa-file-contract"></i>
                 </div>
+
                 <h3>Contracts & Claims</h3>
+
                 <p>
-                    Contract administration, FIDIC awareness, variations,
-                    change orders, claims support and commercial compliance.
+                    FIDIC awareness, contract administration, variations,
+                    EOT support, claim evaluation, entitlement assessment
+                    and commercial compliance.
                 </p>
+
             </div>
 
 
             <div class="competency-card reveal">
+
                 <div class="icon-box">
-                    <i class="fa-solid fa-building"></i>
+                    <i class="fa-solid fa-building-user"></i>
                 </div>
+
                 <h3>Subcontract Administration</h3>
+
                 <p>
-                    Interim payment applications, subcontractor valuations,
-                    payment certification and final account support.
+                    Interim payment applications, subcontractor evaluations,
+                    payment certification, final accounts and commercial
+                    documentation.
                 </p>
+
             </div>
 
 
             <div class="competency-card reveal">
+
                 <div class="icon-box">
-                    <i class="fa-solid fa-calculator"></i>
+                    <i class="fa-solid fa-file-invoice-dollar"></i>
                 </div>
+
                 <h3>Pre-Contract Commercial Support</h3>
+
                 <p>
-                    QTO, MTO, BOQ preparation, estimation support, rate
-                    analysis, quantity verification and commercial input
-                    during bid preparation.
+                    QTO, MTO, BOQ preparation, estimation support, rate analysis,
+                    engineering quantity verification, commercial bid support
+                    and value engineering.
                 </p>
+
             </div>
 
 
             <div class="competency-card reveal">
+
                 <div class="icon-box">
                     <i class="fa-solid fa-diagram-project"></i>
                 </div>
+
                 <h3>Project Controls</h3>
+
                 <p>
                     Progress measurement, quantity tracking, forecasting,
                     commercial reporting and multidisciplinary coordination.
                 </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONTRACT TYPES -->
+
+        <div class="contract-strip reveal">
+
+            <h3>
+                Contract & Commercial Exposure
+            </h3>
+
+            <div class="contract-tags">
+
+                <span class="contract-tag">
+                    FIDIC
+                </span>
+
+                <span class="contract-tag">
+                    Lump Sum EPC
+                </span>
+
+                <span class="contract-tag">
+                    Re-measurable Contracts
+                </span>
+
+                <span class="contract-tag">
+                    Variations
+                </span>
+
+                <span class="contract-tag">
+                    EOT Support
+                </span>
+
+                <span class="contract-tag">
+                    Claims Evaluation
+                </span>
+
+                <span class="contract-tag">
+                    Entitlement Assessment
+                </span>
+
+                <span class="contract-tag">
+                    Final Accounts
+                </span>
+
             </div>
 
         </div>
@@ -1527,32 +2229,38 @@ footer{
     </div>
 
 </section>
+
 
 
 <!-- =========================================================
      DIGITAL QS
 ========================================================= -->
 
-<section class="digital-section" id="digital">
+<section class="section digital" id="digital">
 
     <div class="container">
 
-        <div class="section-label reveal">
+        <div class="section-label">
             Digital QS
         </div>
 
-        <h2 class="section-title reveal">
+
+        <h2 class="section-title">
             Technology-enabled quantity surveying.
         </h2>
 
-        <p class="section-intro reveal">
+
+        <p class="section-description">
+
             Practical use of digital measurement, engineering models and
             commercial data workflows to improve quantity verification,
             reconciliation and reporting.
+
         </p>
 
 
         <div class="digital-grid">
+
 
             <div class="digital-card reveal">
 
@@ -1567,13 +2275,13 @@ footer{
                     engineering quantity review.
                 </p>
 
-                <div class="tool-list">
+                <div class="tags">
 
-                    <span class="tool">Bluebeam Revu</span>
-                    <span class="tool">Navisworks Manage</span>
-                    <span class="tool">AutoCAD</span>
-                    <span class="tool">Digital QTO</span>
-                    <span class="tool">MTO Review</span>
+                    <span class="tag">Bluebeam Revu</span>
+                    <span class="tag">Navisworks Manage</span>
+                    <span class="tag">AutoCAD</span>
+                    <span class="tag">Digital QTO</span>
+                    <span class="tag">MTO Review</span>
 
                 </div>
 
@@ -1588,18 +2296,18 @@ footer{
                 </h3>
 
                 <p>
-                    Smart quantity workflows using CAD automation, model
-                    outputs and structured data analysis to improve
-                    measurement efficiency and commercial reconciliation.
+                    Smart quantity workflows using CAD automation, structured
+                    data analysis and quantity schedules to improve measurement
+                    efficiency and commercial reconciliation.
                 </p>
 
-                <div class="tool-list">
+                <div class="tags">
 
-                    <span class="tool">AutoCAD LISP Workflows</span>
-                    <span class="tool">Quantity Schedules</span>
-                    <span class="tool">Advanced Excel</span>
-                    <span class="tool">Quantity Reconciliation</span>
-                    <span class="tool">Commercial Reporting</span>
+                    <span class="tag">AutoCAD LISP Workflows</span>
+                    <span class="tag">Quantity Schedules</span>
+                    <span class="tag">Advanced Excel</span>
+                    <span class="tag">Quantity Reconciliation</span>
+                    <span class="tag">Commercial Reporting</span>
 
                 </div>
 
@@ -1614,16 +2322,16 @@ footer{
                 </h3>
 
                 <p>
-                    Experience supporting commercial records, payment
-                    workflows, quantity registers and project documentation.
+                    Experience supporting commercial records, payment workflows,
+                    quantity registers and project documentation.
                 </p>
 
-                <div class="tool-list">
+                <div class="tags">
 
-                    <span class="tool">Oracle Fusion ERP</span>
-                    <span class="tool">Wrench ERP</span>
-                    <span class="tool">Excel</span>
-                    <span class="tool">Commercial Records</span>
+                    <span class="tag">Oracle Fusion ERP</span>
+                    <span class="tag">Wrench ERP</span>
+                    <span class="tag">Excel</span>
+                    <span class="tag">Commercial Records</span>
 
                 </div>
 
@@ -1639,16 +2347,16 @@ footer{
 
                 <p>
                     Exploring practical AI-assisted approaches for quantity
-                    review, document analysis, data organisation and
-                    commercial workflow improvement.
+                    review, document analysis, data organisation and commercial
+                    workflow improvement.
                 </p>
 
-                <div class="tool-list">
+                <div class="tags">
 
-                    <span class="tool">AI-assisted QS</span>
-                    <span class="tool">Document Analysis</span>
-                    <span class="tool">Data Workflows</span>
-                    <span class="tool">Process Optimisation</span>
+                    <span class="tag">AI-assisted QS</span>
+                    <span class="tag">Document Analysis</span>
+                    <span class="tag">Data Workflows</span>
+                    <span class="tag">Process Optimisation</span>
 
                 </div>
 
@@ -1661,25 +2369,30 @@ footer{
 </section>
 
 
+
 <!-- =========================================================
      EXPERIENCE
 ========================================================= -->
 
-<section id="experience">
+<section class="section experience" id="experience">
 
     <div class="container">
 
-        <div class="section-label reveal">
+        <div class="section-label">
             Professional Experience
         </div>
 
-        <h2 class="section-title reveal">
+
+        <h2 class="section-title">
             International QS Experience
         </h2>
 
-        <p class="section-intro reveal">
+
+        <p class="section-description">
+
             Progressive experience across EPC, EPCM, FEED and construction
             environments spanning the Middle East, Malaysia and India.
+
         </p>
 
 
@@ -1693,51 +2406,53 @@ footer{
                 <div class="timeline-dot"></div>
 
                 <div class="timeline-date">
-                    Apr 2026 – Present | UAE
+                    APR 2026 – PRESENT | UAE
                 </div>
 
                 <h3>
                     Project Quantity Surveyor – Civil
                 </h3>
 
-                <div class="timeline-company">
+                <div class="company">
                     KENT PLC | EPCM / Project Controls
                 </div>
 
-                <div class="timeline-project">
+                <div class="project-line">
                     FEED & EPCM – BAB Far North Full Field Development (BFN), ADNOC
                 </div>
 
                 <ul>
 
                     <li>
-                        Support EPCM commercial management activities during
-                        FEED and execution phases.
+                        Supporting EPCM commercial administration including
+                        contractor progress assessment, quantity validation,
+                        payment certification, variation evaluation and
+                        commercial controls.
                     </li>
 
                     <li>
-                        Perform quantity verification, progress measurement,
+                        Performing quantity verification, progress measurement,
                         contractor invoice verification and payment certification.
                     </li>
 
                     <li>
-                        Review IFC drawings, engineering deliverables, BOQs,
-                        MTOs and quantity take-offs.
+                        Reviewing IFC drawings, engineering deliverables,
+                        BOQs, MTOs and quantity take-offs.
                     </li>
 
                     <li>
-                        Support variation, change request and quantity-growth
-                        assessments.
+                        Supporting variation, change request and quantity
+                        growth assessments.
                     </li>
 
                     <li>
-                        Coordinate with engineering, procurement, planning,
+                        Coordinating with engineering, procurement, planning,
                         construction, QA/QC and project controls teams.
                     </li>
 
                     <li>
-                        Maintain commercial records, quantity registers and
-                        progress documentation.
+                        Maintaining commercial records, quantity registers
+                        and progress documentation.
                     </li>
 
                 </ul>
@@ -1752,18 +2467,18 @@ footer{
                 <div class="timeline-dot"></div>
 
                 <div class="timeline-date">
-                    Jul 2025 – Feb 2026 | Saudi Arabia
+                    JUL 2025 – FEB 2026 | SAUDI ARABIA
                 </div>
 
                 <h3>
                     Project Quantity Surveyor – Civil
                 </h3>
 
-                <div class="timeline-company">
+                <div class="company">
                     HEISCO – KSA
                 </div>
 
-                <div class="timeline-project">
+                <div class="project-line">
                     Qurayyah Expansion CCGT IPP Project
                 </div>
 
@@ -1779,12 +2494,12 @@ footer{
                     </li>
 
                     <li>
-                        Prepared PPCs and supporting commercial documentation.
+                        Prepared PPCs and supported commercial documentation.
                     </li>
 
                     <li>
-                        Evaluated variations, FEWOs, rate analysis and
-                        change order submissions.
+                        Evaluated variations, change orders, rate analysis
+                        and contractor submissions.
                     </li>
 
                     <li>
@@ -1804,18 +2519,18 @@ footer{
                 <div class="timeline-dot"></div>
 
                 <div class="timeline-date">
-                    Dec 2022 – Jun 2025 | Middle East
+                    DEC 2022 – JUN 2025 | MIDDLE EAST
                 </div>
 
                 <h3>
                     Senior Quantity Surveyor
                 </h3>
 
-                <div class="timeline-company">
+                <div class="company">
                     Gulf Asia Engineering & Projects
                 </div>
 
-                <div class="timeline-project">
+                <div class="project-line">
                     EPC / FEED Projects across UAE, Saudi Arabia, Qatar & Bahrain
                 </div>
 
@@ -1827,8 +2542,8 @@ footer{
                     </li>
 
                     <li>
-                        Supported pre-contract and post-contract commercial
-                        activities including estimation and quantity verification.
+                        Supported pre-contract commercial activities including
+                        estimation and quantity verification.
                     </li>
 
                     <li>
@@ -1837,8 +2552,8 @@ footer{
                     </li>
 
                     <li>
-                        Prepared client billing, subcontractor payment
-                        evaluations and commercial reports.
+                        Prepared client billing, subcontractor payments
+                        and commercial reports.
                     </li>
 
                     <li>
@@ -1858,18 +2573,18 @@ footer{
                 <div class="timeline-dot"></div>
 
                 <div class="timeline-date">
-                    Apr 2017 – Sep 2022 | Malaysia
+                    APR 2017 – SEP 2022 | MALAYSIA
                 </div>
 
                 <h3>
                     Quantity Surveyor – PMC & EPC
                 </h3>
 
-                <div class="timeline-company">
-                    Tan Bock Kwee & Sons Sdn Bhd
+                <div class="company">
+                    Tan Boon Kwee & Sons Sdn Bhd
                 </div>
 
-                <div class="timeline-project">
+                <div class="project-line">
                     Refinery, Industrial, Infrastructure & Building Projects
                 </div>
 
@@ -1881,8 +2596,8 @@ footer{
                     </li>
 
                     <li>
-                        Supported tender evaluation, bid preparation and
-                        commercial analysis.
+                        Supported commercial bid evaluation, cost analysis
+                        and quantity verification.
                     </li>
 
                     <li>
@@ -1911,19 +2626,19 @@ footer{
                 <div class="timeline-dot"></div>
 
                 <div class="timeline-date">
-                    Apr 2013 – May 2017 | India
+                    APR 2013 – MAY 2017 | INDIA
                 </div>
 
                 <h3>
                     Quantity Surveyor
                 </h3>
 
-                <div class="timeline-company">
-                    Senthil Construction Corporation
+                <div class="company">
+                    Construction & Infrastructure Projects
                 </div>
 
-                <div class="timeline-project">
-                    Construction, Building & Infrastructure Projects
+                <div class="project-line">
+                    Civil, Building & Infrastructure Works
                 </div>
 
                 <ul>
@@ -1933,7 +2648,7 @@ footer{
                     </li>
 
                     <li>
-                        Prepared DLR, DPR and MPR progress reports.
+                        Prepared DPR, DLR and MPR progress reports.
                     </li>
 
                     <li>
@@ -1956,40 +2671,52 @@ footer{
 </section>
 
 
+
 <!-- =========================================================
      PROJECTS
 ========================================================= -->
 
-<section id="projects">
+<section class="section projects" id="projects">
 
     <div class="container">
 
-        <div class="section-label reveal">
+        <div class="section-label">
             Selected Project Exposure
         </div>
 
-        <h2 class="section-title reveal">
+
+        <h2 class="section-title">
             Selected Energy & Infrastructure Projects.
         </h2>
 
-        <p class="section-intro reveal">
+
+        <p class="section-description">
+
             Project exposure presented at portfolio level without overstating
             confidential commercial information or unsupported project values.
+
         </p>
 
 
-        <div class="projects-grid">
+        <div class="project-grid">
 
 
-            <div class="project-card reveal">
+            <!-- PROJECT 01 -->
 
-                <img src="assets/1.jpg"
-                     alt="ADNOC BFN"
-                     class="project-image">
+            <article class="project-card reveal">
+
+                <div class="project-image">
+
+                    <img src="assets/1.jpg"
+                         alt="ADNOC BFN">
+
+                </div>
 
                 <div class="project-content">
 
-                    <div class="project-number">PROJECT 01</div>
+                    <div class="project-number">
+                        PROJECT 01
+                    </div>
 
                     <h3>
                         ADNOC BFN – BAB Far North Full Field Development
@@ -2002,30 +2729,40 @@ footer{
                     <p>
                         Current EPCM quantity surveying and commercial support
                         covering quantity verification, billing, payment
-                        certification, variations and multidisciplinary coordination.
+                        certification, variations and multidisciplinary
+                        coordination.
                     </p>
 
                     <div class="tags">
+
                         <span class="tag">Quantity Verification</span>
                         <span class="tag">BOQ Validation</span>
                         <span class="tag">Payment Certification</span>
                         <span class="tag">Commercial Support</span>
+
                     </div>
 
                 </div>
 
-            </div>
+            </article>
 
 
-            <div class="project-card reveal">
+            <!-- PROJECT 02 -->
 
-                <img src="assets/2.jpg"
-                     alt="Qurayyah Expansion CCGT IPP"
-                     class="project-image">
+            <article class="project-card reveal">
+
+                <div class="project-image">
+
+                    <img src="assets/2.jpg"
+                         alt="Qurayyah Expansion CCGT IPP">
+
+                </div>
 
                 <div class="project-content">
 
-                    <div class="project-number">PROJECT 02</div>
+                    <div class="project-number">
+                        PROJECT 02
+                    </div>
 
                     <h3>
                         Qurayyah Expansion CCGT IPP
@@ -2038,30 +2775,40 @@ footer{
                     <p>
                         QS and commercial support covering BOQ, BBS, MTO,
                         subcontractor billing, client invoicing, PPCs,
-                        variation orders, rate analysis and quantity reconciliation.
+                        variation orders, rate analysis and quantity
+                        reconciliation.
                     </p>
 
                     <div class="tags">
+
                         <span class="tag">QTO / MTO / BBS</span>
                         <span class="tag">Billing Verification</span>
                         <span class="tag">Variations</span>
                         <span class="tag">Quantity Reconciliation</span>
+
                     </div>
 
                 </div>
 
-            </div>
+            </article>
 
 
-            <div class="project-card reveal">
+            <!-- PROJECT 03 -->
 
-                <img src="assets/3.jpg"
-                     alt="Hail and Ghasha P2"
-                     class="project-image">
+            <article class="project-card reveal">
+
+                <div class="project-image">
+
+                    <img src="assets/3.jpg"
+                         alt="Hail and Ghasha">
+
+                </div>
 
                 <div class="project-content">
 
-                    <div class="project-number">PROJECT 03</div>
+                    <div class="project-number">
+                        PROJECT 03
+                    </div>
 
                     <h3>
                         Hail & Ghasha P2
@@ -2077,26 +2824,35 @@ footer{
                     </p>
 
                     <div class="tags">
+
                         <span class="tag">Quantity Verification</span>
                         <span class="tag">Commercial Support</span>
                         <span class="tag">EPC Interface</span>
                         <span class="tag">Progress Measurement</span>
+
                     </div>
 
                 </div>
 
-            </div>
+            </article>
 
 
-            <div class="project-card reveal">
+            <!-- PROJECT 04 -->
 
-                <img src="assets/4.jpg"
-                     alt="NFE EPC-1"
-                     class="project-image">
+            <article class="project-card reveal">
+
+                <div class="project-image">
+
+                    <img src="assets/4.jpg"
+                         alt="NFE EPC-1">
+
+                </div>
 
                 <div class="project-content">
 
-                    <div class="project-number">PROJECT 04</div>
+                    <div class="project-number">
+                        PROJECT 04
+                    </div>
 
                     <h3>
                         NFE EPC-1
@@ -2108,31 +2864,40 @@ footer{
 
                     <p>
                         Commercial and quantity surveying exposure within
-                        major energy project environments, supporting quantity
-                        and commercial workflows.
+                        major energy project environments, supporting
+                        quantity and commercial workflows.
                     </p>
 
                     <div class="tags">
+
                         <span class="tag">Quantity Take-Off</span>
                         <span class="tag">BOQ</span>
                         <span class="tag">Commercial Review</span>
                         <span class="tag">EPC Support</span>
+
                     </div>
 
                 </div>
 
-            </div>
+            </article>
 
 
-            <div class="project-card reveal">
+            <!-- PROJECT 05 -->
 
-                <img src="assets/5.jpg"
-                     alt="Tanazib Gas Plant"
-                     class="project-image">
+            <article class="project-card reveal">
+
+                <div class="project-image">
+
+                    <img src="assets/5.jpg"
+                         alt="Tanazib Gas Plant">
+
+                </div>
 
                 <div class="project-content">
 
-                    <div class="project-number">PROJECT 05</div>
+                    <div class="project-number">
+                        PROJECT 05
+                    </div>
 
                     <h3>
                         Tanazib Gas Plant
@@ -2143,32 +2908,41 @@ footer{
                     </div>
 
                     <p>
-                        Oil & gas project exposure involving quantity
-                        surveying, commercial documentation, measurement
-                        and contractor interface.
+                        Oil & Gas project exposure involving quantity surveying,
+                        commercial documentation, measurement and contractor
+                        interface.
                     </p>
 
                     <div class="tags">
+
                         <span class="tag">QTO</span>
                         <span class="tag">MTO</span>
                         <span class="tag">Billing</span>
                         <span class="tag">Commercial Support</span>
+
                     </div>
 
                 </div>
 
-            </div>
+            </article>
 
 
-            <div class="project-card reveal">
+            <!-- PROJECT 06 -->
 
-                <img src="assets/6.jpg"
-                     alt="Petronas RAPID"
-                     class="project-image">
+            <article class="project-card reveal">
+
+                <div class="project-image">
+
+                    <img src="assets/6.jpg"
+                         alt="Petronas RAPID">
+
+                </div>
 
                 <div class="project-content">
 
-                    <div class="project-number">PROJECT 06</div>
+                    <div class="project-number">
+                        PROJECT 06
+                    </div>
 
                     <h3>
                         Petronas RAPID
@@ -2179,21 +2953,23 @@ footer{
                     </div>
 
                     <p>
-                        Industrial and petrochemical project exposure
-                        supporting quantity surveying, commercial documentation
-                        and project controls activities.
+                        Industrial and petrochemical project exposure supporting
+                        quantity surveying, commercial documentation and
+                        project controls activities.
                     </p>
 
                     <div class="tags">
+
                         <span class="tag">Quantity Surveying</span>
                         <span class="tag">Cost Control</span>
                         <span class="tag">Commercial Reporting</span>
                         <span class="tag">Project Controls</span>
+
                     </div>
 
                 </div>
 
-            </div>
+            </article>
 
         </div>
 
@@ -2202,117 +2978,94 @@ footer{
 </section>
 
 
+
 <!-- =========================================================
-     INDUSTRIES
+     COMMERCIAL APPROACH
 ========================================================= -->
 
-<section>
+<section class="section commercial">
 
     <div class="container">
 
-        <div class="section-label reveal">
-            Industry Expertise
+        <div class="section-label">
+            Commercial Approach
         </div>
 
-        <h2 class="section-title reveal">
-            Commercial exposure across major project sectors.
-        </h2>
 
-
-        <div class="industry-grid">
-
-            <div class="industry-card reveal">
-                <i class="fa-solid fa-oil-well"></i>
-                <h3>Oil & Gas</h3>
-                <p>
-                    Refinery, gas plant and upstream/downstream project exposure.
-                </p>
-            </div>
-
-            <div class="industry-card reveal">
-                <i class="fa-solid fa-industry"></i>
-                <h3>Petrochemical</h3>
-                <p>
-                    Petrochemical, polymer and industrial project environments.
-                </p>
-            </div>
-
-            <div class="industry-card reveal">
-                <i class="fa-solid fa-bolt"></i>
-                <h3>Power</h3>
-                <p>
-                    Power generation and major EPC project commercial support.
-                </p>
-            </div>
-
-            <div class="industry-card reveal">
-                <i class="fa-solid fa-road"></i>
-                <h3>Infrastructure</h3>
-                <p>
-                    Buildings, utilities, roads, drainage and infrastructure works.
-                </p>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================================================
-     PROFESSIONAL HIGHLIGHTS
-========================================================= -->
-
-<section>
-
-    <div class="container">
-
-        <div class="section-label reveal">
-            Professional Highlights
-        </div>
-
-        <h2 class="section-title reveal">
+        <h2 class="section-title">
             From quantities to commercial decisions.
         </h2>
 
 
-        <div class="highlights">
+        <p class="section-description">
+            A structured approach to quantity accuracy, contractual compliance,
+            commercial assessment and project cost control.
+        </p>
 
-            <div class="highlight reveal">
-                <i class="fa-solid fa-ruler"></i>
-                <h3>Measure</h3>
+
+        <div class="commercial-grid">
+
+
+            <div class="commercial-card reveal">
+
+                <h3>
+                    <i class="fa-solid fa-ruler"></i>
+                    Measure
+                </h3>
+
                 <p>
-                    Accurate QTO, MTO, BOQ and engineering quantity verification
-                    using drawings, specifications and digital tools.
+                    Accurate QTO, MTO, BOQ, BBS and engineering quantity
+                    verification using drawings, specifications and digital
+                    measurement tools.
                 </p>
+
             </div>
 
-            <div class="highlight reveal">
-                <i class="fa-solid fa-check-double"></i>
-                <h3>Verify</h3>
+
+            <div class="commercial-card reveal">
+
+                <h3>
+                    <i class="fa-solid fa-circle-check"></i>
+                    Verify
+                </h3>
+
                 <p>
                     Review contractor submissions against approved drawings,
-                    BOQ requirements, project records and commercial procedures.
+                    BOQ requirements, contract provisions and project records.
                 </p>
+
             </div>
 
-            <div class="highlight reveal">
-                <i class="fa-solid fa-scale-balanced"></i>
-                <h3>Assess</h3>
+
+            <div class="commercial-card reveal">
+
+                <h3>
+                    <i class="fa-solid fa-scale-balanced"></i>
+                    Assess
+                </h3>
+
                 <p>
-                    Evaluate variations, changes, quantity growth and commercial
-                    impacts to support project decisions.
+                    Evaluate variations, changes, claims, entitlement,
+                    commercial impacts and support informed project-level
+                    commercial decisions.
                 </p>
+
             </div>
 
-            <div class="highlight reveal">
-                <i class="fa-solid fa-chart-column"></i>
-                <h3>Control</h3>
+
+            <div class="commercial-card reveal">
+
+                <h3>
+                    <i class="fa-solid fa-chart-column"></i>
+                    Control
+                </h3>
+
                 <p>
-                    Support payment certification, cost control, reporting,
-                    reconciliation and contract compliance.
+                    Support payment certification, cost control, commercial
+                    reporting, reconciliation and contract compliance throughout
+                    the project lifecycle.
                 </p>
+
             </div>
 
         </div>
@@ -2320,26 +3073,28 @@ footer{
     </div>
 
 </section>
+
 
 
 <!-- =========================================================
      PROFESSIONAL DEVELOPMENT
 ========================================================= -->
 
-<section>
+<section class="section development">
 
     <div class="container">
 
-        <div class="section-label reveal">
+        <div class="section-label">
             Professional Development
         </div>
 
-        <h2 class="section-title reveal">
+
+        <h2 class="section-title">
             Continuous professional growth.
         </h2>
 
 
-        <div class="development-box reveal">
+        <div class="development-card reveal">
 
             <h3>
                 RICS / MRICS Pathway
@@ -2358,62 +3113,96 @@ footer{
 </section>
 
 
+
 <!-- =========================================================
      CONTACT
 ========================================================= -->
 
-<section id="contact">
+<section class="section contact" id="contact">
 
     <div class="container">
 
-        <div class="section-label reveal">
+        <div class="section-label">
             Contact
         </div>
 
-        <h2 class="section-title reveal">
+
+        <h2 class="section-title">
             Let's connect.
         </h2>
 
 
-        <div class="contact-box reveal">
+        <div class="contact-card reveal">
 
-            <div class="contact-name">
-                Prabhu A R
+
+            <div class="contact-header">
+
+                <div>
+
+                    <div class="contact-name">
+                        Prabhu A R
+                    </div>
+
+                    <div class="contact-role">
+                        Senior Quantity Surveyor | Commercial Professional
+                    </div>
+
+                    <div class="contact-location">
+                        Abu Dhabi, United Arab Emirates · GCC · International Projects
+                    </div>
+
+                </div>
+
             </div>
 
-            <div class="contact-role">
-                Senior Quantity Surveyor | Commercial Professional
-            </div>
 
-            <div class="contact-location">
-                Abu Dhabi, United Arab Emirates · GCC · International Projects
-            </div>
+            <div class="contact-grid">
 
-            <div class="contact-information">
-                <div class="contact-info-item">
+
+                <div class="contact-item">
+
                     <i class="fa-solid fa-envelope"></i>
-                    <a href="mailto:arprabhu511@gmail.com">arprabhu511@gmail.com</a>
+
+                    <a href="mailto:arprabhu511@gmail.com">
+                        arprabhu511@gmail.com
+                    </a>
+
                 </div>
 
-                <div class="contact-info-item">
+
+                <div class="contact-item">
+
                     <i class="fa-solid fa-phone"></i>
-                    <a href="tel:+971501053602">+971 50 105 3602</a>
+
+                    <a href="tel:+971501053602">
+                        +971 50 105 3602
+                    </a>
+
                 </div>
 
-                <div class="contact-info-item">
+
+                <div class="contact-item">
+
                     <i class="fa-solid fa-location-dot"></i>
-                    <span>Abu Dhabi, United Arab Emirates</span>
+
+                    Abu Dhabi, United Arab Emirates
+
                 </div>
 
-                <div class="contact-info-item">
+
+                <div class="contact-item">
+
                     <i class="fa-brands fa-linkedin-in"></i>
-                    <a href="https://www.linkedin.com/in/prabhuar-2557811a4" target="_blank" rel="noopener">linkedin.com/in/prabhuar-2557811a4</a>
+
+                    <a href="https://www.linkedin.com/in/prabhuar-2557811a4"
+                       target="_blank">
+
+                        linkedin.com/in/prabhuar-2557811a4
+
+                    </a>
+
                 </div>
 
-                <div class="contact-info-item passport-note">
-                    <i class="fa-solid fa-passport"></i>
-                    <span>Passport details available on request</span>
-                </div>
             </div>
 
 
@@ -2421,22 +3210,30 @@ footer{
 
                 <a href="mailto:arprabhu511@gmail.com"
                    class="btn btn-primary">
+
                     <i class="fa-solid fa-envelope"></i>
                     Email Me
+
                 </a>
+
 
                 <a href="https://www.linkedin.com/in/prabhuar-2557811a4"
                    target="_blank"
                    class="btn btn-outline">
+
                     <i class="fa-brands fa-linkedin-in"></i>
                     LinkedIn
+
                 </a>
+
 
                 <a href="assets/Prabhu-A-R-CV.pdf"
                    download
                    class="btn btn-outline">
+
                     <i class="fa-solid fa-file-pdf"></i>
                     Download CV
+
                 </a>
 
             </div>
@@ -2448,6 +3245,7 @@ footer{
 </section>
 
 
+
 <!-- =========================================================
      FOOTER
 ========================================================= -->
@@ -2456,75 +3254,178 @@ footer{
 
     <div class="container footer-inner">
 
-        <div>
+        <span>
             © 2026 Prabhu A R. All rights reserved.
-        </div>
+        </span>
 
-        <div>
-            Senior Quantity Surveyor · Commercial Controls · EPC & EPCM · Digital QS
-        </div>
+        <span>
+            Senior Quantity Surveyor · Commercial Controls · EPC / EPCM
+        </span>
 
     </div>
 
 </footer>
 
 
-<!-- =========================================================
-     JAVASCRIPT
-========================================================= -->
 
 <script>
 
 /* =========================================================
-   MOBILE MENU
+   01. MOBILE MENU
 ========================================================= */
 
 const menuBtn = document.getElementById("menuBtn");
 const navLinks = document.getElementById("navLinks");
 
 menuBtn.addEventListener("click", () => {
+
     navLinks.classList.toggle("open");
+
 });
 
-
-/* Close mobile menu after clicking a link */
 
 document.querySelectorAll(".nav-links a").forEach(link => {
 
     link.addEventListener("click", () => {
+
         navLinks.classList.remove("open");
+
     });
 
 });
+
 
 
 /* =========================================================
-   SCROLL REVEAL
+   02. HEADER SCROLL EFFECT
+========================================================= */
+
+const header = document.getElementById("header");
+
+window.addEventListener("scroll", () => {
+
+    if (window.scrollY > 40) {
+
+        header.classList.add("scrolled");
+
+    } else {
+
+        header.classList.remove("scrolled");
+
+    }
+
+});
+
+
+
+/* =========================================================
+   03. HERO PROJECT BACKGROUND SLIDER
+========================================================= */
+
+const slides =
+    document.querySelectorAll(".hero-slide");
+
+const projectNumber =
+    document.getElementById("heroProjectNumber");
+
+const projectName =
+    document.getElementById("heroProjectName");
+
+
+const projectNames = [
+
+    "ADNOC BFN — UAE",
+
+    "Qurayyah Expansion CCGT IPP — Saudi Arabia",
+
+    "Hail & Ghasha P2 — UAE",
+
+    "NFE EPC-1 — Qatar",
+
+    "Tanazib Gas Plant — Saudi Arabia",
+
+    "Petronas RAPID — Malaysia"
+
+];
+
+
+let currentSlide = 0;
+
+
+/*
+    Each image stays for 15 seconds.
+
+    CSS handles the smooth fade
+    and slow zoom animation.
+*/
+
+function changeHeroSlide() {
+
+    slides[currentSlide]
+        .classList.remove("active");
+
+
+    currentSlide =
+        (currentSlide + 1) % slides.length;
+
+
+    slides[currentSlide]
+        .classList.add("active");
+
+
+    projectNumber.textContent =
+        String(currentSlide + 1).padStart(2,"0")
+        + " / 06";
+
+
+    projectName.textContent =
+        projectNames[currentSlide];
+
+}
+
+
+/*
+    15 seconds.
+*/
+
+setInterval(changeHeroSlide, 15000);
+
+
+
+/* =========================================================
+   04. SCROLL REVEAL ANIMATION
 ========================================================= */
 
 const revealElements =
-document.querySelectorAll(".reveal");
+    document.querySelectorAll(".reveal");
+
 
 const observer =
-new IntersectionObserver(
-(entries) => {
+    new IntersectionObserver(
 
-    entries.forEach(entry => {
+        (entries) => {
 
-        if(entry.isIntersecting){
+            entries.forEach(entry => {
 
-            entry.target.classList.add("visible");
+                if (entry.isIntersecting) {
 
-            observer.unobserve(entry.target);
+                    entry.target
+                        .classList.add("visible");
 
+                    observer
+                        .unobserve(entry.target);
+
+                }
+
+            });
+
+        },
+
+        {
+            threshold: 0.12
         }
 
-    });
-
-},
-{
-    threshold:0.12
-});
+    );
 
 
 revealElements.forEach(element => {
@@ -2534,37 +3435,48 @@ revealElements.forEach(element => {
 });
 
 
+
 /* =========================================================
-   ACTIVE NAVIGATION
+   05. ACTIVE NAVIGATION
 ========================================================= */
 
 const sections =
-document.querySelectorAll("section[id]");
+    document.querySelectorAll("section[id]");
 
 const navItems =
-document.querySelectorAll(".nav-links a");
+    document.querySelectorAll(".nav-links a");
+
 
 window.addEventListener("scroll", () => {
 
-    let current = "home";
+    let current = "";
 
     sections.forEach(section => {
 
         const sectionTop =
-        section.offsetTop - 120;
+            section.offsetTop - 130;
 
-        if(window.scrollY >= sectionTop){
-            current = section.getAttribute("id");
+        if (window.scrollY >= sectionTop) {
+
+            current =
+                section.getAttribute("id");
+
         }
 
     });
+
 
     navItems.forEach(link => {
 
         link.classList.remove("active");
 
-        if(link.getAttribute("href") === "#" + current){
+        if (
+            link.getAttribute("href")
+            === "#" + current
+        ) {
+
             link.classList.add("active");
+
         }
 
     });
@@ -2572,18 +3484,15 @@ window.addEventListener("scroll", () => {
 });
 
 
-/* =========================================================
-   PREVENT BROKEN CV LINK IF FILE NOT PRESENT
-========================================================= */
 
-/*
-   IMPORTANT:
-   If your CV filename is different, change:
+/* =========================================================
+   06. PREVENT BROKEN CV LINK FROM LOOKING LIKE ERROR
+
+   Upload this exact file:
 
    assets/Prabhu-A-R-CV.pdf
 
-   to the exact PDF filename inside your assets folder.
-*/
+========================================================= */
 
 </script>
 
