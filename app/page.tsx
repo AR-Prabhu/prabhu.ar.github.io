@@ -7,48 +7,71 @@ type Message = {
   text: string;
 };
 
-type DressMode = 'Saree' | 'Night' | 'Casual' | 'Glamour';
-
-const dressImages: Record<DressMode, string> = {
-  Saree: '/silk/silk-face-1.jpg.jpg',
-  Night: '/silk/silk-face-2.jpg.jpg',
-  Casual: '/silk/silk-face-3.jpg.jpg',
-  Glamour: '/silk/silk-face-4.jpg.jpg',
+type Look = {
+  name: string;
+  image: string;
 };
+
+const looks: Look[] = [
+  {
+    name: 'Saree',
+    image: '/silk/silk-face-1.jpg.jpg',
+  },
+  {
+    name: 'Traditional',
+    image: '/silk/silk-face-2.jpg.jpg',
+  },
+  {
+    name: 'Night',
+    image: '/silk/silk-face-3.jpg.jpg',
+  },
+  {
+    name: 'Casual',
+    image: '/silk/silk-face-4.jpg.jpg',
+  },
+  {
+    name: 'Glamour',
+    image: '/silk/silk-face-5.jpg.jpg',
+  },
+];
 
 export default function SilkApp() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-
   const [status, setStatus] = useState('Live');
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isListening, setIsListening] = useState(false);
 
-  const [dress, setDress] = useState<DressMode>('Saree');
-  const [mood, setMood] = useState('Happy');
-
+  const [currentLook, setCurrentLook] = useState(0);
   const [lastAudio, setLastAudio] = useState<string | null>(null);
 
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      text: 'வணக்கம் செல்லம்... நான் தான் உன் SILK. சொல்லுடா என்ன பேசணும்?'
-    }
+      text: 'வணக்கம் செல்லம்... நான் தான் SILK. சொல்லுடா என்ன பேசணும்?',
+    },
   ]);
 
-  const chatContainerRef = useRef<HTMLDivElement>(null);
+  const chatRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  /* ---------------- SCROLL CHAT ---------------- */
+  /*
+   * ---------------------------------------------------------
+   * AUTO SCROLL CHAT
+   * ---------------------------------------------------------
+   */
 
   useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
+    if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [messages]);
 
-  /* ---------------- AUDIO ---------------- */
+  /*
+   * ---------------------------------------------------------
+   * VOICE PLAYER
+   * ---------------------------------------------------------
+   */
 
   const playAudio = (audioData: string) => {
     try {
@@ -58,6 +81,7 @@ export default function SilkApp() {
       }
 
       const audio = new Audio(audioData);
+
       audioRef.current = audio;
 
       audio.onplay = () => {
@@ -72,31 +96,54 @@ export default function SilkApp() {
 
       audio.onerror = () => {
         setIsSpeaking(false);
-        setStatus('Live');
-        console.error('Audio playback error');
+        setStatus('Voice Error');
       };
 
       audio.play().catch(() => {
-        setStatus('Click Play to Hear');
+        setIsSpeaking(false);
+        setStatus('Click Play');
       });
     } catch (error) {
-      console.error(error);
+      console.error('Audio error:', error);
       setIsSpeaking(false);
       setStatus('Live');
     }
   };
 
-  /* ---------------- SPEECH RECOGNITION ---------------- */
+  /*
+   * ---------------------------------------------------------
+   * CHANGE LOOK
+   * ---------------------------------------------------------
+   */
+
+  const changeLook = (index: number) => {
+    setCurrentLook(index);
+
+    setStatus(`Changing to ${looks[index].name}...`);
+
+    setTimeout(() => {
+      setStatus('Live');
+    }, 700);
+  };
+
+  /*
+   * ---------------------------------------------------------
+   * SPEECH RECOGNITION
+   * ---------------------------------------------------------
+   */
 
   const startListening = () => {
-    const SpeechRecognition =
-      (window as any).SpeechRecognition ||
-      (window as any).webkitSpeechRecognition;
-
-    if (!SpeechRecognition) {
+    if (
+      !('webkitSpeechRecognition' in window) &&
+      !('SpeechRecognition' in window)
+    ) {
       alert('இந்த browser-ல் microphone support இல்லை.');
       return;
     }
+
+    const SpeechRecognition =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
 
     const recognition = new SpeechRecognition();
 
@@ -110,13 +157,13 @@ export default function SilkApp() {
     };
 
     recognition.onresult = (event: any) => {
-      const transcript =
-        event.results?.[0]?.[0]?.transcript || '';
+      const transcript = event.results[0][0].transcript;
 
-      if (transcript) {
-        setInput(transcript);
+      setInput(transcript);
+
+      setTimeout(() => {
         handleSend(transcript);
-      }
+      }, 100);
     };
 
     recognition.onerror = () => {
@@ -135,12 +182,16 @@ export default function SilkApp() {
     recognition.start();
   };
 
-  /* ---------------- SEND MESSAGE ---------------- */
+  /*
+   * ---------------------------------------------------------
+   * SEND MESSAGE
+   * ---------------------------------------------------------
+   */
 
   const handleSend = async (customText?: string) => {
-    const query = (customText ?? input).trim();
+    const query = customText ?? input;
 
-    if (!query || loading) return;
+    if (!query.trim() || loading) return;
 
     if (!customText) {
       setInput('');
@@ -148,10 +199,10 @@ export default function SilkApp() {
 
     const userMessage: Message = {
       role: 'user',
-      text: query
+      text: query,
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    setMessages((prev) => [...prev, userMessage]);
 
     setLoading(true);
     setStatus('Thinking...');
@@ -160,30 +211,30 @@ export default function SilkApp() {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           message: query,
-          history: messages
-        })
+          history: messages,
+        }),
       });
 
       if (!res.ok) {
-        throw new Error('API request failed');
+        throw new Error(`API Error ${res.status}`);
       }
 
       const data = await res.json();
 
       const reply =
         data.reply ||
-        'செல்லம்... கொஞ்சம் problem வந்திருக்கு. மறுபடியும் try பண்ணுடா.';
+        'செல்லம்... இப்போ கொஞ்சம் connection problem. மறுபடியும் சொல்லுடா.';
 
-      setMessages(prev => [
+      setMessages((prev) => [
         ...prev,
         {
           role: 'assistant',
-          text: reply
-        }
+          text: reply,
+        },
       ]);
 
       if (data.audio) {
@@ -192,58 +243,41 @@ export default function SilkApp() {
       } else {
         setStatus('Live');
       }
-
     } catch (error) {
       console.error(error);
 
-      setMessages(prev => [
+      setMessages((prev) => [
         ...prev,
         {
           role: 'assistant',
-          text: 'செல்லம்... connection கொஞ்சம் problem. மறுபடியும் try பண்ணலாம்.'
-        }
+          text: 'செல்லம்... connection கொஞ்சம் slow. மறுபடியும் try பண்ணலாம்.',
+        },
       ]);
 
       setStatus('Live');
-
     } finally {
       setLoading(false);
     }
   };
 
-  /* ---------------- DRESS ---------------- */
+  /*
+   * ---------------------------------------------------------
+   * QUICK COMMAND
+   * ---------------------------------------------------------
+   */
 
-  const changeDress = (newDress: DressMode) => {
-    setDress(newDress);
-
-    const dressText: Record<DressMode, string> = {
-      Saree: 'சரி செல்லம்... Saree look-ku change பண்ணிக்கிட்டேன். ❤️',
-      Night: 'சரி செல்லம்... Night look-ku change பண்ணிக்கிட்டேன். ❤️',
-      Casual: 'சரி செல்லம்... Casual look-ku change பண்ணிக்கிட்டேன். ❤️',
-      Glamour: 'சரி செல்லம்... Glamour look-ku change பண்ணிக்கிட்டேன். ❤️'
-    };
-
-    setMessages(prev => [
-      ...prev,
-      {
-        role: 'assistant',
-        text: dressText[newDress]
-      }
-    ]);
+  const quickMessage = (text: string) => {
+    handleSend(text);
   };
 
-  /* ---------------- MOOD ---------------- */
-
-  const changeMood = (newMood: string) => {
-    setMood(newMood);
-  };
+  const currentImage = looks[currentLook].image;
 
   return (
     <main className="silk-app">
 
       {/* ================= HEADER ================= */}
 
-      <header className="topbar">
+      <header className="header">
 
         <div>
           <h1>PROJECT SILK</h1>
@@ -251,55 +285,67 @@ export default function SilkApp() {
         </div>
 
         <div className="live-indicator">
-          <span className="live-dot" />
+          <span
+            className={
+              isSpeaking
+                ? 'dot speaking'
+                : isListening
+                ? 'dot listening'
+                : 'dot'
+            }
+          />
+
           <span>{status}</span>
         </div>
 
       </header>
 
+      {/* ================= MAIN ================= */}
 
-      {/* ================= MAIN AREA ================= */}
+      <section className="main">
 
-      <section className="main-area">
+        {/* ================= LEFT CHAT ================= */}
 
-        {/* LEFT CHAT */}
-
-        <aside className="panel chat-panel">
+        <aside className="chat-panel">
 
           <div className="panel-title">
-            <span>💗</span>
-            <strong>SILK Chat</strong>
+            💗 SILK Chat
           </div>
 
           <div
-            ref={chatContainerRef}
+            ref={chatRef}
             className="messages"
           >
 
-            {messages.map((msg, index) => (
-
+            {messages.map((message, index) => (
               <div
                 key={index}
                 className={
-                  msg.role === 'user'
-                    ? 'message user-message'
-                    : 'message silk-message'
+                  message.role === 'user'
+                    ? 'message user'
+                    : 'message silk'
                 }
               >
 
                 <small>
-                  {msg.role === 'user' ? 'You' : 'SILK'}
+                  {message.role === 'user' ? 'You' : 'SILK'}
                 </small>
 
-                <div>{msg.text}</div>
+                <div>
+                  {message.text}
+                </div>
 
               </div>
-
             ))}
 
             {loading && (
-              <div className="typing">
-                SILK is thinking<span>.</span><span>.</span><span>.</span>
+              <div className="message silk">
+                <small>SILK</small>
+                <div className="typing">
+                  <span />
+                  <span />
+                  <span />
+                </div>
               </div>
             )}
 
@@ -307,47 +353,35 @@ export default function SilkApp() {
 
         </aside>
 
-
-        {/* ================= CENTER AVATAR ================= */}
+        {/* ================= AVATAR ================= */}
 
         <section className="avatar-section">
 
-          <div className="ambient-glow" />
+          <div className="glow" />
 
           <div
-            className={`avatar-stage ${
-              isSpeaking ? 'speaking' : ''
-            }`}
+            className={
+              isSpeaking
+                ? 'avatar-container speaking-avatar'
+                : 'avatar-container'
+            }
           >
 
-            {/* breathing wrapper */}
+            <img
+              key={currentImage}
+              src={currentImage}
+              alt="SILK virtual companion"
+              className="silk-image"
+            />
 
-            <div className="breathing-avatar">
-
-              <img
-                src={dressImages[dress]}
-                alt="SILK virtual companion"
-                className="silk-image"
-              />
-
-            </div>
-
-            {/* Live badge */}
+            {/* LIVE BADGE */}
 
             <div className="avatar-live">
-
-              <span className="live-dot" />
-
-              {isSpeaking
-                ? 'Speaking'
-                : isListening
-                ? 'Listening'
-                : 'Live'}
-
+              <span />
+              {isSpeaking ? 'Speaking' : 'Live'}
             </div>
 
           </div>
-
 
           {/* SUBTITLE */}
 
@@ -357,84 +391,78 @@ export default function SilkApp() {
 
           </div>
 
+          {/* VOICE REPLAY */}
+
+          {lastAudio && !isSpeaking && (
+            <button
+              className="replay"
+              onClick={() => playAudio(lastAudio)}
+            >
+              🔊 Play Voice
+            </button>
+          )}
+
         </section>
 
+        {/* ================= ACTION PANEL ================= */}
 
-        {/* ================= RIGHT ACTIONS ================= */}
-
-        <aside className="panel actions-panel">
+        <aside className="actions">
 
           <div className="panel-title">
-            <strong>SILK Actions</strong>
+            SILK Actions
           </div>
 
+          <div className="action-content">
 
-          {/* DRESS */}
+            <div className="section-label">
+              LOOK
+            </div>
 
-          <div className="action-section">
+            {looks.map((look, index) => (
+              <button
+                key={look.name}
+                onClick={() => changeLook(index)}
+                className={
+                  currentLook === index
+                    ? 'action active'
+                    : 'action'
+                }
+              >
+                👗 {look.name}
+              </button>
+            ))}
 
-            <label>DRESS</label>
+            <div className="section-label mood-label">
+              MOOD
+            </div>
 
             <button
-              className={dress === 'Saree' ? 'action active' : 'action'}
-              onClick={() => changeDress('Saree')}
+              className="action"
+              onClick={() => quickMessage('இன்னைக்கு happy mood-la இருக்கியா?')}
             >
-              👗 Dress: Saree
+              😊 Happy
             </button>
 
             <button
-              className={dress === 'Night' ? 'action active' : 'action'}
-              onClick={() => changeDress('Night')}
+              className="action"
+              onClick={() => quickMessage('கொஞ்சம் shy-aa பேசு')}
             >
-              👗 Dress: Night
+              😊 Shy
             </button>
 
             <button
-              className={dress === 'Casual' ? 'action active' : 'action'}
-              onClick={() => changeDress('Casual')}
+              className="action"
+              onClick={() => quickMessage('இப்போ என்ன think பண்ணிட்டு இருக்க?')}
             >
-              👗 Dress: Casual
+              🤔 Thinking
             </button>
 
             <button
-              className={dress === 'Glamour' ? 'action active' : 'action'}
-              onClick={() => changeDress('Glamour')}
+              className="action"
+              onClick={() => quickMessage('Playful-aa பேசலாம்')}
             >
-              👗 Dress: Glamour
+              😄 Playful
             </button>
-
-          </div>
-
-
-          {/* MOOD */}
-
-          <div className="action-section">
-
-            <label>MOOD</label>
-
-            {['Happy', 'Shy', 'Thinking', 'Playful'].map(
-              item => (
-
-                <button
-                  key={item}
-                  className={
-                    mood === item
-                      ? 'action active'
-                      : 'action'
-                  }
-                  onClick={() => changeMood(item)}
-                >
-                  {item === 'Happy' && '😊'}
-                  {item === 'Shy' && '😳'}
-                  {item === 'Thinking' && '🤔'}
-                  {item === 'Playful' && '😜'}
-
-                  {' '}{item}
-
-                </button>
-
-              )
-            )}
 
           </div>
 
@@ -442,25 +470,43 @@ export default function SilkApp() {
 
       </section>
 
+      {/* ================= BOTTOM INFO ================= */}
 
-      {/* ================= FOOTER ================= */}
+      <div className="current-info">
 
-      <footer className="input-area">
+        <span>
+          <b>Current Look</b> {looks[currentLook].name}
+        </span>
+
+        <span>
+          <b>Mode</b> AI Companion
+        </span>
+
+        <span>
+          <b>Status</b> {status}
+        </span>
+
+      </div>
+
+      {/* ================= INPUT ================= */}
+
+      <footer className="footer">
 
         <button
-          className={`mic-button ${
-            isListening ? 'listening' : ''
-          }`}
+          className={
+            isListening
+              ? 'mic listening-mic'
+              : 'mic'
+          }
           onClick={startListening}
         >
           🎤
         </button>
 
-
         <input
           value={input}
-          onChange={e => setInput(e.target.value)}
-          onKeyDown={e => {
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => {
             if (e.key === 'Enter') {
               handleSend();
             }
@@ -468,778 +514,539 @@ export default function SilkApp() {
           placeholder="பேசுடா செல்லம்... அல்லது type பண்ணு..."
         />
 
-
         <button
-          className="send-button"
-          onClick={() => handleSend()}
+          className="send"
           disabled={loading}
+          onClick={() => handleSend()}
         >
           {loading ? '...' : 'Send'}
         </button>
 
       </footer>
 
+      <div className="footer-text">
+        Made with 💗 for you, Chellam
+      </div>
 
       {/* ================= CSS ================= */}
 
-      <style jsx global>{`
+      <style jsx>{`
 
         * {
           box-sizing: border-box;
-        }
-
-        html,
-        body {
-          margin: 0;
-          padding: 0;
-          width: 100%;
-          height: 100%;
-          background: #05020a;
-        }
-
-        body {
-          font-family:
-            Arial,
-            "Noto Sans Tamil",
-            sans-serif;
-          color: white;
-        }
-
-        button,
-        input {
-          font-family: inherit;
         }
 
         .silk-app {
           width: 100vw;
           height: 100vh;
           overflow: hidden;
-          display: flex;
-          flex-direction: column;
           background:
             radial-gradient(
               circle at 50% 45%,
-              rgba(155, 40, 190, 0.16),
+              rgba(236, 72, 153, 0.09),
               transparent 35%
             ),
-            #05020a;
+            #030105;
+          color: white;
+          font-family:
+            Arial,
+            Helvetica,
+            sans-serif;
+          display: flex;
+          flex-direction: column;
         }
-
 
         /* HEADER */
 
-        .topbar {
+        .header {
           height: 82px;
           flex-shrink: 0;
-
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-
           padding: 0 30px;
-
-          border-bottom:
-            1px solid rgba(255,255,255,0.08);
-
-          background:
-            rgba(0,0,0,0.55);
-
-          backdrop-filter: blur(14px);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          border-bottom: 1px solid rgba(255,255,255,.08);
+          background: rgba(0,0,0,.55);
         }
 
-        .topbar h1 {
+        .header h1 {
           margin: 0;
-
           color: #ec4899;
-
-          font-size: 29px;
-
+          font-size: 28px;
           letter-spacing: 4px;
-
-          font-weight: 800;
-
-          text-shadow:
-            0 0 20px rgba(236,72,153,0.4);
         }
 
-        .topbar span {
-          display: block;
-
-          margin-top: 4px;
-
+        .header span {
           color: #999;
-
-          font-size: 13px;
-
-          letter-spacing: 0.5px;
+          font-size: 14px;
         }
-
-
-        /* LIVE */
 
         .live-indicator {
           display: flex;
           align-items: center;
           gap: 9px;
-
-          padding: 10px 17px;
-
-          border-radius: 25px;
-
-          background:
-            rgba(255,255,255,0.05);
-
-          border:
-            1px solid rgba(255,255,255,0.12);
-
-          font-size: 13px;
+          padding: 10px 18px;
+          border-radius: 30px;
+          background: rgba(255,255,255,.06);
+          border: 1px solid rgba(255,255,255,.12);
         }
 
-        .live-dot {
+        .dot {
           width: 9px;
           height: 9px;
-
           border-radius: 50%;
-
-          display: inline-block;
-
           background: #22c55e;
-
-          box-shadow:
-            0 0 12px #22c55e;
-
-          animation: pulseDot 1.5s infinite;
+          box-shadow: 0 0 12px #22c55e;
         }
 
-        @keyframes pulseDot {
-
-          0%,100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-
-          50% {
-            opacity: 0.55;
-            transform: scale(0.75);
-          }
-
+        .dot.speaking {
+          background: #ec4899;
+          box-shadow: 0 0 14px #ec4899;
+          animation: pulse 0.7s infinite;
         }
 
+        .dot.listening {
+          background: #eab308;
+          box-shadow: 0 0 14px #eab308;
+          animation: pulse 0.7s infinite;
+        }
 
         /* MAIN */
 
-        .main-area {
+        .main {
           flex: 1;
           min-height: 0;
-
           display: grid;
-
-          grid-template-columns:
-            330px
-            minmax(400px, 1fr)
-            280px;
-
-          gap: 20px;
-
-          padding: 20px 24px;
+          grid-template-columns: 330px minmax(400px, 1fr) 270px;
+          gap: 22px;
+          padding: 22px;
         }
-
 
         /* PANELS */
 
-        .panel {
+        .chat-panel,
+        .actions {
           min-height: 0;
-
-          border:
-            1px solid rgba(255,255,255,0.09);
-
-          border-radius: 20px;
-
-          background:
-            rgba(12,8,18,0.82);
-
-          backdrop-filter: blur(15px);
-
           overflow: hidden;
+          border: 1px solid rgba(255,255,255,.10);
+          border-radius: 22px;
+          background: rgba(12,8,18,.82);
+          backdrop-filter: blur(15px);
         }
 
         .panel-title {
-          height: 62px;
-
-          display: flex;
-          align-items: center;
-          gap: 9px;
-
-          padding: 0 20px;
-
-          border-bottom:
-            1px solid rgba(255,255,255,0.08);
-
+          padding: 20px;
           font-size: 18px;
+          font-weight: bold;
+          border-bottom: 1px solid rgba(255,255,255,.08);
         }
-
 
         /* CHAT */
 
-        .chat-panel {
-          display: flex;
-          flex-direction: column;
-        }
-
         .messages {
-          flex: 1;
-
+          height: calc(100% - 65px);
           overflow-y: auto;
-
-          padding: 12px;
-        }
-
-        .messages::-webkit-scrollbar {
-          width: 7px;
-        }
-
-        .messages::-webkit-scrollbar-thumb {
-          background: rgba(255,255,255,0.15);
-          border-radius: 10px;
+          padding: 14px;
         }
 
         .message {
-          padding: 12px 14px;
-
-          margin-bottom: 10px;
-
-          border-radius: 14px;
-
+          padding: 13px 14px;
+          margin-bottom: 12px;
+          border-radius: 15px;
           font-size: 14px;
-
           line-height: 1.5;
         }
 
         .message small {
           display: block;
-
-          margin-bottom: 4px;
-
+          margin-bottom: 5px;
+          color: #aaa;
           font-size: 10px;
-
-          opacity: 0.55;
-
-          letter-spacing: 1px;
         }
 
-        .silk-message {
-          background:
-            rgba(255,255,255,0.045);
-
-          color: #f2a7d0;
+        .message.silk {
+          background: rgba(255,255,255,.045);
         }
 
-        .user-message {
+        .message.user {
           background:
             linear-gradient(
               135deg,
-              #9d3fc5,
-              #6f3fb5
+              rgba(236,72,153,.75),
+              rgba(139,92,246,.75)
             );
-
-          color: white;
-
-          margin-left: 15px;
         }
 
         .typing {
-          color: #ec4899;
-
-          padding: 10px;
-
-          font-size: 13px;
+          display: flex;
+          gap: 5px;
         }
 
         .typing span {
-          animation: typing 1.2s infinite;
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #ec4899;
+          animation: typing 1s infinite;
         }
 
         .typing span:nth-child(2) {
-          animation-delay: .2s;
+          animation-delay: .15s;
         }
 
         .typing span:nth-child(3) {
-          animation-delay: .4s;
+          animation-delay: .3s;
         }
-
-        @keyframes typing {
-
-          0%,100% {
-            opacity: .2;
-          }
-
-          50% {
-            opacity: 1;
-          }
-
-        }
-
 
         /* AVATAR */
 
         .avatar-section {
           position: relative;
-
           min-width: 0;
-
+          min-height: 0;
           display: flex;
-
-          align-items: center;
-
           justify-content: center;
-
-          flex-direction: column;
-
+          align-items: center;
           overflow: hidden;
         }
 
-        .ambient-glow {
+        .glow {
           position: absolute;
-
-          width: 520px;
-          height: 520px;
-
+          width: 430px;
+          height: 430px;
           border-radius: 50%;
-
           background:
             radial-gradient(
               circle,
-              rgba(236,72,153,0.27),
-              rgba(120,40,180,0.1) 40%,
-              transparent 70%
+              rgba(236,72,153,.25),
+              transparent 68%
             );
-
           filter: blur(35px);
-
-          pointer-events: none;
         }
 
-
-        .avatar-stage {
+        .avatar-container {
           position: relative;
-
-          height: calc(100% - 75px);
-
-          width: min(100%, 520px);
-
+          height: 92%;
+          width: min(520px, 100%);
           display: flex;
-
-          align-items: center;
-
           justify-content: center;
-
-          z-index: 2;
-        }
-
-
-        /* LIVE BREATHING EFFECT */
-
-        .breathing-avatar {
-          height: 100%;
-          width: 100%;
-
-          display: flex;
-
           align-items: center;
-          justify-content: center;
-
-          animation:
-            breathing 4.2s ease-in-out infinite;
+          transition: transform .35s ease;
         }
 
-        .speaking .breathing-avatar {
-          animation:
-            speakingMovement 0.9s ease-in-out infinite;
+        .avatar-container:hover {
+          transform: scale(1.015);
         }
-
-        @keyframes breathing {
-
-          0%,100% {
-            transform:
-              translateY(0)
-              scale(1);
-          }
-
-          50% {
-            transform:
-              translateY(-5px)
-              scale(1.008);
-          }
-
-        }
-
-        @keyframes speakingMovement {
-
-          0%,100% {
-            transform:
-              translateY(0)
-              scale(1);
-          }
-
-          50% {
-            transform:
-              translateY(-3px)
-              scale(1.012);
-          }
-
-        }
-
 
         .silk-image {
-          max-height: 100%;
-          max-width: 100%;
-
+          height: 100%;
+          width: 100%;
           object-fit: contain;
-
-          border-radius: 18px;
-
+          display: block;
           filter:
-            brightness(0.96)
+            brightness(.94)
             contrast(1.04)
-            drop-shadow(
-              0 15px 45px
-              rgba(236,72,153,0.22)
-            );
-
+            saturate(1.04);
           transition:
-            opacity .35s ease,
             filter .35s ease,
             transform .35s ease;
         }
 
-        .speaking .silk-image {
-          filter:
-            brightness(1.04)
-            contrast(1.05)
-            drop-shadow(
-              0 0 25px
-              rgba(236,72,153,0.55)
+        /* LIVE BREATHING / SPEAKING EFFECT */
+
+        .avatar-container::after {
+          content: '';
+          position: absolute;
+          inset: 5%;
+          border-radius: 35px;
+          pointer-events: none;
+          background:
+            radial-gradient(
+              ellipse at center,
+              rgba(236,72,153,.08),
+              transparent 65%
             );
+          opacity: .5;
         }
 
+        .speaking-avatar {
+          animation: breathing 3.2s ease-in-out infinite;
+        }
 
-        /* AVATAR LIVE */
+        .speaking-avatar .silk-image {
+          filter:
+            brightness(1.03)
+            contrast(1.04)
+            drop-shadow(0 0 18px rgba(236,72,153,.45));
+        }
 
         .avatar-live {
           position: absolute;
-
-          bottom: 24px;
+          bottom: 5%;
           left: 50%;
-
           transform: translateX(-50%);
-
-          padding: 9px 18px;
-
+          padding: 8px 17px;
+          border-radius: 30px;
+          background: rgba(0,0,0,.82);
+          border: 1px solid rgba(255,255,255,.15);
           display: flex;
-
-          align-items: center;
-
           gap: 8px;
-
-          border-radius: 25px;
-
-          background:
-            rgba(0,0,0,0.72);
-
-          border:
-            1px solid rgba(255,255,255,0.15);
-
+          align-items: center;
           font-size: 12px;
-
-          backdrop-filter: blur(10px);
         }
 
+        .avatar-live span {
+          width: 8px;
+          height: 8px;
+          background: #22c55e;
+          border-radius: 50%;
+          box-shadow: 0 0 10px #22c55e;
+        }
 
         /* SUBTITLE */
 
         .subtitle {
           position: absolute;
-
-          bottom: 0;
-
-          width: min(90%, 760px);
-
-          min-height: 48px;
-
-          padding: 12px 20px;
-
-          display: flex;
-
-          align-items: center;
-
-          justify-content: center;
-
+          bottom: 10px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 85%;
+          padding: 13px 20px;
           text-align: center;
-
           border-radius: 18px;
-
-          background:
-            rgba(0,0,0,0.72);
-
-          border:
-            1px solid rgba(236,72,153,0.25);
-
-          color: #f3a3cc;
-
+          background: rgba(0,0,0,.86);
+          border: 1px solid rgba(236,72,153,.3);
+          color: #f9a8d4;
           font-size: 14px;
-
-          z-index: 5;
-
+          line-height: 1.4;
           backdrop-filter: blur(10px);
+          z-index: 5;
         }
 
+        .replay {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          z-index: 10;
+          border: none;
+          border-radius: 20px;
+          padding: 9px 15px;
+          background: #ec4899;
+          color: white;
+          font-weight: bold;
+          cursor: pointer;
+        }
 
         /* ACTIONS */
 
-        .actions-panel {
+        .action-content {
+          padding: 15px;
           overflow-y: auto;
+          height: calc(100% - 65px);
         }
 
-        .action-section {
-          padding: 18px 14px;
-
-          border-bottom:
-            1px solid rgba(255,255,255,0.06);
-        }
-
-        .action-section label {
-          display: block;
-
-          margin: 0 8px 10px;
-
-          color: #8f8995;
-
+        .section-label {
+          margin: 5px 7px 10px;
+          color: #888;
           font-size: 11px;
-
           letter-spacing: 1.5px;
+        }
+
+        .mood-label {
+          margin-top: 22px;
         }
 
         .action {
           width: 100%;
-
-          border: none;
-
-          background: transparent;
-
-          color: #ddd;
-
-          padding: 12px;
-
-          margin-bottom: 4px;
-
-          border-radius: 12px;
-
+          margin-bottom: 6px;
+          padding: 12px 13px;
           text-align: left;
-
+          border: none;
+          border-radius: 13px;
+          background: transparent;
+          color: #ddd;
           cursor: pointer;
-
           font-size: 13px;
-
-          transition:
-            background .2s ease,
-            transform .2s ease;
+          transition: .2s;
         }
 
         .action:hover {
-          background:
-            rgba(236,72,153,0.10);
-
-          transform:
-            translateX(3px);
+          background: rgba(236,72,153,.12);
         }
 
         .action.active {
           background:
-            rgba(236,72,153,0.17);
-
+            linear-gradient(
+              90deg,
+              rgba(236,72,153,.25),
+              rgba(236,72,153,.08)
+            );
           color: #f472b6;
+          border-left: 3px solid #ec4899;
         }
 
+        /* CURRENT INFO */
 
-        /* INPUT */
-
-        .input-area {
-          height: 88px;
-
+        .current-info {
+          height: 38px;
           flex-shrink: 0;
-
           display: flex;
-
+          justify-content: center;
           align-items: center;
-
-          gap: 12px;
-
-          padding: 14px 24px;
-
-          border-top:
-            1px solid rgba(255,255,255,0.08);
-
-          background:
-            rgba(8,5,13,0.95);
+          gap: 45px;
+          color: #aaa;
+          font-size: 11px;
+          border-top: 1px solid rgba(255,255,255,.07);
         }
 
-        .input-area input {
-          flex: 1;
-
-          height: 54px;
-
-          border-radius: 28px;
-
-          padding:
-            0 20px;
-
-          border:
-            1px solid rgba(255,255,255,0.12);
-
-          outline: none;
-
-          background:
-            rgba(255,255,255,0.06);
-
-          color: white;
-
-          font-size: 15px;
+        .current-info b {
+          color: #ec4899;
+          margin-right: 5px;
         }
 
-        .input-area input::placeholder {
-          color: #77717c;
-        }
+        /* FOOTER */
 
-        .input-area input:focus {
-          border-color:
-            rgba(236,72,153,0.45);
-        }
-
-        .mic-button {
-          width: 54px;
-          height: 54px;
-
+        .footer {
+          height: 72px;
           flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 10px 24px;
+          background: rgba(10,5,20,.95);
+          border-top: 1px solid rgba(255,255,255,.09);
+        }
 
+        .mic {
+          width: 48px;
+          height: 48px;
+          flex-shrink: 0;
           border: none;
-
           border-radius: 50%;
-
-          cursor: pointer;
-
-          color: white;
-
-          font-size: 20px;
-
           background:
             linear-gradient(
               135deg,
               #ec4899,
               #8b5cf6
             );
-
-          box-shadow:
-            0 0 20px
-            rgba(236,72,153,0.22);
-        }
-
-        .mic-button.listening {
-          background: #eab308;
-
-          box-shadow:
-            0 0 25px
-            rgba(234,179,8,0.55);
-        }
-
-        .send-button {
-          height: 50px;
-
-          padding:
-            0 25px;
-
-          border: none;
-
-          border-radius: 26px;
-
-          background: #ec4899;
-
           color: white;
-
-          font-weight: 700;
-
+          font-size: 19px;
           cursor: pointer;
+        }
 
+        .listening-mic {
+          background: #eab308;
+          box-shadow: 0 0 20px rgba(234,179,8,.5);
+          animation: pulse 1s infinite;
+        }
+
+        .footer input {
+          flex: 1;
+          min-width: 0;
+          height: 48px;
+          padding: 0 18px;
+          border-radius: 25px;
+          border: 1px solid rgba(255,255,255,.12);
+          background: rgba(255,255,255,.06);
+          color: white;
+          outline: none;
           font-size: 14px;
         }
 
-        .send-button:disabled {
-          opacity: .55;
+        .footer input:focus {
+          border-color: rgba(236,72,153,.5);
+        }
+
+        .send {
+          height: 46px;
+          padding: 0 24px;
+          border: none;
+          border-radius: 24px;
+          background: #ec4899;
+          color: white;
+          font-weight: bold;
+          cursor: pointer;
+        }
+
+        .send:disabled {
+          opacity: .5;
           cursor: not-allowed;
         }
 
+        .footer-text {
+          position: absolute;
+          bottom: 2px;
+          left: 50%;
+          transform: translateX(-50%);
+          color: #555;
+          font-size: 9px;
+          pointer-events: none;
+        }
+
+        /* ANIMATIONS */
+
+        @keyframes breathing {
+          0%,
+          100% {
+            transform: scale(1) translateY(0);
+          }
+
+          50% {
+            transform: scale(1.008) translateY(-3px);
+          }
+        }
+
+        @keyframes pulse {
+          0%,
+          100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+
+          50% {
+            transform: scale(1.35);
+            opacity: .7;
+          }
+        }
+
+        @keyframes typing {
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+
+          50% {
+            transform: translateY(-4px);
+          }
+        }
 
         /* MOBILE */
 
         @media (max-width: 1000px) {
 
-          .main-area {
-            grid-template-columns:
-              250px
-              minmax(300px, 1fr);
-
+          .main {
+            grid-template-columns: 1fr;
           }
 
-          .actions-panel {
-            display: none;
-          }
-
-        }
-
-
-        @media (max-width: 700px) {
-
-          .topbar {
-            height: 65px;
-            padding: 0 15px;
-          }
-
-          .topbar h1 {
-            font-size: 20px;
-          }
-
-          .topbar span {
-            font-size: 10px;
-          }
-
-          .main-area {
-            display: block;
-            padding: 10px;
-          }
-
-          .chat-panel {
+          .chat-panel,
+          .actions {
             display: none;
           }
 
           .avatar-section {
-            height: 100%;
-          }
-
-          .avatar-stage {
             width: 100%;
           }
 
-          .input-area {
-            padding: 10px;
-            height: 76px;
+          .current-info {
+            gap: 15px;
           }
 
-          .mic-button {
-            width: 46px;
-            height: 46px;
+          .header {
+            padding: 0 15px;
           }
 
-          .send-button {
-            padding: 0 17px;
+          .header h1 {
+            font-size: 20px;
           }
 
         }
