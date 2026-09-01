@@ -20,6 +20,14 @@ export default function SilkPage() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const chatTranscriptRef = useRef<HTMLDivElement | null>(null);
 
+  // Realistic Outfit Image Mapping
+  const outfitImages: Record<string, string> = {
+    normal: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+    traditional: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=800&q=80",
+    modern: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
+    night: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80"
+  };
+
   useEffect(() => {
     // Load local storage data
     const savedHistory = localStorage.getItem('silk_chat_history');
@@ -72,19 +80,34 @@ export default function SilkPage() {
     setStatusText('Memory Saved');
   };
 
+  // ENHANCED REAL-LIVE VOICE ENGINE (Tanglish / Indian Voice Optimization)
   const speakText = (text: string) => {
     if (!('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.98;
-    utterance.pitch = 1.08;
+
+    // Clean Tanglish for smoother pronunciation
+    const cleanedText = text
+      .replace(/chellam/gi, "chellaam")
+      .replace(/da/gi, "daa")
+      .replace(/di/gi, "dee");
+
+    const utterance = new SpeechSynthesisUtterance(cleanedText);
+    
+    // Fine-tuned rate & pitch for realistic warmth
+    utterance.rate = 0.90; 
+    utterance.pitch = 1.18; 
 
     const voices = window.speechSynthesis.getVoices();
-    const femaleVoice = voices.find(v =>
-      (v.lang.includes('ta') || v.lang.includes('en')) &&
-      (v.name.includes('Female') || v.name.includes('Google') || v.name.includes('Samantha') || v.name.includes('Zira'))
+    
+    // Priority sequence: Indian Female Voices -> High-quality Natural Female Voices
+    const naturalVoice = voices.find(v => 
+      (v.lang.includes('ta') || v.lang.includes('en-IN')) && 
+      (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Female'))
+    ) || voices.find(v => 
+      v.name.includes('Samantha') || v.name.includes('Zira') || v.name.includes('Victoria') || v.name.includes('Google US English')
     );
-    if (femaleVoice) utterance.voice = femaleVoice;
+
+    if (naturalVoice) utterance.voice = naturalVoice;
 
     utterance.onstart = () => {
       setAvatarState('speaking');
@@ -178,16 +201,31 @@ export default function SilkPage() {
     }
   };
 
-  const getOutfitFill = () => {
-    if (currentOutfit === 'traditional') return 'url(#outfitTraditional)';
-    if (currentOutfit === 'modern') return 'url(#outfitModern)';
-    if (currentOutfit === 'night') return 'url(#outfitNight)';
-    return 'url(#outfitNormal)';
-  };
-
   return (
-    <div style={{ height: '100vh', width: '100vw', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative', fontFamily: 'sans-serif', color: '#FFF' }}>
+    <div style={{ height: '100vh', width: '100vw', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative', fontFamily: 'sans-serif', backgroundColor: '#09040e', color: '#FFF' }}>
       
+      {/* Dynamic Keyframe Animations */}
+      <style jsx global>{`
+        @keyframes pulseGlow {
+          0% { box-shadow: 0 0 25px rgba(168, 85, 247, 0.3); transform: scale(1); }
+          50% { box-shadow: 0 0 45px rgba(236, 72, 153, 0.6); transform: scale(1.02); }
+          100% { box-shadow: 0 0 25px rgba(168, 85, 247, 0.3); transform: scale(1); }
+        }
+        @keyframes thinkPulse {
+          0% { opacity: 0.6; }
+          50% { opacity: 1; }
+          100% { opacity: 0.6; }
+        }
+        .avatar-speaking {
+          animation: pulseGlow 1.8s infinite ease-in-out;
+          border-color: #ec4899 !important;
+        }
+        .avatar-thinking {
+          animation: thinkPulse 1s infinite ease-in-out;
+          border-color: #eab308 !important;
+        }
+      `}</style>
+
       {/* Header Bar */}
       <div style={{ position: 'relative', zIndex: 10, display: 'flex', justifyContent: 'space-between', padding: '16px', background: 'linear-gradient(to bottom, rgba(11, 5, 18, 0.95), transparent)' }}>
         <select value={currentMode} onChange={(e) => setCurrentMode(e.target.value)} style={{ background: 'rgba(0,0,0,0.6)', color: '#FFF', border: '1px solid rgba(255,255,255,0.2)', padding: '8px 14px', borderRadius: '20px', fontSize: '12px', outline: 'none' }}>
@@ -209,36 +247,29 @@ export default function SilkPage() {
         </button>
       </div>
 
-      {/* Fullscreen Stage */}
+      {/* Fullscreen Stage (PHOTOREALISTIC AVATAR UI) */}
       <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
-        <svg className={`silk-avatar ${avatarState}`} viewBox="0 0 200 300" style={{ width: '280px', height: '420px', filter: 'drop-shadow(0 0 25px rgba(168, 85, 247, 0.35))' }}>
-          <defs>
-            <linearGradient id="skinGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor="#9E6B5C"/><stop offset="100%" stopColor="#7A4B3E"/></linearGradient>
-            <linearGradient id="outfitNormal" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#8B5CF6"/><stop offset="100%" stopColor="#6D28D9"/></linearGradient>
-            <linearGradient id="outfitTraditional" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#BE185D"/><stop offset="100%" stopColor="#F59E0B"/></linearGradient>
-            <linearGradient id="outfitModern" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#0284C7"/><stop offset="100%" stopColor="#0F172A"/></linearGradient>
-            <linearGradient id="outfitNight" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#4C1D95"/><stop offset="100%" stopColor="#1E1B4B"/></linearGradient>
-          </defs>
+        <div 
+          className={`relative rounded-full transition-all duration-500 ${avatarState === 'speaking' ? 'avatar-speaking' : avatarState === 'thinking' ? 'avatar-thinking' : ''}`}
+          style={{
+            width: '260px',
+            height: '260px',
+            borderRadius: '50%',
+            overflow: 'hidden',
+            border: '4px solid rgba(168, 85, 247, 0.5)',
+            boxShadow: '0 0 35px rgba(168, 85, 247, 0.4)',
+            position: 'relative'
+          }}
+        >
+          <img 
+            src={outfitImages[currentOutfit] || outfitImages.normal} 
+            alt="SILK Realistic Companion"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(88, 28, 135, 0.3), transparent)', pointerEvents: 'none' }} />
+        </div>
 
-          <path d="M 45 75 Q 15 120 35 230 Q 165 230 165 120 Q 185 75 155 75 Z" fill="#120722" />
-          <path d="M 55 160 C 55 135, 145 135, 145 160 L 160 300 L 40 300 Z" fill={getOutfitFill()} />
-          <rect x="88" y="128" width="24" height="32" rx="6" fill="url(#skinGrad)" />
-          
-          <g id="headGroup">
-            <ellipse cx="100" cy="98" rx="36" ry="43" fill="url(#skinGrad)" />
-            <circle cx="100" cy="78" r="2.5" fill="#DC2626" />
-            <ellipse cx="84" cy="96" rx="5.5" ry="3.8" fill="#FFF" />
-            <ellipse cx="116" cy="96" rx="5.5" ry="3.8" fill="#FFF" />
-            <circle cx="84" cy="96" r="2.2" fill="#120722" />
-            <circle cx="116" cy="96" r="2.2" fill="#120722" />
-            <path d="M 76 89 Q 84 85 92 89" stroke="#120722" strokeWidth="2.2" fill="none" />
-            <path d="M 108 89 Q 116 85 124 89" stroke="#120722" strokeWidth="2.2" fill="none" />
-            <path d="M 90 120 Q 100 124 110 120" stroke="#E11D48" strokeWidth="3" fill="none" />
-            <path d="M 62 92 C 62 60, 138 60, 138 92 C 122 72, 78 72, 62 92 Z" fill="#120722" />
-          </g>
-        </svg>
-
-        <div style={{ marginTop: '20px', background: 'rgba(0, 0, 0, 0.65)', padding: '8px 18px', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.15)', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div style={{ marginTop: '24px', background: 'rgba(0, 0, 0, 0.65)', padding: '8px 18px', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.15)', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: statusState === 'busy' ? '#EAB308' : statusState === 'speaking' ? '#EC4899' : '#22C55E' }} />
           <span>{statusText}</span>
         </div>
@@ -251,7 +282,7 @@ export default function SilkPage() {
 
       {/* Transcript */}
       {showTranscript && (
-        <div ref={chatTranscriptRef} style={{ position: 'relative', zIndex: 10, margin: '0 16px 8px 16px', height: '170px', background: 'rgba(0, 0, 0, 0.55)', borderRadius: '20px', padding: '14px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
+        <div ref={chatTranscriptRef} style={{ position: 'relative', zIndex: 10, margin: '0 16px 8px 16px', height: '170px', background: 'rgba(0, 0, 0, 0.55)', backdropFilter: 'blur(10px)', borderRadius: '20px', padding: '14px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
           {chatHistory.map((m, i) => (
             <div key={i} style={{ fontSize: '13px', lineHeight: '1.45', maxWidth: '88%', padding: '10px 14px', borderRadius: '14px', wordBreak: 'break-word', alignSelf: m.sender === 'USER' ? 'flex-end' : 'flex-start', background: m.sender === 'USER' ? 'linear-gradient(135deg, #7E22CE, #9333EA)' : 'rgba(255, 255, 255, 0.15)', color: m.sender === 'USER' ? '#FFF' : '#F3E8FF' }}>
               {m.text}
