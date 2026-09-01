@@ -35,7 +35,7 @@ export default function SilkApp() {
   // Web Audio API refs
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
-  const sourceNodeRef = useRef<MediaElementSourceNode | null>(null);
+  const sourceNodeRef = useRef<MediaElementAudioSourceNode | null>(null);
   const animationFrameRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -71,7 +71,7 @@ export default function SilkApp() {
         sourceNodeRef.current = null;
       }
 
-      // Create a fresh MediaElementSource for this new Audio element and link to analyser
+      // Create a fresh MediaElementAudioSource for this new Audio element and link to analyser
       if (audioContextRef.current && analyserRef.current) {
         sourceNodeRef.current = audioContextRef.current.createMediaElementSource(audioEl);
         sourceNodeRef.current.connect(analyserRef.current);
@@ -321,7 +321,7 @@ export default function SilkApp() {
           <input
             type="text"
             value={inputMessage}
-            onChange={(e) =>setInputMessage(e.target.value)}
+            onChange={(e) => setInputMessage(e.target.value)}
             placeholder="பேசுடா செல்லம்... அல்லது type பண்ணு..."
             className="flex-1 bg-transparent border-none outline-none px-4 text-sm text-pink-100 placeholder-pink-500/50"
           />
