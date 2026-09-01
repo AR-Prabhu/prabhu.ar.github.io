@@ -76,6 +76,7 @@ User Memory Context: ${memory ? memory : "None provided"}`;
         parts: [{ text: item.text }],
       }));
 
+    // Updated model name according to Google GenAI standards
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: [
