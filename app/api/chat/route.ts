@@ -42,11 +42,12 @@ Core Character & Behavior:
 
 export async function POST(req: NextRequest) {
   try {
-    const apiKey = process.process ? process.env.GEMINI_API_KEY : undefined;
+    // API Key Fix: Reading correctly from Node.js process environment
+    const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
       return NextResponse.json(
-        { error: "GEMINI_API_KEY is not configured on Vercel environment variables." },
+        { error: "GEMINI_API_KEY is missing from Vercel environment variables." },
         { status: 500, headers: corsHeaders }
       );
     }
@@ -76,24 +77,22 @@ User Memory Context: ${memory ? memory : "None provided"}`;
         parts: [{ text: item.text }],
       }));
 
-    // Updated active model string
+    // Using Google's required gemini-3.6-flash model
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-3.6-flash",
       contents: [
         ...formattedHistory,
         { role: "user", parts: [{ text: message.trim() }] }
       ],
       config: {
         systemInstruction,
-        temperature: 0.85,
-        topP: 0.95,
       },
     });
 
     const responseText = response.text;
 
     if (!responseText) {
-      throw new Error("Received empty text payload from Gemini model.");
+      throw new Error("Received empty response payload from Gemini.");
     }
 
     return NextResponse.json(
