@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#0B0512"/>
+  <circle cx="256" cy="224" r="116" fill="#6B3F72"/>
+  <path d="M256 372c-64-56-108-91-108-143 0-35 27-61 61-61 22 0 39 12 47 30 8-18 25-30 47-30 34 0 61 26 61 61 0 52-44 87-108 143z" fill="none" stroke="#F3E8FF" stroke-width="20" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="256" y="112" text-anchor="middle" fill="#F3E8FF" font-family="Arial,sans-serif" font-size="48" font-weight="700">SILK</text>
+</svg>
