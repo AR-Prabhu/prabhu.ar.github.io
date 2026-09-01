@@ -77,7 +77,7 @@ User Memory Context: ${memory ? memory : "None provided"}`;
       }));
 
     const chat = ai.chats.create({
-      model: "gemini-2.5-flash",
+      model: "gemini-1.5-flash",
       config: {
         systemInstruction,
         temperature: 0.85,
