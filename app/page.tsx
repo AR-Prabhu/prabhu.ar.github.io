@@ -61,42 +61,74 @@ export default function SilkApp() {
     }
   }, [messages]);
 
-  const playAudio = (audioData: string) => {
+  // Reliable Audio Playback with fallback to browser SpeechSynthesis
+  const playAudio = (audioData: string | null, textFallback: string) => {
     try {
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
       }
 
-      const audio = new Audio(audioData);
-      audioRef.current = audio;
+      if (audioData) {
+        const audio = new Audio(audioData);
+        audioRef.current = audio;
 
-      audio.onplay = () => {
-        setIsSpeaking(true);
-        setStatus('Silk Speaking...');
-      };
+        audio.onplay = () => {
+          setIsSpeaking(true);
+          setStatus('Silk Speaking...');
+        };
 
-      audio.onended = () => {
-        setIsSpeaking(false);
-        setStatus('Live');
-      };
+        audio.onended = () => {
+          setIsSpeaking(false);
+          setStatus('Live');
+        };
 
-      audio.onerror = () => {
-        setIsSpeaking(false);
-        setStatus('Audio Playback Blocked / Error');
-        console.warn('Browser audio playback failed.');
-      };
+        audio.onerror = () => {
+          console.warn('ElevenLabs audio error, falling back to browser speech.');
+          fallbackBrowserSpeech(textFallback);
+        };
 
-      audio.play().catch((err) => {
-        setIsSpeaking(false);
-        setStatus('Audio Click Required');
-        console.warn('Audio play restricted by browser policy:', err);
-      });
+        audio.play().catch(() => {
+          console.warn('Audio play restricted or failed, falling back to browser speech.');
+          fallbackBrowserSpeech(textFallback);
+        });
+      } else {
+        fallbackBrowserSpeech(textFallback);
+      }
     } catch (error) {
-      console.error('Audio initialization error:', error);
+      console.error('Audio playback exception:', error);
+      fallbackBrowserSpeech(textFallback);
+    }
+  };
+
+  const fallbackBrowserSpeech = (text: string) => {
+    if (!('speechSynthesis' in window)) {
       setIsSpeaking(false);
       setStatus('Live');
+      return;
     }
+
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'ta-IN';
+    utterance.rate = 1.0;
+
+    utterance.onstart = () => {
+      setIsSpeaking(true);
+      setStatus('Silk Speaking...');
+    };
+
+    utterance.onend = () => {
+      setIsSpeaking(false);
+      setStatus('Live');
+    };
+
+    utterance.onerror = () => {
+      setIsSpeaking(false);
+      setStatus('Live');
+    };
+
+    window.speechSynthesis.speak(utterance);
   };
 
   const changeLook = (index: number) => {
@@ -104,7 +136,7 @@ export default function SilkApp() {
     setStatus(`Switching look to ${looks[index].name}...`);
     setTimeout(() => {
       setStatus('Live');
-    }, 600);
+    }, 500);
   };
 
   const startListening = () => {
@@ -166,7 +198,8 @@ export default function SilkApp() {
       text: query,
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    const updatedHistory = [...messages, userMessage];
+    setMessages(updatedHistory);
     setLoading(true);
     setStatus('Thinking...');
 
@@ -183,13 +216,14 @@ export default function SilkApp() {
       });
 
       if (!res.ok) {
-        throw new Error(`Server API Error: Status ${res.status}`);
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || `Server error: ${res.status}`);
       }
 
       const data = await res.json();
       const reply =
         data.reply ||
-        'செல்லம்... எனக்கு இப்போது பதில் உருவாக்குவதில் சின்னத் தயக்கம். மீண்டும் சொல்லுடா.';
+        'செல்லம்... எனக்கு இப்போது பதில் தருவதில் சின்னத் தயக்கம். மீண்டும் சொல்லுடா.';
 
       setMessages((prev) => [
         ...prev,
@@ -199,22 +233,21 @@ export default function SilkApp() {
         },
       ]);
 
-      if (data.audio) {
-        setLastAudio(data.audio);
-        playAudio(data.audio);
-      } else {
-        setStatus('Live (Text Only)');
-      }
+      setLastAudio(data.audio || null);
+      playAudio(data.audio || null, reply);
     } catch (error: any) {
-      console.error('API Error:', error);
+      console.error('Chat API Error:', error);
+      const errorMessage = `மன்னிக்கவும் செல்லம், AI சேவையில் தற்காலிக இணைப்பு பிரச்சனை (${error.message || 'API Error'}). சிறிது நேரம் கழித்து முயற்சிக்கவும்.`;
+      
       setMessages((prev) => [
         ...prev,
         {
           role: 'assistant',
-          text: 'மன்னிக்கவும் செல்லம், Gemini API சேவையில் இணைப்பு துண்டிக்கப்பட்டது. சிறிது நேரம் கழித்து முயற்சிக்கவும்.',
+          text: errorMessage,
         },
       ]);
-      setStatus('API Connection Error');
+      setStatus('API Error');
+      setIsSpeaking(false);
     } finally {
       setLoading(false);
     }
@@ -283,7 +316,6 @@ export default function SilkApp() {
 
         {/* ================= LIVE MOVING AVATAR ================= */}
         <section className="avatar-section">
-          {/* Dynamic Background Glow Rings */}
           <div className="glow-ring glow-1" />
           <div className="glow-ring glow-2" />
 
@@ -294,7 +326,6 @@ export default function SilkApp() {
                 : 'avatar-container live-breathing'
             }
           >
-            {/* Ambient Lighting Overlay inside frame */}
             <div className="ambient-overlay" />
 
             <img
@@ -304,23 +335,20 @@ export default function SilkApp() {
               className="silk-image"
             />
 
-            {/* LIVE BADGE */}
             <div className="avatar-live">
               <span className="live-pulse" />
               {isSpeaking ? 'Speaking Live' : 'AI Live'}
             </div>
           </div>
 
-          {/* SUBTITLE */}
           <div className="subtitle">
             {messages[messages.length - 1]?.text}
           </div>
 
-          {/* VOICE REPLAY */}
           {lastAudio && !isSpeaking && (
             <button
               className="replay"
-              onClick={() => playAudio(lastAudio)}
+              onClick={() => playAudio(lastAudio, messages[messages.length - 1]?.text || '')}
             >
               🔊 Play Voice
             </button>
@@ -352,21 +380,21 @@ export default function SilkApp() {
 
             <button
               className="action"
-              onClick={() => handleSend('இன்னைக்கு happy mood-la இருக்கியா?')}
+              onClick={() => handleSend('இன்னைக்கு happy mood-la இருக்கியா செல்லம்?')}
             >
               😊 Happy
             </button>
 
             <button
               className="action"
-              onClick={() => handleSend('கொஞ்சம் shy-aa பேசு செல்லம்')}
+              onClick={() => handleSend('கொஞ்சம் shy-aa பேசுடா')}
             >
               😊 Shy
             </button>
 
             <button
               className="action"
-              onClick={() => handleSend('இப்போ என்ன யோசிச்சிட்டு இருக்க சொல்லு?')}
+              onClick={() => handleSend('இப்போ என்ன யோசிச்சிட்டு இருக்க?')}
             >
               🤔 Thinking
             </button>
@@ -455,7 +483,6 @@ export default function SilkApp() {
           flex-direction: column;
         }
 
-        /* HEADER */
         .header {
           height: 82px;
           flex-shrink: 0;
@@ -509,7 +536,6 @@ export default function SilkApp() {
           animation: pulse 0.7s infinite;
         }
 
-        /* MAIN */
         .main {
           flex: 1;
           min-height: 0;
@@ -519,7 +545,6 @@ export default function SilkApp() {
           padding: 22px;
         }
 
-        /* PANELS */
         .chat-panel,
         .actions {
           min-height: 0;
@@ -537,7 +562,6 @@ export default function SilkApp() {
           border-bottom: 1px solid rgba(255,255,255,.08);
         }
 
-        /* CHAT */
         .messages {
           height: calc(100% - 65px);
           overflow-y: auto;
@@ -592,7 +616,6 @@ export default function SilkApp() {
           animation-delay: .3s;
         }
 
-        /* LIVE MOVING AVATAR CONTAINER */
         .avatar-section {
           position: relative;
           min-width: 0;
@@ -640,7 +663,6 @@ export default function SilkApp() {
           background: #000;
         }
 
-        /* Subtle Continuous Live Breathing Motion */
         .live-breathing {
           animation: softBreathing 5s ease-in-out infinite;
         }
@@ -705,7 +727,6 @@ export default function SilkApp() {
           animation: pulseDot 1.5s infinite;
         }
 
-        /* SUBTITLE */
         .subtitle {
           position: absolute;
           bottom: 50px;
@@ -739,7 +760,6 @@ export default function SilkApp() {
           font-size: 12px;
         }
 
-        /* ACTIONS */
         .action-content {
           padding: 15px;
           overflow-y: auto;
@@ -785,7 +805,6 @@ export default function SilkApp() {
           border-left: 3px solid #ec4899;
         }
 
-        /* CURRENT INFO */
         .current-info {
           height: 38px;
           flex-shrink: 0;
@@ -803,7 +822,6 @@ export default function SilkApp() {
           margin-right: 5px;
         }
 
-        /* FOOTER */
         .footer {
           height: 72px;
           flex-shrink: 0;
@@ -880,7 +898,6 @@ export default function SilkApp() {
           pointer-events: none;
         }
 
-        /* ANIMATIONS */
         @keyframes softBreathing {
           0%, 100% {
             transform: scale(1) translateY(0);
@@ -939,7 +956,6 @@ export default function SilkApp() {
           }
         }
 
-        /* MOBILE */
         @media (max-width: 1000px) {
           .main {
             grid-template-columns: 1fr;
