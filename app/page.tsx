@@ -19,8 +19,10 @@ export default function SilkPage() {
   const recognitionRef = useRef<any>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const chatTranscriptRef = useRef<HTMLDivElement | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioUrlRef = useRef<string | null>(null);
 
-  // Full-Body Realistic Character Models
+  // High-Quality Photorealistic Models
   const fullBodyOutfits: Record<string, string> = {
     normal: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80",
     traditional: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1000&q=80",
@@ -66,6 +68,14 @@ export default function SilkPage() {
     }
   }, [chatHistory]);
 
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) audioRef.current.pause();
+      if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    };
+  }, []);
+
   const saveHistory = (newHistory: Array<{ sender: string; text: string }>) => {
     const trimmed = newHistory.slice(-30);
     setChatHistory(trimmed);
@@ -78,40 +88,104 @@ export default function SilkPage() {
     setStatusText('Memory Saved');
   };
 
-  const speakText = (text: string) => {
-    if (!('speechSynthesis' in window)) return;
-    window.speechSynthesis.cancel();
+  // Dual Voice System (Backend API TTS + Browser Dynamic Fallback)
+  const speakText = async (text: string) => {
+    try {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+        audioRef.current = null;
+      }
+      if (audioUrlRef.current) {
+        URL.revokeObjectURL(audioUrlRef.current);
+        audioUrlRef.current = null;
+      }
 
-    const cleanedText = text
-      .replace(/chellam/gi, "chellaam")
-      .replace(/da/gi, "daa")
-      .replace(/di/gi, "dee");
-
-    const utterance = new SpeechSynthesisUtterance(cleanedText);
-    utterance.rate = 0.90;
-    utterance.pitch = 1.18;
-
-    const voices = window.speechSynthesis.getVoices();
-    const naturalVoice = voices.find(v => 
-      (v.lang.includes('ta') || v.lang.includes('en-IN')) && 
-      (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Female'))
-    ) || voices.find(v => 
-      v.name.includes('Samantha') || v.name.includes('Zira') || v.name.includes('Google US English')
-    );
-
-    if (naturalVoice) utterance.voice = naturalVoice;
-
-    utterance.onstart = () => {
       setAvatarState('speaking');
       setStatusState('speaking');
       setStatusText('SILK Speaking...');
-    };
-    utterance.onend = utterance.onerror = () => {
-      setAvatarState('idle');
-      setStatusState('ready');
-      setStatusText('SILK Ready');
-    };
-    window.speechSynthesis.speak(utterance);
+
+      const response = await fetch('/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, mode: currentMode }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.details || errorData.error || `TTS server error ${response.status}`);
+      }
+
+      const audioBlob = await response.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+      audioUrlRef.current = audioUrl;
+
+      const audio = new Audio(audioUrl);
+      audio.preload = 'auto';
+      audioRef.current = audio;
+
+      audio.onplay = () => {
+        setAvatarState('speaking');
+        setStatusState('speaking');
+        setStatusText('SILK Speaking...');
+      };
+
+      audio.onended = () => {
+        setAvatarState('idle');
+        setStatusState('ready');
+        setStatusText('SILK Ready');
+        URL.revokeObjectURL(audioUrl);
+        if (audioUrlRef.current === audioUrl) audioUrlRef.current = null;
+        if (audioRef.current === audio) audioRef.current = null;
+      };
+
+      audio.onerror = () => {
+        setAvatarState('idle');
+        setStatusState('ready');
+        setStatusText('SILK Ready');
+        URL.revokeObjectURL(audioUrl);
+        if (audioUrlRef.current === audioUrl) audioUrlRef.current = null;
+        if (audioRef.current === audio) audioRef.current = null;
+      };
+
+      await audio.play();
+    } catch (ttsError) {
+      console.warn('Backend TTS fallback active:', ttsError);
+
+      if (!('speechSynthesis' in window)) {
+        setAvatarState('idle');
+        setStatusState('ready');
+        setStatusText('SILK Ready');
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+      const cleanedText = text
+        .replace(/\bchellam\b/gi, 'chellaam')
+        .replace(/\bda\b/gi, 'daa')
+        .replace(/\bdi\b/gi, 'dee');
+      const utterance = new SpeechSynthesisUtterance(cleanedText);
+      utterance.rate = 0.88; // Deep Seductive Rhythm
+      utterance.pitch = 0.95;
+
+      const voices = window.speechSynthesis.getVoices();
+      const voice = voices.find(v => v.lang.toLowerCase().includes('ta') || v.lang.toLowerCase().includes('en-in'))
+        || voices.find(v => v.name.includes('Samantha') || v.name.includes('Zira'))
+        || voices[0];
+
+      if (voice) utterance.voice = voice;
+      utterance.onstart = () => {
+        setAvatarState('speaking');
+        setStatusState('speaking');
+        setStatusText('SILK Speaking...');
+      };
+      utterance.onend = utterance.onerror = () => {
+        setAvatarState('idle');
+        setStatusState('ready');
+        setStatusText('SILK Ready');
+      };
+      window.speechSynthesis.speak(utterance);
+    }
   };
 
   const handleSendText = async (textToSend?: string) => {
@@ -196,7 +270,7 @@ export default function SilkPage() {
   return (
     <div style={{ height: '100vh', width: '100vw', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative', fontFamily: 'sans-serif', backgroundColor: '#05020a', color: '#FFF' }}>
       
-      {/* Real Live Idle & Motion CSS Animations */}
+      {/* Real Live Visual Animations */}
       <style jsx global>{`
         @keyframes liveBreathing {
           0% { transform: scale(1) translateY(0px); }
@@ -204,16 +278,14 @@ export default function SilkPage() {
           100% { transform: scale(1) translateY(0px); }
         }
         @keyframes liveTalkPulse {
-          0% { filter: drop-shadow(0 0 15px rgba(236, 72, 153, 0.4)); transform: scale(1.01); }
-          50% { filter: drop-shadow(0 0 35px rgba(236, 72, 153, 0.8)); transform: scale(1.025); }
-          100% { filter: drop-shadow(0 0 15px rgba(236, 72, 153, 0.4)); transform: scale(1.01); }
+          0% { filter: drop-shadow(0 0 12px rgba(236, 72, 153, 0.35)); transform: translateY(0px) scale(1); }
+          25% { filter: drop-shadow(0 0 22px rgba(236, 72, 153, 0.55)); transform: translateY(-2px) scale(1.008); }
+          50% { filter: drop-shadow(0 0 30px rgba(236, 72, 153, 0.7)); transform: translateY(-1px) scale(1.015); }
+          75% { filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.5)); transform: translateY(-2px) scale(1.008); }
+          100% { filter: drop-shadow(0 0 12px rgba(236, 72, 153, 0.35)); transform: translateY(0px) scale(1); }
         }
-        .full-body-idle {
-          animation: liveBreathing 4s infinite ease-in-out;
-        }
-        .full-body-speaking {
-          animation: liveTalkPulse 1.2s infinite ease-in-out;
-        }
+        .full-body-idle { animation: liveBreathing 4s infinite ease-in-out; }
+        .full-body-speaking { animation: liveTalkPulse 1.2s infinite ease-in-out; }
       `}</style>
 
       {/* Header Bar */}
@@ -237,19 +309,11 @@ export default function SilkPage() {
         </button>
       </div>
 
-      {/* FULL BODY REAL-FEEL STAGE */}
+      {/* Full Body Stage */}
       <div style={{ position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center', alignItems: 'flex-end', zIndex: 1, overflow: 'hidden' }}>
         <div 
           className={avatarState === 'speaking' ? 'full-body-speaking' : 'full-body-idle'}
-          style={{
-            height: '92vh',
-            width: '100%',
-            maxWidth: '520px',
-            position: 'relative',
-            display: 'flex',
-            justify: 'center',
-            transition: 'all 0.5s ease'
-          }}
+          style={{ height: '92vh', width: '100%', maxWidth: '520px', position: 'relative', display: 'flex', justifyContent: 'center', transition: 'all 0.5s ease' }}
         >
           <img 
             src={fullBodyOutfits[currentOutfit] || fullBodyOutfits.normal} 
@@ -263,11 +327,10 @@ export default function SilkPage() {
               WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)'
             }}
           />
-          {/* Ambient Studio Lighting Glow */}
-          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 50% 30%, transparent 40%, #05020a 95%)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 50% 30%, transparent 46%, #05020a 94%)', pointerEvents: 'none' }} />
         </div>
 
-        {/* Floating Status Pill */}
+        {/* Status Pill */}
         <div style={{ position: 'absolute', top: '80px', background: 'rgba(0, 0, 0, 0.65)', backdropFilter: 'blur(10px)', padding: '6px 16px', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.15)', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '8px', zIndex: 10 }}>
           <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: statusState === 'busy' ? '#EAB308' : statusState === 'speaking' ? '#EC4899' : '#22C55E' }} />
           <span>{statusText}</span>
@@ -279,7 +342,7 @@ export default function SilkPage() {
         <video ref={videoRef} autoPlay playsInline muted style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scaleX(-1)' }} />
       </div>
 
-      {/* Floating Chat Overlay (APK Style UI) */}
+      {/* Chat Overlay */}
       {showTranscript && (
         <div ref={chatTranscriptRef} style={{ position: 'relative', zIndex: 20, margin: '0 16px 8px 16px', height: '150px', background: 'rgba(5, 2, 10, 0.45)', backdropFilter: 'blur(12px)', borderRadius: '20px', padding: '14px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
           {chatHistory.map((m, i) => (
@@ -290,7 +353,7 @@ export default function SilkPage() {
         </div>
       )}
 
-      {/* Bottom Controls */}
+      {/* Controls */}
       <div style={{ position: 'relative', zIndex: 20, padding: '16px', background: 'linear-gradient(to top, rgba(5, 2, 10, 0.98) 75%, transparent)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <div style={{ display: 'flex', gap: '10px' }}>
           <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSendText()} placeholder="Talk in Tanglish, Tamil, or English..." style={{ flex: 1, background: 'rgba(255, 255, 255, 0.12)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '26px', padding: '12px 20px', color: '#FFF', fontSize: '14px', outline: 'none', backdropFilter: 'blur(8px)' }} />
