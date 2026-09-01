@@ -8,6 +8,7 @@ export default function SilkApp() {
   const [status, setStatus] = useState('Live');
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [lastAudio, setLastAudio] = useState<string | null>(null);
   const [messages, setMessages] = useState<Array<{ role: string; text: string }>>([
     { role: 'assistant', text: 'வணக்கம் செல்லம்... நான் தான் உன் SILK. சொல்லுடா என்ன பேசணும்?' }
   ]);
@@ -19,37 +20,41 @@ export default function SilkApp() {
     chatContainerRef.current?.scrollTo({ top: chatContainerRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages]);
 
-  // Audio Player for ElevenLabs Voice
+  // Audio Player Function
   const playAudio = (base64Audio: string) => {
-    if (audioRef.current) {
-      audioRef.current.pause();
+    try {
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+      const audio = new Audio(base64Audio);
+      audioRef.current = audio;
+
+      audio.onplay = () => {
+        setIsSpeaking(true);
+        setStatus('Silk Speaking...');
+      };
+
+      audio.onended = () => {
+        setIsSpeaking(false);
+        setStatus('Live');
+      };
+
+      audio.onerror = (e) => {
+        console.error("Audio playback error:", e);
+        setIsSpeaking(false);
+        setStatus('Live');
+      };
+
+      audio.play().catch(e => {
+        console.error("Browser blocked autoplay:", e);
+        setStatus('Click Play to Hear');
+      });
+    } catch (err) {
+      console.error("Audio init error:", err);
     }
-    const audio = new Audio(base64Audio);
-    audioRef.current = audio;
-
-    audio.onplay = () => {
-      setIsSpeaking(true);
-      setStatus('Silk Speaking...');
-    };
-
-    audio.onended = () => {
-      setIsSpeaking(false);
-      setStatus('Live');
-    };
-
-    audio.onerror = () => {
-      setIsSpeaking(false);
-      setStatus('Live');
-    };
-
-    audio.play().catch(e => {
-      console.error("Audio error:", e);
-      setIsSpeaking(false);
-      setStatus('Live');
-    });
   };
 
-  // Mic Speech-to-Text Setup
+  // Mic Speech-to-Text
   const startListening = () => {
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
       alert('உங்கள் Browser-ல் Mic வசதி ஆதரிக்கப்படவில்லை.');
@@ -106,6 +111,7 @@ export default function SilkApp() {
       setMessages(prev => [...prev, { role: 'assistant', text: reply }]);
       
       if (data.audio) {
+        setLastAudio(data.audio);
         playAudio(data.audio);
       } else {
         setStatus('Live');
@@ -125,7 +131,7 @@ export default function SilkApp() {
       <div style={{ position: 'relative', zIndex: 10, padding: '14px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.7)' }}>
         <div>
           <h1 style={{ margin: 0, fontSize: '18px', color: '#ec4899', letterSpacing: '1px' }}>PROJECT SILK</h1>
-          <span style={{ fontSize: '10px', color: '#aaa' }}>Full Body Live Interactive Mode</span>
+          <span style={{ fontSize: '10px', color: '#aaa' }}>Live Interactive Mode</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.1)', padding: '5px 12px', borderRadius: '20px' }}>
           <div style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: isSpeaking ? '#ec4899' : isListening ? '#eab308' : '#22c55e' }} />
@@ -133,27 +139,51 @@ export default function SilkApp() {
         </div>
       </div>
 
-      {/* FULL BODY STANDING VIEW CONTAINER */}
+      {/* AVATAR & FULL BODY VIEW CONTAINER */}
       <div style={{ flex: 1, position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#000', overflow: 'hidden', paddingBottom: '70px' }}>
         
         {/* Glow Lighting */}
         <div style={{ position: 'absolute', width: '300px', height: '300px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(236,72,153,0.2) 0%, transparent 70%)', filter: 'blur(40px)' }} />
 
-        {/* Head-to-Toe Standing Full Body Image */}
+        {/* Silk Smitha Image - Change the src link to your uploaded Silk photo URL if hosted */}
         <div style={{ height: '100%', width: '100%', maxWidth: '450px', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '10px' }}>
           <img 
             src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80" 
-            alt="SILK Full Body Standing"
+            alt="SILK Avatar"
             style={{
               maxHeight: '100%',
               maxWidth: '100%',
-              objectFit: 'contain', // Ensures head-to-toe and legs are fully visible without cropping
+              objectFit: 'contain',
               filter: isSpeaking ? 'drop-shadow(0 0 20px rgba(236,72,153,0.7)) brightness(1.05)' : 'brightness(0.95)',
               transform: isSpeaking ? 'scale(1.01)' : 'scale(1)',
               transition: 'all 0.3s ease-in-out'
             }}
           />
         </div>
+
+        {/* REPLAY VOICE BUTTON (Appears if audio is blocked or ready) */}
+        {lastAudio && !isSpeaking && (
+          <button
+            onClick={() => playAudio(lastAudio)}
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              background: '#ec4899',
+              color: '#fff',
+              border: 'none',
+              padding: '8px 14px',
+              borderRadius: '20px',
+              fontSize: '12px',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              zIndex: 20,
+              boxShadow: '0 0 10px rgba(236,72,153,0.5)'
+            }}
+          >
+            🔊 Play Voice
+          </button>
+        )}
 
         {/* CHAT SUBTITLE OVERLAY */}
         <div ref={chatContainerRef} style={{ position: 'absolute', bottom: '10px', left: '50%', transform: 'translateX(-50%)', width: '90%', maxWidth: '450px', maxHeight: '100px', overflowY: 'auto', background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)', padding: '10px 15px', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.15)' }}>
