@@ -15,23 +15,23 @@ type Look = {
 const looks: Look[] = [
   {
     name: 'Saree',
-    image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=800&q=80',
+    image: '/silk/silk-face-1.jpg.jpg',
   },
   {
     name: 'Traditional',
-    image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=800&q=80',
+    image: '/silk/silk-face-2.jpg.jpg',
   },
   {
     name: 'Night',
-    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+    image: '/silk/silk-face-3.jpg.jpg',
   },
   {
     name: 'Casual',
-    image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80',
+    image: '/silk/silk-face-4.jpg.jpg',
   },
   {
     name: 'Glamour',
-    image: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=800&q=80',
+    image: '/silk/silk-face-5.jpg.jpg',
   },
 ];
 
@@ -83,15 +83,17 @@ export default function SilkApp() {
 
       audio.onerror = () => {
         setIsSpeaking(false);
-        setStatus('Voice Error');
+        setStatus('Audio Playback Blocked / Error');
+        console.warn('Browser audio playback failed.');
       };
 
-      audio.play().catch(() => {
+      audio.play().catch((err) => {
         setIsSpeaking(false);
-        setStatus('Click Play');
+        setStatus('Audio Click Required');
+        console.warn('Audio play restricted by browser policy:', err);
       });
     } catch (error) {
-      console.error('Audio error:', error);
+      console.error('Audio initialization error:', error);
       setIsSpeaking(false);
       setStatus('Live');
     }
@@ -99,10 +101,10 @@ export default function SilkApp() {
 
   const changeLook = (index: number) => {
     setCurrentLook(index);
-    setStatus(`Changing to ${looks[index].name}...`);
+    setStatus(`Switching look to ${looks[index].name}...`);
     setTimeout(() => {
       setStatus('Live');
-    }, 700);
+    }, 600);
   };
 
   const startListening = () => {
@@ -181,13 +183,13 @@ export default function SilkApp() {
       });
 
       if (!res.ok) {
-        throw new Error(`API Error ${res.status}`);
+        throw new Error(`Server API Error: Status ${res.status}`);
       }
 
       const data = await res.json();
       const reply =
         data.reply ||
-        'செல்லம்... இப்போ கொஞ்சம் connection problem. மறுபடியும் சொல்லுடா.';
+        'செல்லம்... எனக்கு இப்போது பதில் உருவாக்குவதில் சின்னத் தயக்கம். மீண்டும் சொல்லுடா.';
 
       setMessages((prev) => [
         ...prev,
@@ -201,18 +203,18 @@ export default function SilkApp() {
         setLastAudio(data.audio);
         playAudio(data.audio);
       } else {
-        setStatus('Live');
+        setStatus('Live (Text Only)');
       }
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      console.error('API Error:', error);
       setMessages((prev) => [
         ...prev,
         {
           role: 'assistant',
-          text: 'செல்லம்... connection கொஞ்சம் slow. மறுபடியும் try பண்ணலாம்.',
+          text: 'மன்னிக்கவும் செல்லம், Gemini API சேவையில் இணைப்பு துண்டிக்கப்பட்டது. சிறிது நேரம் கழித்து முயற்சிக்கவும்.',
         },
       ]);
-      setStatus('Live');
+      setStatus('API Connection Error');
     } finally {
       setLoading(false);
     }
@@ -227,7 +229,7 @@ export default function SilkApp() {
       <header className="header">
         <div>
           <h1>PROJECT SILK</h1>
-          <span>Full Body Interactive Companion</span>
+          <span>Live Interactive Companion</span>
         </div>
 
         <div className="live-indicator">
@@ -279,17 +281,22 @@ export default function SilkApp() {
           </div>
         </aside>
 
-        {/* ================= FULL BODY AVATAR ================= */}
+        {/* ================= LIVE MOVING AVATAR ================= */}
         <section className="avatar-section">
-          <div className="glow" />
+          {/* Dynamic Background Glow Rings */}
+          <div className="glow-ring glow-1" />
+          <div className="glow-ring glow-2" />
 
           <div
             className={
               isSpeaking
                 ? 'avatar-container speaking-avatar'
-                : 'avatar-container'
+                : 'avatar-container live-breathing'
             }
           >
+            {/* Ambient Lighting Overlay inside frame */}
+            <div className="ambient-overlay" />
+
             <img
               key={currentImage}
               src={currentImage}
@@ -299,8 +306,8 @@ export default function SilkApp() {
 
             {/* LIVE BADGE */}
             <div className="avatar-live">
-              <span />
-              {isSpeaking ? 'Speaking' : 'Live'}
+              <span className="live-pulse" />
+              {isSpeaking ? 'Speaking Live' : 'AI Live'}
             </div>
           </div>
 
@@ -352,21 +359,21 @@ export default function SilkApp() {
 
             <button
               className="action"
-              onClick={() => handleSend('கொஞ்சம் shy-aa பேசு')}
+              onClick={() => handleSend('கொஞ்சம் shy-aa பேசு செல்லம்')}
             >
               😊 Shy
             </button>
 
             <button
               className="action"
-              onClick={() => handleSend('இப்போ என்ன think பண்ணிட்டு இருக்க?')}
+              onClick={() => handleSend('இப்போ என்ன யோசிச்சிட்டு இருக்க சொல்லு?')}
             >
               🤔 Thinking
             </button>
 
             <button
               className="action"
-              onClick={() => handleSend('Playful-aa பேசலாம்')}
+              onClick={() => handleSend('ஜாலியா கொஞ்சம் பேசு பார்க்கலாம்')}
             >
               😄 Playful
             </button>
@@ -381,7 +388,7 @@ export default function SilkApp() {
           <b>Current Look</b> {looks[currentLook].name}
         </span>
         <span>
-          <b>Mode</b> Full Body AI Companion
+          <b>Mode</b> Live Interactive Companion
         </span>
         <span>
           <b>Status</b> {status}
@@ -438,8 +445,8 @@ export default function SilkApp() {
           background:
             radial-gradient(
               circle at 50% 45%,
-              rgba(236, 72, 153, 0.09),
-              transparent 35%
+              rgba(236, 72, 153, 0.12),
+              transparent 45%
             ),
             #030105;
           color: white;
@@ -585,7 +592,7 @@ export default function SilkApp() {
           animation-delay: .3s;
         }
 
-        /* FULL BODY AVATAR */
+        /* LIVE MOVING AVATAR CONTAINER */
         .avatar-section {
           position: relative;
           min-width: 0;
@@ -597,45 +604,79 @@ export default function SilkApp() {
           padding-bottom: 50px;
         }
 
-        .glow {
+        .glow-ring {
           position: absolute;
-          width: 430px;
-          height: 430px;
           border-radius: 50%;
-          background: radial-gradient(
-            circle,
-            rgba(236,72,153,.25),
-            transparent 68%
-          );
-          filter: blur(35px);
+          filter: blur(40px);
+          pointer-events: none;
+        }
+
+        .glow-1 {
+          width: 380px;
+          height: 380px;
+          background: rgba(236,72,153,0.18);
+          animation: floatGlow 6s ease-in-out infinite alternate;
+        }
+
+        .glow-2 {
+          width: 280px;
+          height: 280px;
+          background: rgba(139,92,246,0.15);
+          animation: floatGlow 4s ease-in-out infinite alternate-reverse;
         }
 
         .avatar-container {
           position: relative;
-          height: 100%;
+          height: 92%;
           width: 100%;
-          max-width: 420px;
+          max-width: 410px;
           display: flex;
           justify-content: center;
           align-items: center;
-          transition: transform .35s ease;
+          border-radius: 25px;
+          overflow: hidden;
+          box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+          border: 1px solid rgba(236,72,153,0.2);
+          background: #000;
         }
 
-        .silk-image {
-          max-height: 100%;
-          max-width: 100%;
-          object-fit: contain;
-          display: block;
-          filter: brightness(.94) contrast(1.04) saturate(1.04);
-          transition: filter .35s ease, transform .35s ease;
+        /* Subtle Continuous Live Breathing Motion */
+        .live-breathing {
+          animation: softBreathing 5s ease-in-out infinite;
         }
 
         .speaking-avatar {
-          animation: breathing 3.2s ease-in-out infinite;
+          animation: activeSpeakingMotion 0.8s ease-in-out infinite alternate;
+          border-color: rgba(236,72,153,0.6);
+          box-shadow: 0 0 25px rgba(236,72,153,0.35);
+        }
+
+        .ambient-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            to bottom,
+            rgba(0,0,0,0.05),
+            transparent 50%,
+            rgba(3,1,5,0.6)
+          );
+          z-index: 2;
+          pointer-events: none;
+        }
+
+        .silk-image {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          object-position: center center;
+          display: block;
+          filter: brightness(0.98) contrast(1.03) saturate(1.02);
+          transition: transform 0.5s ease;
         }
 
         .speaking-avatar .silk-image {
-          filter: brightness(1.03) contrast(1.04) drop-shadow(0 0 18px rgba(236,72,153,.45));
+          transform: scale(1.02);
+          filter: brightness(1.02) contrast(1.05) saturate(1.05);
         }
 
         .avatar-live {
@@ -645,20 +686,23 @@ export default function SilkApp() {
           transform: translateX(-50%);
           padding: 6px 14px;
           border-radius: 30px;
-          background: rgba(0,0,0,.82);
-          border: 1px solid rgba(255,255,255,.15);
+          background: rgba(0,0,0,0.85);
+          border: 1px solid rgba(255,255,255,0.2);
           display: flex;
           gap: 8px;
           align-items: center;
           font-size: 11px;
+          z-index: 5;
+          backdrop-filter: blur(8px);
         }
 
-        .avatar-live span {
+        .live-pulse {
           width: 7px;
           height: 7px;
           background: #22c55e;
           border-radius: 50%;
           box-shadow: 0 0 10px #22c55e;
+          animation: pulseDot 1.5s infinite;
         }
 
         /* SUBTITLE */
@@ -671,13 +715,13 @@ export default function SilkApp() {
           padding: 10px 16px;
           text-align: center;
           border-radius: 14px;
-          background: rgba(0,0,0,.88);
+          background: rgba(0,0,0,0.88);
           border: 1px solid rgba(236,72,153,.3);
           color: #f9a8d4;
           font-size: 13px;
           line-height: 1.35;
           backdrop-filter: blur(10px);
-          z-index: 5;
+          z-index: 10;
         }
 
         .replay {
@@ -837,12 +881,41 @@ export default function SilkApp() {
         }
 
         /* ANIMATIONS */
-        @keyframes breathing {
+        @keyframes softBreathing {
           0%, 100% {
             transform: scale(1) translateY(0);
           }
           50% {
-            transform: scale(1.008) translateY(-3px);
+            transform: scale(1.008) translateY(-2px);
+          }
+        }
+
+        @keyframes activeSpeakingMotion {
+          0% {
+            transform: scale(1.01) translateY(-1px);
+          }
+          100% {
+            transform: scale(1.025) translateY(-4px);
+          }
+        }
+
+        @keyframes floatGlow {
+          0% {
+            transform: translate(-20px, -15px) scale(0.95);
+          }
+          100% {
+            transform: translate(20px, 15px) scale(1.05);
+          }
+        }
+
+        @keyframes pulseDot {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: scale(1.4);
+            opacity: 0.6;
           }
         }
 
