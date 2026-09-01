@@ -1,988 +1,339 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
-type Message = {
-  role: 'user' | 'assistant';
+interface Message {
+  role: 'user' | 'model';
   text: string;
-};
+}
 
-type Look = {
-  name: string;
-  image: string;
-};
-
-const looks: Look[] = [
-  {
-    name: 'Saree',
-    image: '/silk/silk-face-1.jpg.jpg',
-  },
-  {
-    name: 'Traditional',
-    image: '/silk/silk-face-2.jpg.jpg',
-  },
-  {
-    name: 'Night',
-    image: '/silk/silk-face-3.jpg.jpg',
-  },
-  {
-    name: 'Casual',
-    image: '/silk/silk-face-4.jpg.jpg',
-  },
-  {
-    name: 'Glamour',
-    image: '/silk/silk-face-5.jpg.jpg',
-  },
+const LOOKS = [
+  { name: 'Saree', path: '/public/silk/saree.jpg', file: 'saree.jpg' },
+  { name: 'Traditional', path: '/public/silk/traditional.jpg', file: 'traditional.jpg' },
+  { name: 'Night', path: '/public/silk/night.jpg', file: 'night.jpg' },
+  { name: 'Casual', path: '/public/silk/casual.jpg', file: 'casual.jpg' },
+  { name: 'Glamour', path: '/public/silk/glamour.jpg', file: 'glamour.jpg' },
 ];
 
-export default function SilkApp() {
-  const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState('Live');
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [isListening, setIsListening] = useState(false);
+const MOODS = ['Happy', 'Shy', 'Excited', 'Calm', 'Loving'];
 
-  const [currentLook, setCurrentLook] = useState(0);
-  const [lastAudio, setLastAudio] = useState<string | null>(null);
-
+export default function SilkCompanionPage() {
   const [messages, setMessages] = useState<Message[]>([
-    {
-      role: 'assistant',
-      text: 'வணக்கம் செல்லம்... நான் தான் SILK. சொல்லுடா என்ன பேசணும்?',
-    },
+    { role: 'model', text: 'வணக்கம் செல்லம்... நான் தான் SILK. சொல்லுடா என்ன பேசணும்?' }
   ]);
+  const [inputMessage, setInputMessage] = useState('');
+  const [currentLook, setCurrentLook] = useState('Traditional');
+  const [currentMood, setCurrentMood] = useState('Happy');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [apiStatus, setApiStatus] = useState<'Live' | 'API Error'>('Live');
 
-  const chatRef = useRef<HTMLDivElement>(null);
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const avatarContainerRef = useRef<HTMLDivElement>(null);
+
+  // Web Audio API refs
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const sourceNodeRef = useRef<MediaElementSourceNode | null>(null);
+  const animationFrameRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, isLoading]);
 
-  // Reliable Audio Playback with fallback to browser SpeechSynthesis
-  const playAudio = (audioData: string | null, textFallback: string) => {
+  // Handle Audio-Reactive Animation Loop & Safe Source Linking
+  const startAudioReactivity = (audioEl: HTMLAudioElement) => {
     try {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
+      if (!audioContextRef.current) {
+        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+        audioContextRef.current = new AudioCtx();
       }
 
-      if (audioData) {
-        const audio = new Audio(audioData);
-        audioRef.current = audio;
-
-        audio.onplay = () => {
-          setIsSpeaking(true);
-          setStatus('Silk Speaking...');
-        };
-
-        audio.onended = () => {
-          setIsSpeaking(false);
-          setStatus('Live');
-        };
-
-        audio.onerror = () => {
-          console.warn('ElevenLabs audio error, falling back to browser speech.');
-          fallbackBrowserSpeech(textFallback);
-        };
-
-        audio.play().catch(() => {
-          console.warn('Audio play restricted or failed, falling back to browser speech.');
-          fallbackBrowserSpeech(textFallback);
-        });
-      } else {
-        fallbackBrowserSpeech(textFallback);
+      if (audioContextRef.current.state === 'suspended') {
+        audioContextRef.current.resume();
       }
-    } catch (error) {
-      console.error('Audio playback exception:', error);
-      fallbackBrowserSpeech(textFallback);
+
+      if (!analyserRef.current && audioContextRef.current) {
+        analyserRef.current = audioContextRef.current.createAnalyser();
+        analyserRef.current.fftSize = 256;
+      }
+
+      // Safely cleanup previous source node to prevent memory leaks and duplicate creation errors
+      if (sourceNodeRef.current) {
+        try {
+          sourceNodeRef.current.disconnect();
+        } catch (e) {
+          // ignore disconnect errors if already disconnected
+        }
+        sourceNodeRef.current = null;
+      }
+
+      // Create a fresh MediaElementSource for this new Audio element and link to analyser
+      if (audioContextRef.current && analyserRef.current) {
+        sourceNodeRef.current = audioContextRef.current.createMediaElementSource(audioEl);
+        sourceNodeRef.current.connect(analyserRef.current);
+        analyserRef.current.connect(audioContextRef.current.destination);
+      }
+
+      const bufferLength = analyserRef.current?.frequencyBinCount || 128;
+      const dataArray = new Uint8Array(bufferLength);
+
+      const renderFrame = () => {
+        if (!analyserRef.current || !avatarContainerRef.current) return;
+        analyserRef.current.getByteFrequencyData(dataArray);
+
+        let sum = 0;
+        for (let i = 0; i < bufferLength; i++) {
+          sum += dataArray[i];
+        }
+        const average = sum / bufferLength;
+        const normalized = average / 255; // 0.0 to 1.0
+
+        // Audio-reactive scale, vertical drift, and dynamic glow
+        const scale = 1 + normalized * 0.035;
+        const translateY = -normalized * 5;
+        const glowAlpha = 0.2 + normalized * 0.5;
+
+        avatarContainerRef.current.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+        avatarContainerRef.current.style.boxShadow = `0 0 ${15 + normalized * 30}px rgba(255, 105, 180, ${glowAlpha})`;
+
+        animationFrameRef.current = requestAnimationFrame(renderFrame);
+      };
+
+      renderFrame();
+    } catch (err) {
+      console.warn('Web Audio API initialization warning:', err);
     }
   };
 
-  const fallbackBrowserSpeech = (text: string) => {
-    if (!('speechSynthesis' in window)) {
+  const stopAudioReactivity = () => {
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+    }
+    if (avatarContainerRef.current) {
+      avatarContainerRef.current.style.transform = '';
+      avatarContainerRef.current.style.boxShadow = '';
+    }
+  };
+
+  const playAudio = (base64Audio: string | null) => {
+    if (!base64Audio) {
       setIsSpeaking(false);
-      setStatus('Live');
       return;
     }
 
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'ta-IN';
-    utterance.rate = 1.0;
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
 
-    utterance.onstart = () => {
+    const audio = new Audio(base64Audio);
+    audioRef.current = audio;
+
+    audio.onplay = () => {
       setIsSpeaking(true);
-      setStatus('Silk Speaking...');
+      startAudioReactivity(audio);
     };
 
-    utterance.onend = () => {
+    audio.onended = () => {
       setIsSpeaking(false);
-      setStatus('Live');
+      stopAudioReactivity();
     };
 
-    utterance.onerror = () => {
+    audio.onerror = () => {
       setIsSpeaking(false);
-      setStatus('Live');
+      stopAudioReactivity();
     };
 
-    window.speechSynthesis.speak(utterance);
+    audio.play().catch((e) => {
+      console.warn('Audio playback restricted or failed:', e);
+      setIsSpeaking(false);
+      stopAudioReactivity();
+    });
   };
 
-  const changeLook = (index: number) => {
-    setCurrentLook(index);
-    setStatus(`Switching look to ${looks[index].name}...`);
-    setTimeout(() => {
-      setStatus('Live');
-    }, 500);
-  };
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputMessage.trim() || isLoading) return;
 
-  const startListening = () => {
-    if (
-      !('webkitSpeechRecognition' in window) &&
-      !('SpeechRecognition' in window)
-    ) {
-      alert('இந்த browser-ல் microphone support இல்லை.');
-      return;
-    }
-
-    const SpeechRecognition =
-      (window as any).SpeechRecognition ||
-      (window as any).webkitSpeechRecognition;
-
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'ta-IN';
-    recognition.interimResults = false;
-    recognition.continuous = false;
-
-    recognition.onstart = () => {
-      setIsListening(true);
-      setStatus('Listening...');
-    };
-
-    recognition.onresult = (event: any) => {
-      const transcript = event.results[0][0].transcript;
-      setInput(transcript);
-      setTimeout(() => {
-        handleSend(transcript);
-      }, 100);
-    };
-
-    recognition.onerror = () => {
-      setIsListening(false);
-      setStatus('Live');
-    };
-
-    recognition.onend = () => {
-      setIsListening(false);
-      if (!isSpeaking) {
-        setStatus('Live');
-      }
-    };
-
-    recognition.start();
-  };
-
-  const handleSend = async (customText?: string) => {
-    const query = customText ?? input;
-    if (!query.trim() || loading) return;
-
-    if (!customText) {
-      setInput('');
-    }
-
-    const userMessage: Message = {
-      role: 'user',
-      text: query,
-    };
-
-    const updatedHistory = [...messages, userMessage];
-    setMessages(updatedHistory);
-    setLoading(true);
-    setStatus('Thinking...');
+    const userText = inputMessage.trim();
+    setInputMessage('');
+    setMessages((prev) => [...prev, { role: 'user', text: userText }]);
+    setIsLoading(true);
+    setApiStatus('Live');
 
     try {
-      const res = await fetch('/api/chat', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          message: query,
+          message: userText,
           history: messages,
         }),
       });
 
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.error || `Server error: ${res.status}`);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Server error occurred');
       }
 
-      const data = await res.json();
-      const reply =
-        data.reply ||
-        'செல்லம்... எனக்கு இப்போது பதில் தருவதில் சின்னத் தயக்கம். மீண்டும் சொல்லுடா.';
-
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: 'assistant',
-          text: reply,
-        },
-      ]);
-
-      setLastAudio(data.audio || null);
-      playAudio(data.audio || null, reply);
-    } catch (error: any) {
-      console.error('Chat API Error:', error);
-      const errorMessage = `மன்னிக்கவும் செல்லம், AI சேவையில் தற்காலிக இணைப்பு பிரச்சனை (${error.message || 'API Error'}). சிறிது நேரம் கழித்து முயற்சிக்கவும்.`;
-      
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: 'assistant',
-          text: errorMessage,
-        },
-      ]);
-      setStatus('API Error');
-      setIsSpeaking(false);
+      setMessages((prev) => [...prev, { role: 'model', text: data.reply }]);
+      playAudio(data.audio);
+    } catch (err: any) {
+      console.error('Chat request failed:', err);
+      setApiStatus('API Error');
+      const fallbackReply = 'மன்னிக்கவும் செல்லம், இணைப்பில் சிறு தாராளப் பிரச்சனை. சிறிது நேரம் கழித்து பேசலாம்.';
+      setMessages((prev) => [...prev, { role: 'model', text: fallbackReply }]);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
-  const currentImage = looks[currentLook].image;
+  // Get active image filename based on look
+  const activeLookObj = LOOKS.find((l) => l.name === currentLook) || LOOKS[1];
+  const imageSrc = `/silk/${activeLookObj.file}`;
 
   return (
-    <main className="silk-app">
-
-      {/* ================= HEADER ================= */}
-      <header className="header">
+    <main className="min-h-screen bg-[#0a050c] text-pink-100 flex flex-col justify-between p-4 font-sans select-none">
+      {/* Top Header */}
+      <header className="flex justify-between items-center border-b border-pink-900/40 pb-3 px-2">
         <div>
-          <h1>PROJECT SILK</h1>
-          <span>Live Interactive Companion</span>
+          <h1 className="text-2xl font-bold tracking-wider text-pink-400 font-serif">PROJECT SILK</h1>
+          <p className="text-xs text-pink-400/70 tracking-widest uppercase">Live Interactive Companion</p>
         </div>
-
-        <div className="live-indicator">
-          <span
-            className={
-              isSpeaking
-                ? 'dot speaking'
-                : isListening
-                ? 'dot listening'
-                : 'dot'
-            }
-          />
-          <span>{status}</span>
+        <div className="flex items-center gap-2 bg-black/40 px-3 py-1 rounded-full border border-pink-900/50 text-xs">
+          <span className={`w-2.5 h-2.5 rounded-full ${apiStatus === 'Live' ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
+          <span className={apiStatus === 'Live' ? 'text-emerald-400' : 'text-rose-400'}>{apiStatus}</span>
         </div>
       </header>
 
-      {/* ================= MAIN ================= */}
-      <section className="main">
-
-        {/* ================= LEFT CHAT ================= */}
-        <aside className="chat-panel">
-          <div className="panel-title">💗 SILK Chat</div>
-
-          <div ref={chatRef} className="messages">
-            {messages.map((message, index) => (
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 my-4 flex-1">
+        {/* Left: Chat Log */}
+        <section className="bg-[#120816]/80 border border-pink-900/30 rounded-xl p-4 flex flex-col h-[520px] shadow-lg shadow-pink-950/20">
+          <h2 className="text-sm font-semibold text-pink-300 mb-3 flex items-center gap-2">
+            <span>💖</span> SILK Chat
+          </h2>
+          <div ref={chatContainerRef} className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin">
+            {messages.map((msg, idx) => (
               <div
-                key={index}
-                className={
-                  message.role === 'user'
-                    ? 'message user'
-                    : 'message silk'
-                }
+                key={idx}
+                className={`p-3 rounded-lg text-sm leading-relaxed ${
+                  msg.role === 'user'
+                    ? 'bg-pink-900/40 border border-pink-700/40 ml-6 text-pink-50'
+                    : 'bg-black/50 border border-pink-900/30 mr-6 text-pink-200'
+                }`}
               >
-                <small>{message.role === 'user' ? 'You' : 'SILK'}</small>
-                <div>{message.text}</div>
+                <div className="text-[10px] uppercase tracking-wider text-pink-400/60 mb-1">
+                  {msg.role === 'user' ? 'You' : 'SILK'}
+                </div>
+                {msg.text}
               </div>
             ))}
-
-            {loading && (
-              <div className="message silk">
-                <small>SILK</small>
-                <div className="typing">
-                  <span />
-                  <span />
-                  <span />
-                </div>
+            {isLoading && (
+              <div className="bg-black/50 border border-pink-900/30 p-3 rounded-lg mr-6 text-xs text-pink-400 animate-pulse">
+                SILK is thinking & crafting response...
               </div>
             )}
           </div>
-        </aside>
+        </section>
 
-        {/* ================= LIVE MOVING AVATAR ================= */}
-        <section className="avatar-section">
-          <div className="glow-ring glow-1" />
-          <div className="glow-ring glow-2" />
-
+        {/* Center: Avatar Stage */}
+        <section className="lg:col-span-2 flex flex-col items-center justify-center bg-[#0d0710] border border-pink-900/30 rounded-xl p-4 relative overflow-hidden shadow-2xl shadow-pink-950/40 h-[520px]">
           <div
-            className={
-              isSpeaking
-                ? 'avatar-container speaking-avatar'
-                : 'avatar-container live-breathing'
-            }
+            ref={avatarContainerRef}
+            className={`relative w-full max-w-[360px] h-[440px] rounded-2xl overflow-hidden border border-pink-800/40 transition-all duration-300 ${
+              isSpeaking ? 'audio-active-glow' : 'idle-breath'
+            }`}
           >
-            <div className="ambient-overlay" />
-
             <img
-              key={currentImage}
-              src={currentImage}
-              alt="SILK Full Body Companion"
-              className="silk-image"
+              src={imageSrc}
+              alt={`SILK - ${currentLook}`}
+              className="w-full h-full object-contain object-center bg-black/80"
             />
+            {/* Live speech subtitle / status overlay */}
+            <div className="absolute bottom-3 left-3 right-3 bg-black/70 backdrop-blur-md border border-pink-900/50 p-2.5 rounded-xl text-center">
+              <p className="text-xs text-pink-200 font-medium italic line-clamp-2">
+                {messages[messages.length - 1]?.role === 'model' ? messages[messages.length - 1].text : 'Ready to talk, செல்லம்...'}
+              </p>
+            </div>
+          </div>
+        </section>
 
-            <div className="avatar-live">
-              <span className="live-pulse" />
-              {isSpeaking ? 'Speaking Live' : 'AI Live'}
+        {/* Right: Actions / Looks / Moods */}
+        <section className="bg-[#120816]/80 border border-pink-900/30 rounded-xl p-4 flex flex-col h-[520px] overflow-y-auto shadow-lg shadow-pink-950/20">
+          <h2 className="text-sm font-semibold text-pink-300 mb-3">SILK Actions</h2>
+
+          <div className="mb-4">
+            <label className="text-xs uppercase tracking-wider text-pink-400/70 block mb-2 font-semibold">Look</label>
+            <div className="space-y-1.5">
+              {LOOKS.map((look) => (
+                <button
+                  key={look.name}
+                  onClick={() => setCurrentLook(look.name)}
+                  className={`w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                    currentLook === look.name
+                      ? 'bg-pink-900/60 border border-pink-600 text-pink-100 shadow-sm'
+                      : 'bg-black/30 hover:bg-pink-950/30 text-pink-300/80 border border-transparent'
+                  }`}
+                >
+                  👗 {look.name}
+                </button>
+              ))}
             </div>
           </div>
 
-          <div className="subtitle">
-            {messages[messages.length - 1]?.text}
+          <div>
+            <label className="text-xs uppercase tracking-wider text-pink-400/70 block mb-2 font-semibold">Mood</label>
+            <div className="grid grid-cols-1 gap-1.5">
+              {MOODS.map((mood) => (
+                <button
+                  key={mood}
+                  onClick={() => setCurrentMood(mood)}
+                  className={`text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                    currentMood === mood
+                      ? 'bg-pink-900/40 border border-pink-700 text-pink-200'
+                      : 'bg-black/30 hover:bg-pink-950/30 text-pink-300/70 border border-transparent'
+                  }`}
+                >
+                  😊 {mood}
+                </button>
+              ))}
+            </div>
           </div>
-
-          {lastAudio && !isSpeaking && (
-            <button
-              className="replay"
-              onClick={() => playAudio(lastAudio, messages[messages.length - 1]?.text || '')}
-            >
-              🔊 Play Voice
-            </button>
-          )}
         </section>
-
-        {/* ================= ACTION PANEL ================= */}
-        <aside className="actions">
-          <div className="panel-title">SILK Actions</div>
-
-          <div className="action-content">
-            <div className="section-label">LOOK</div>
-
-            {looks.map((look, index) => (
-              <button
-                key={look.name}
-                onClick={() => changeLook(index)}
-                className={
-                  currentLook === index
-                    ? 'action active'
-                    : 'action'
-                }
-              >
-                👗 {look.name}
-              </button>
-            ))}
-
-            <div className="section-label mood-label">MOOD</div>
-
-            <button
-              className="action"
-              onClick={() => handleSend('இன்னைக்கு happy mood-la இருக்கியா செல்லம்?')}
-            >
-              😊 Happy
-            </button>
-
-            <button
-              className="action"
-              onClick={() => handleSend('கொஞ்சம் shy-aa பேசுடா')}
-            >
-              😊 Shy
-            </button>
-
-            <button
-              className="action"
-              onClick={() => handleSend('இப்போ என்ன யோசிச்சிட்டு இருக்க?')}
-            >
-              🤔 Thinking
-            </button>
-
-            <button
-              className="action"
-              onClick={() => handleSend('ஜாலியா கொஞ்சம் பேசு பார்க்கலாம்')}
-            >
-              😄 Playful
-            </button>
-          </div>
-        </aside>
-
-      </section>
-
-      {/* ================= BOTTOM INFO ================= */}
-      <div className="current-info">
-        <span>
-          <b>Current Look</b> {looks[currentLook].name}
-        </span>
-        <span>
-          <b>Mode</b> Live Interactive Companion
-        </span>
-        <span>
-          <b>Status</b> {status}
-        </span>
       </div>
 
-      {/* ================= INPUT ================= */}
-      <footer className="footer">
-        <button
-          className={
-            isListening
-              ? 'mic listening-mic'
-              : 'mic'
-          }
-          onClick={startListening}
-        >
-          🎤
-        </button>
+      {/* Footer Status Bar & Input Form */}
+      <footer className="mt-2">
+        <div className="flex justify-between items-center text-xs text-pink-400/60 px-2 mb-2">
+          <div><span className="text-pink-400 font-medium">Current Look:</span> {currentLook}</div>
+          <div><span className="text-pink-400 font-medium">Mode:</span> Live Interactive Companion</div>
+          <div><span className="text-pink-400 font-medium">Status:</span> {isSpeaking ? 'Speaking...' : 'Idle'}</div>
+        </div>
 
-        <input
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              handleSend();
-            }
-          }}
-          placeholder="பேசுடா செல்லம்... அல்லது type பண்ணு..."
-        />
-
-        <button
-          className="send"
-          disabled={loading}
-          onClick={() => handleSend()}
-        >
-          {loading ? '...' : 'Send'}
-        </button>
+        <form onSubmit={handleSendMessage} className="flex gap-2 bg-[#120816] border border-pink-900/50 p-2 rounded-2xl shadow-lg">
+          <input
+            type="text"
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            placeholder="பேசுடா செல்லம்... அல்லது type பண்ணு..."
+            className="flex-1 bg-transparent border-none outline-none px-4 text-sm text-pink-100 placeholder-pink-500/50"
+          />
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="bg-pink-700 hover:bg-pink-600 active:scale-95 text-pink-50 px-6 py-2.5 rounded-xl text-sm font-medium transition-all shadow-md shadow-pink-900/50 disabled:opacity-50"
+          >
+            {isLoading ? 'Thinking...' : 'Send'}
+          </button>
+        </form>
       </footer>
-
-      <div className="footer-text">
-        Made with 💗 for you, Chellam
-      </div>
-
-      {/* ================= CSS ================= */}
-      <style jsx>{`
-        * {
-          box-sizing: border-box;
-        }
-
-        .silk-app {
-          width: 100vw;
-          height: 100vh;
-          overflow: hidden;
-          background:
-            radial-gradient(
-              circle at 50% 45%,
-              rgba(236, 72, 153, 0.12),
-              transparent 45%
-            ),
-            #030105;
-          color: white;
-          font-family: Arial, Helvetica, sans-serif;
-          display: flex;
-          flex-direction: column;
-        }
-
-        .header {
-          height: 82px;
-          flex-shrink: 0;
-          padding: 0 30px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          border-bottom: 1px solid rgba(255,255,255,.08);
-          background: rgba(0,0,0,.55);
-        }
-
-        .header h1 {
-          margin: 0;
-          color: #ec4899;
-          font-size: 28px;
-          letter-spacing: 4px;
-        }
-
-        .header span {
-          color: #999;
-          font-size: 14px;
-        }
-
-        .live-indicator {
-          display: flex;
-          align-items: center;
-          gap: 9px;
-          padding: 10px 18px;
-          border-radius: 30px;
-          background: rgba(255,255,255,.06);
-          border: 1px solid rgba(255,255,255,.12);
-        }
-
-        .dot {
-          width: 9px;
-          height: 9px;
-          border-radius: 50%;
-          background: #22c55e;
-          box-shadow: 0 0 12px #22c55e;
-        }
-
-        .dot.speaking {
-          background: #ec4899;
-          box-shadow: 0 0 14px #ec4899;
-          animation: pulse 0.7s infinite;
-        }
-
-        .dot.listening {
-          background: #eab308;
-          box-shadow: 0 0 14px #eab308;
-          animation: pulse 0.7s infinite;
-        }
-
-        .main {
-          flex: 1;
-          min-height: 0;
-          display: grid;
-          grid-template-columns: 330px minmax(400px, 1fr) 270px;
-          gap: 22px;
-          padding: 22px;
-        }
-
-        .chat-panel,
-        .actions {
-          min-height: 0;
-          overflow: hidden;
-          border: 1px solid rgba(255,255,255,.10);
-          border-radius: 22px;
-          background: rgba(12,8,18,.82);
-          backdrop-filter: blur(15px);
-        }
-
-        .panel-title {
-          padding: 20px;
-          font-size: 18px;
-          font-weight: bold;
-          border-bottom: 1px solid rgba(255,255,255,.08);
-        }
-
-        .messages {
-          height: calc(100% - 65px);
-          overflow-y: auto;
-          padding: 14px;
-        }
-
-        .message {
-          padding: 13px 14px;
-          margin-bottom: 12px;
-          border-radius: 15px;
-          font-size: 14px;
-          line-height: 1.5;
-        }
-
-        .message small {
-          display: block;
-          margin-bottom: 5px;
-          color: #aaa;
-          font-size: 10px;
-        }
-
-        .message.silk {
-          background: rgba(255,255,255,.045);
-        }
-
-        .message.user {
-          background: linear-gradient(
-            135deg,
-            rgba(236,72,153,.75),
-            rgba(139,92,246,.75)
-          );
-        }
-
-        .typing {
-          display: flex;
-          gap: 5px;
-        }
-
-        .typing span {
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background: #ec4899;
-          animation: typing 1s infinite;
-        }
-
-        .typing span:nth-child(2) {
-          animation-delay: .15s;
-        }
-
-        .typing span:nth-child(3) {
-          animation-delay: .3s;
-        }
-
-        .avatar-section {
-          position: relative;
-          min-width: 0;
-          min-height: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          overflow: hidden;
-          padding-bottom: 50px;
-        }
-
-        .glow-ring {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(40px);
-          pointer-events: none;
-        }
-
-        .glow-1 {
-          width: 380px;
-          height: 380px;
-          background: rgba(236,72,153,0.18);
-          animation: floatGlow 6s ease-in-out infinite alternate;
-        }
-
-        .glow-2 {
-          width: 280px;
-          height: 280px;
-          background: rgba(139,92,246,0.15);
-          animation: floatGlow 4s ease-in-out infinite alternate-reverse;
-        }
-
-        .avatar-container {
-          position: relative;
-          height: 92%;
-          width: 100%;
-          max-width: 410px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          border-radius: 25px;
-          overflow: hidden;
-          box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-          border: 1px solid rgba(236,72,153,0.2);
-          background: #000;
-        }
-
-        .live-breathing {
-          animation: softBreathing 5s ease-in-out infinite;
-        }
-
-        .speaking-avatar {
-          animation: activeSpeakingMotion 0.8s ease-in-out infinite alternate;
-          border-color: rgba(236,72,153,0.6);
-          box-shadow: 0 0 25px rgba(236,72,153,0.35);
-        }
-
-        .ambient-overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            to bottom,
-            rgba(0,0,0,0.05),
-            transparent 50%,
-            rgba(3,1,5,0.6)
-          );
-          z-index: 2;
-          pointer-events: none;
-        }
-
-        .silk-image {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          object-position: center center;
-          display: block;
-          filter: brightness(0.98) contrast(1.03) saturate(1.02);
-          transition: transform 0.5s ease;
-        }
-
-        .speaking-avatar .silk-image {
-          transform: scale(1.02);
-          filter: brightness(1.02) contrast(1.05) saturate(1.05);
-        }
-
-        .avatar-live {
-          position: absolute;
-          bottom: 12px;
-          left: 50%;
-          transform: translateX(-50%);
-          padding: 6px 14px;
-          border-radius: 30px;
-          background: rgba(0,0,0,0.85);
-          border: 1px solid rgba(255,255,255,0.2);
-          display: flex;
-          gap: 8px;
-          align-items: center;
-          font-size: 11px;
-          z-index: 5;
-          backdrop-filter: blur(8px);
-        }
-
-        .live-pulse {
-          width: 7px;
-          height: 7px;
-          background: #22c55e;
-          border-radius: 50%;
-          box-shadow: 0 0 10px #22c55e;
-          animation: pulseDot 1.5s infinite;
-        }
-
-        .subtitle {
-          position: absolute;
-          bottom: 50px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 85%;
-          padding: 10px 16px;
-          text-align: center;
-          border-radius: 14px;
-          background: rgba(0,0,0,0.88);
-          border: 1px solid rgba(236,72,153,.3);
-          color: #f9a8d4;
-          font-size: 13px;
-          line-height: 1.35;
-          backdrop-filter: blur(10px);
-          z-index: 10;
-        }
-
-        .replay {
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          z-index: 10;
-          border: none;
-          border-radius: 20px;
-          padding: 8px 14px;
-          background: #ec4899;
-          color: white;
-          font-weight: bold;
-          cursor: pointer;
-          font-size: 12px;
-        }
-
-        .action-content {
-          padding: 15px;
-          overflow-y: auto;
-          height: calc(100% - 65px);
-        }
-
-        .section-label {
-          margin: 5px 7px 10px;
-          color: #888;
-          font-size: 11px;
-          letter-spacing: 1.5px;
-        }
-
-        .mood-label {
-          margin-top: 22px;
-        }
-
-        .action {
-          width: 100%;
-          margin-bottom: 6px;
-          padding: 12px 13px;
-          text-align: left;
-          border: none;
-          border-radius: 13px;
-          background: transparent;
-          color: #ddd;
-          cursor: pointer;
-          font-size: 13px;
-          transition: .2s;
-        }
-
-        .action:hover {
-          background: rgba(236,72,153,.12);
-        }
-
-        .action.active {
-          background: linear-gradient(
-            90deg,
-            rgba(236,72,153,.25),
-            rgba(236,72,153,.08)
-          );
-          color: #f472b6;
-          border-left: 3px solid #ec4899;
-        }
-
-        .current-info {
-          height: 38px;
-          flex-shrink: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 45px;
-          color: #aaa;
-          font-size: 11px;
-          border-top: 1px solid rgba(255,255,255,.07);
-        }
-
-        .current-info b {
-          color: #ec4899;
-          margin-right: 5px;
-        }
-
-        .footer {
-          height: 72px;
-          flex-shrink: 0;
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 10px 24px;
-          background: rgba(10,5,20,.95);
-          border-top: 1px solid rgba(255,255,255,.09);
-        }
-
-        .mic {
-          width: 48px;
-          height: 48px;
-          flex-shrink: 0;
-          border: none;
-          border-radius: 50%;
-          background: linear-gradient(
-            135deg,
-            #ec4899,
-            #8b5cf6
-          );
-          color: white;
-          font-size: 19px;
-          cursor: pointer;
-        }
-
-        .listening-mic {
-          background: #eab308;
-          box-shadow: 0 0 20px rgba(234,179,8,.5);
-          animation: pulse 1s infinite;
-        }
-
-        .footer input {
-          flex: 1;
-          min-width: 0;
-          height: 48px;
-          padding: 0 18px;
-          border-radius: 25px;
-          border: 1px solid rgba(255,255,255,.12);
-          background: rgba(255,255,255,.06);
-          color: white;
-          outline: none;
-          font-size: 14px;
-        }
-
-        .footer input:focus {
-          border-color: rgba(236,72,153,.5);
-        }
-
-        .send {
-          height: 46px;
-          padding: 0 24px;
-          border: none;
-          border-radius: 24px;
-          background: #ec4899;
-          color: white;
-          font-weight: bold;
-          cursor: pointer;
-        }
-
-        .send:disabled {
-          opacity: .5;
-          cursor: not-allowed;
-        }
-
-        .footer-text {
-          position: absolute;
-          bottom: 2px;
-          left: 50%;
-          transform: translateX(-50%);
-          color: #555;
-          font-size: 9px;
-          pointer-events: none;
-        }
-
-        @keyframes softBreathing {
-          0%, 100% {
-            transform: scale(1) translateY(0);
-          }
-          50% {
-            transform: scale(1.008) translateY(-2px);
-          }
-        }
-
-        @keyframes activeSpeakingMotion {
-          0% {
-            transform: scale(1.01) translateY(-1px);
-          }
-          100% {
-            transform: scale(1.025) translateY(-4px);
-          }
-        }
-
-        @keyframes floatGlow {
-          0% {
-            transform: translate(-20px, -15px) scale(0.95);
-          }
-          100% {
-            transform: translate(20px, 15px) scale(1.05);
-          }
-        }
-
-        @keyframes pulseDot {
-          0%, 100% {
-            transform: scale(1);
-            opacity: 1;
-          }
-          50% {
-            transform: scale(1.4);
-            opacity: 0.6;
-          }
-        }
-
-        @keyframes pulse {
-          0%, 100% {
-            transform: scale(1);
-            opacity: 1;
-          }
-          50% {
-            transform: scale(1.35);
-            opacity: .7;
-          }
-        }
-
-        @keyframes typing {
-          0%, 100% {
-            transform: translateY(0);
-          }
-          50% {
-            transform: translateY(-4px);
-          }
-        }
-
-        @media (max-width: 1000px) {
-          .main {
-            grid-template-columns: 1fr;
-          }
-
-          .chat-panel,
-          .actions {
-            display: none;
-          }
-
-          .avatar-section {
-            width: 100%;
-          }
-
-          .current-info {
-            gap: 15px;
-          }
-
-          .header {
-            padding: 0 15px;
-          }
-
-          .header h1 {
-            font-size: 20px;
-          }
-        }
-      `}</style>
     </main>
   );
 }
