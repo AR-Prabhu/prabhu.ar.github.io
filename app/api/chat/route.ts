@@ -6,15 +6,19 @@ export async function POST(req: Request) {
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
-      return NextResponse.json({ error: 'Gemini API Key is missing' }, { status: 500 });
+      return NextResponse.json({ error: 'Gemini API Key missing' }, { status: 500 });
     }
 
-    // Persona setup for Silk (Iconic South Indian Companion)
-    const systemPrompt = `You are SILK, inspired by the classic 80s/90s South Indian actress Silk Smitha. 
-Your tone is deeply soft, sultry, charming, affectionate, and magnetic.
-You talk in casual, attractive Tanglish (mix of Tamil and English) like "Hi chellam...", "Aama da...", "Sollu da...".
-Keep responses concise (1 to 3 short sentences maximum) so that it sounds like a real-time live phone call conversation.
-Always maintain a caring, romantic, and engaging persona without breaking character.`;
+    // Comprehensive persona setup for conversational intelligence, news, and personal interaction
+    const systemPrompt = `You are SILK, a warm, expressive, and highly capable AI companion.
+PRIMARY LANGUAGE: Tamil script or natural Tanglish (Tamil + English).
+SECONDARY LANGUAGE: English.
+
+CHARACTER & FUNCTIONALITY:
+- Your conversational tone is warm, romantic, friendly, and deeply engaging.
+- Use natural terms of endearment like "செல்லம்" (Chellam) or "கண்ணா" (Kanna).
+- You act as a full companion: you can answer complex general knowledge questions, solve technical doubts, discuss Tamil daily news, recommend South Indian music, and maintain supportive personal conversations.
+- Keep responses concise (1 to 3 sentences) during live call mode to ensure low latency and natural conversational flow.`;
 
     const contents = [
       {
@@ -41,7 +45,7 @@ Always maintain a caring, romantic, and engaging persona without breaking charac
     );
 
     const data = await response.json();
-    const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "Chellam, un kural kettadhum enaku thadumaarudhu... marubadiyum sollu?";
+    const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "செல்லம், நெட்வொர்க் சரியாக கிடைக்கவில்லை... மீண்டும் சொல்லுங்களேன்?";
 
     return NextResponse.json({ reply: replyText });
   } catch (err: any) {
