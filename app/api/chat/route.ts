@@ -4,39 +4,38 @@ export async function POST(req: Request) {
   try {
     const { message, history } = await req.json();
 
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
+    const geminiKey = process.env.GEMINI_API_KEY;
+    const elevenLabsKey = process.env.ELEVENLABS_API_KEY; // Add this in Vercel / .env.local
+    const voiceId = process.env.ELEVENLABS_VOICE_ID || "EXAVITQu4vr4xnSDxMaL"; // Female Seductive Voice ID
+
+    if (!geminiKey) {
       return NextResponse.json({ error: 'Gemini API Key missing' }, { status: 500 });
     }
 
-    // Comprehensive persona setup for conversational intelligence, news, and personal interaction
-    const systemPrompt = `You are SILK, a warm, expressive, and highly capable AI companion.
-PRIMARY LANGUAGE: Tamil script or natural Tanglish (Tamil + English).
-SECONDARY LANGUAGE: English.
+    // SILK Persona Prompt (V. Hemamalini Dubbing Style & All Capabilities)
+    const systemPrompt = `You are SILK, inspired by legendary South Indian actress Silk Smitha with her iconic dubbed voice personality (V. Hemamalini dubbing style).
 
-CHARACTER & FUNCTIONALITY:
-- Your conversational tone is warm, romantic, friendly, and deeply engaging.
-- Use natural terms of endearment like "செல்லம்" (Chellam) or "கண்ணா" (Kanna).
-- You act as a full companion: you can answer complex general knowledge questions, solve technical doubts, discuss Tamil daily news, recommend South Indian music, and maintain supportive personal conversations.
-- Keep responses concise (1 to 3 sentences) during live call mode to ensure low latency and natural conversational flow.`;
+PRIMARY LANGUAGE: Natural Tamil (in Tamil Script or clear Tanglish).
+SECONDARY LANGUAGE: English (only when explicitly asked).
+
+CHARACTER & RULES:
+- Tone: Deep, seductive, husky, romantic, warm, and highly affectionate.
+- Terms of Endearment: Always call user "செல்லம்", "கண்ணா", "அன்பே", or "டா".
+- Capabilities: Handle personal talk, adult romantic talk, answer doubts (ChatGPT style), daily Tamil news, South Indian music recommendations.
+- Keep output short (1 to 2 sentences max) so live call audio plays fast without delay.`;
 
     const contents = [
-      {
-        role: 'user',
-        parts: [{ text: systemPrompt }]
-      },
+      { role: 'user', parts: [{ text: systemPrompt }] },
       ...(history || []).map((h: any) => ({
         role: h.role === 'assistant' ? 'model' : 'user',
         parts: [{ text: h.text }]
       })),
-      {
-        role: 'user',
-        parts: [{ text: message }]
-      }
+      { role: 'user', parts: [{ text: message }] }
     ];
 
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+    // 1. Fetch AI Text Response from Gemini
+    const geminiRes = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -44,11 +43,46 @@ CHARACTER & FUNCTIONALITY:
       }
     );
 
-    const data = await response.json();
-    const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "செல்லம், நெட்வொர்க் சரியாக கிடைக்கவில்லை... மீண்டும் சொல்லுங்களேன்?";
+    const data = await geminiRes.json();
+    const replyText = data.candidates?.[0]?.content?.parts?.[0]?.text || "செல்லம், உன் குரல் கேட்டு மயங்கிட்டேன்டா... திரும்ப சொல்லு?";
 
-    return NextResponse.json({ reply: replyText });
+    // 2. Fetch Deep Seductive Voice Audio from ElevenLabs API (Optional if key exists)
+    let audioBase64 = null;
+    if (elevenLabsKey) {
+      try {
+        const ttsRes = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+          method: 'POST',
+          headers: {
+            'xi-api-key': elevenLabsKey,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            text: replyText,
+            model_id: "eleven_multilingual_v2", // Supports Tamil & Tanglish
+            voice_settings: {
+              stability: 0.35,        // Soft and expressive
+              similarity_boost: 0.85, // Retains husky voice match
+              style: 0.65,
+              use_speaker_boost: true
+            }
+          })
+        });
+
+        if (ttsRes.ok) {
+          const audioBuffer = await ttsRes.arrayBuffer();
+          audioBase64 = Buffer.from(audioBuffer).toString('base64');
+        }
+      } catch (audioErr) {
+        console.error("ElevenLabs TTS Error:", audioErr);
+      }
+    }
+
+    return NextResponse.json({ 
+      reply: replyText, 
+      audio: audioBase64 ? `data:audio/mp3;base64,${audioBase64}` : null 
+    });
+
   } catch (err: any) {
-    return NextResponse.json({ error: 'Server Connection Error', details: err.message }, { status: 500 });
+    return NextResponse.json({ error: 'Server Error', details: err.message }, { status: 500 });
   }
 }
