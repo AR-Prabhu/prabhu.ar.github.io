@@ -1,386 +1,139 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
-export default function SilkPage() {
-  const [currentMode, setCurrentMode] = useState('girlfriend');
-  const [currentOutfit, setCurrentOutfit] = useState('normal');
-  const [isListening, setIsListening] = useState(false);
-  const [cameraActive, setCameraActive] = useState(false);
-  const [statusText, setStatusText] = useState('SILK Ready');
-  const [statusState, setStatusState] = useState<'ready' | 'busy' | 'speaking'>('ready');
-  const [avatarState, setAvatarState] = useState<'idle' | 'thinking' | 'speaking'>('idle');
-  const [inputText, setInputText] = useState('');
-  const [chatHistory, setChatHistory] = useState<Array<{ sender: string; text: string }>>([]);
-  const [userMemory, setUserMemory] = useState('');
-  const [showMemoryModal, setShowMemoryModal] = useState(false);
-  const [showTranscript, setShowTranscript] = useState(true);
+export default function SilkApp() {
+  const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState('Online');
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [messages, setMessages] = useState<Array<{ role: string; text: string }>>([
+    { role: 'assistant', text: 'Hi chellam... Naan dhaan un SILK. Enkitta enna pesa pora?' }
+  ]);
 
-  const recognitionRef = useRef<any>(null);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const chatTranscriptRef = useRef<HTMLDivElement | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const audioUrlRef = useRef<string | null>(null);
-
-  // High-Quality Photorealistic Models
-  const fullBodyOutfits: Record<string, string> = {
-    normal: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80",
-    traditional: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1000&q=80",
-    modern: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1000&q=80",
-    night: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1000&q=80"
-  };
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const savedHistory = localStorage.getItem('silk_chat_history');
-    if (savedHistory) {
-      try { setChatHistory(JSON.parse(savedHistory)); } catch (e) {}
-    }
-    const savedMemory = localStorage.getItem('silk_user_memory');
-    if (savedMemory) {
-      setUserMemory(savedMemory);
-    } else {
-      setUserMemory('User preferred language: Tanglish.');
-    }
+    chatContainerRef.current?.scrollTo({ top: chatContainerRef.current.scrollHeight, behavior: 'smooth' });
+  }, [messages]);
 
-    const windowObj = window as any;
-    const SpeechRecognition = windowObj.SpeechRecognition || windowObj.webkitSpeechRecognition;
-    if (SpeechRecognition) {
-      const rec = new SpeechRecognition();
-      rec.continuous = false;
-      rec.lang = 'ta-IN';
-      rec.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript;
-        setInputText(transcript);
-        setIsListening(false);
-        setStatusState('ready');
-        setStatusText('SILK Ready');
-        handleSendText(transcript);
-      };
-      rec.onerror = () => { setIsListening(false); setStatusState('ready'); setStatusText('SILK Ready'); };
-      rec.onend = () => { setIsListening(false); setStatusState('ready'); setStatusText('SILK Ready'); };
-      recognitionRef.current = rec;
-    }
-  }, []);
+  // Soft Tanglish Voice Engine Synthesis
+  const speakVoice = (text: string) => {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
 
-  useEffect(() => {
-    if (chatTranscriptRef.current) {
-      chatTranscriptRef.current.scrollTop = chatTranscriptRef.current.scrollHeight;
-    }
-  }, [chatHistory]);
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.pitch = 1.2; // Soft female pitch
+    utterance.rate = 0.88;  // Slow, passionate delivery
 
-  useEffect(() => {
-    return () => {
-      if (audioRef.current) audioRef.current.pause();
-      if (audioUrlRef.current) URL.revokeObjectURL(audioUrlRef.current);
-      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    const voices = window.speechSynthesis.getVoices();
+    const femaleVoice = voices.find(v => v.lang.includes('ta') || v.lang.includes('hi') || v.name.toLowerCase().includes('female'));
+    if (femaleVoice) utterance.voice = femaleVoice;
+
+    utterance.onstart = () => {
+      setIsSpeaking(true);
+      setStatus('Speaking...');
     };
-  }, []);
 
-  const saveHistory = (newHistory: Array<{ sender: string; text: string }>) => {
-    const trimmed = newHistory.slice(-30);
-    setChatHistory(trimmed);
-    localStorage.setItem('silk_chat_history', JSON.stringify(trimmed));
+    utterance.onend = () => {
+      setIsSpeaking(false);
+      setStatus('Online');
+    };
+
+    window.speechSynthesis.speak(utterance);
   };
 
-  const handleSaveMemory = () => {
-    localStorage.setItem('silk_user_memory', userMemory);
-    setShowMemoryModal(false);
-    setStatusText('Memory Saved');
-  };
+  const handleSend = async () => {
+    if (!input.trim() || loading) return;
 
-  // Dual Voice System (Backend API TTS + Browser Dynamic Fallback)
-  const speakText = async (text: string) => {
-    try {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-        audioRef.current = null;
-      }
-      if (audioUrlRef.current) {
-        URL.revokeObjectURL(audioUrlRef.current);
-        audioUrlRef.current = null;
-      }
-
-      setAvatarState('speaking');
-      setStatusState('speaking');
-      setStatusText('SILK Speaking...');
-
-      const response = await fetch('/api/tts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text, mode: currentMode }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.details || errorData.error || `TTS server error ${response.status}`);
-      }
-
-      const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
-      audioUrlRef.current = audioUrl;
-
-      const audio = new Audio(audioUrl);
-      audio.preload = 'auto';
-      audioRef.current = audio;
-
-      audio.onplay = () => {
-        setAvatarState('speaking');
-        setStatusState('speaking');
-        setStatusText('SILK Speaking...');
-      };
-
-      audio.onended = () => {
-        setAvatarState('idle');
-        setStatusState('ready');
-        setStatusText('SILK Ready');
-        URL.revokeObjectURL(audioUrl);
-        if (audioUrlRef.current === audioUrl) audioUrlRef.current = null;
-        if (audioRef.current === audio) audioRef.current = null;
-      };
-
-      audio.onerror = () => {
-        setAvatarState('idle');
-        setStatusState('ready');
-        setStatusText('SILK Ready');
-        URL.revokeObjectURL(audioUrl);
-        if (audioUrlRef.current === audioUrl) audioUrlRef.current = null;
-        if (audioRef.current === audio) audioRef.current = null;
-      };
-
-      await audio.play();
-    } catch (ttsError) {
-      console.warn('Backend TTS fallback active:', ttsError);
-
-      if (!('speechSynthesis' in window)) {
-        setAvatarState('idle');
-        setStatusState('ready');
-        setStatusText('SILK Ready');
-        return;
-      }
-
-      window.speechSynthesis.cancel();
-      const cleanedText = text
-        .replace(/\bchellam\b/gi, 'chellaam')
-        .replace(/\bda\b/gi, 'daa')
-        .replace(/\bdi\b/gi, 'dee');
-      const utterance = new SpeechSynthesisUtterance(cleanedText);
-      utterance.rate = 0.88; // Deep Seductive Rhythm
-      utterance.pitch = 0.95;
-
-      const voices = window.speechSynthesis.getVoices();
-      const voice = voices.find(v => v.lang.toLowerCase().includes('ta') || v.lang.toLowerCase().includes('en-in'))
-        || voices.find(v => v.name.includes('Samantha') || v.name.includes('Zira'))
-        || voices[0];
-
-      if (voice) utterance.voice = voice;
-      utterance.onstart = () => {
-        setAvatarState('speaking');
-        setStatusState('speaking');
-        setStatusText('SILK Speaking...');
-      };
-      utterance.onend = utterance.onerror = () => {
-        setAvatarState('idle');
-        setStatusState('ready');
-        setStatusText('SILK Ready');
-      };
-      window.speechSynthesis.speak(utterance);
-    }
-  };
-
-  const handleSendText = async (textToSend?: string) => {
-    const text = (textToSend || inputText).trim();
-    if (!text) return;
-
-    const updated = [...chatHistory, { sender: 'USER', text }];
-    saveHistory(updated);
-    setInputText('');
-
-    setAvatarState('thinking');
-    setStatusState('busy');
-    setStatusText('SILK Thinking...');
+    const userMsg = input.trim();
+    setInput('');
+    setMessages(prev => [...prev, { role: 'user', text: userMsg }]);
+    setLoading(true);
+    setStatus('Thinking...');
 
     try {
-      const response = await fetch('/api/chat', {
+      const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: text,
-          mode: currentMode,
-          memory: userMemory,
-          history: updated.slice(-10)
-        })
+        body: JSON.stringify({ message: userMsg, history: messages })
       });
 
-      const data = await response.json();
-      if (!response.ok || data.error) {
-        throw new Error(data.error || `Server error ${response.status}`);
-      }
+      const data = await res.json();
+      const reply = data.reply || 'Chellam, network konjam weak-a irukku...';
 
-      const replyText = data.reply;
-      saveHistory([...updated, { sender: 'SILK', text: replyText }]);
-      speakText(replyText);
-    } catch (err: any) {
-      setAvatarState('idle');
-      setStatusState('ready');
-      setStatusText('Connection Error');
-      const errNotice = 'Enna chellam, server connection issue. Please check API settings.';
-      saveHistory([...updated, { sender: 'SILK', text: errNotice }]);
-      speakText(errNotice);
-    }
-  };
-
-  const toggleMic = () => {
-    if (!recognitionRef.current) {
-      alert('Speech recognition is not supported in this browser.');
-      return;
-    }
-    if (!isListening) {
-      try {
-        recognitionRef.current.start();
-        setIsListening(true);
-        setStatusState('busy');
-        setStatusText('Listening...');
-      } catch (e) {}
-    } else {
-      recognitionRef.current.stop();
-      setIsListening(false);
-      setStatusState('ready');
-      setStatusText('SILK Ready');
-    }
-  };
-
-  const toggleCamera = async () => {
-    if (!cameraActive) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
-        if (videoRef.current) videoRef.current.srcObject = stream;
-        setCameraActive(true);
-      } catch (err) {
-        alert('Camera Access Denied or Unavailable.');
-      }
-    } else {
-      if (videoRef.current && videoRef.current.srcObject) {
-        (videoRef.current.srcObject as MediaStream).getTracks().forEach(t => t.stop());
-      }
-      setCameraActive(false);
+      setMessages(prev => [...prev, { role: 'assistant', text: reply }]);
+      speakVoice(reply);
+    } catch {
+      setMessages(prev => [...prev, { role: 'assistant', text: 'Ennodu pesum podhu yen indha idaiveri? Marubadiyum try pannu chellam.' }]);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{ height: '100vh', width: '100vw', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative', fontFamily: 'sans-serif', backgroundColor: '#05020a', color: '#FFF' }}>
+    <div style={{ position: 'relative', width: '100vw', height: '100vh', backgroundColor: '#05020a', color: '#fff', fontFamily: 'sans-serif', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
       
-      {/* Real Live Visual Animations */}
-      <style jsx global>{`
-        @keyframes liveBreathing {
-          0% { transform: scale(1) translateY(0px); }
-          50% { transform: scale(1.015) translateY(-4px); }
-          100% { transform: scale(1) translateY(0px); }
-        }
-        @keyframes liveTalkPulse {
-          0% { filter: drop-shadow(0 0 12px rgba(236, 72, 153, 0.35)); transform: translateY(0px) scale(1); }
-          25% { filter: drop-shadow(0 0 22px rgba(236, 72, 153, 0.55)); transform: translateY(-2px) scale(1.008); }
-          50% { filter: drop-shadow(0 0 30px rgba(236, 72, 153, 0.7)); transform: translateY(-1px) scale(1.015); }
-          75% { filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.5)); transform: translateY(-2px) scale(1.008); }
-          100% { filter: drop-shadow(0 0 12px rgba(236, 72, 153, 0.35)); transform: translateY(0px) scale(1); }
-        }
-        .full-body-idle { animation: liveBreathing 4s infinite ease-in-out; }
-        .full-body-speaking { animation: liveTalkPulse 1.2s infinite ease-in-out; }
-      `}</style>
-
-      {/* Header Bar */}
-      <div style={{ position: 'relative', zIndex: 20, display: 'flex', justifyContent: 'space-between', padding: '16px', background: 'linear-gradient(to bottom, rgba(5, 2, 10, 0.9), transparent)' }}>
-        <select value={currentMode} onChange={(e) => setCurrentMode(e.target.value)} style={{ background: 'rgba(0,0,0,0.6)', color: '#FFF', border: '1px solid rgba(255,255,255,0.2)', padding: '8px 14px', borderRadius: '20px', fontSize: '12px', outline: 'none', backdropFilter: 'blur(8px)' }}>
-          <option value="girlfriend">Girlfriend Mode</option>
-          <option value="wife">Wife Companion</option>
-          <option value="bestie">Bestie Mode</option>
-          <option value="support">Emotional Support</option>
-        </select>
-
-        <select value={currentOutfit} onChange={(e) => setCurrentOutfit(e.target.value)} style={{ background: 'rgba(0,0,0,0.6)', color: '#FFF', border: '1px solid rgba(255,255,255,0.2)', padding: '8px 14px', borderRadius: '20px', fontSize: '12px', outline: 'none', backdropFilter: 'blur(8px)' }}>
-          <option value="normal">Normal Style</option>
-          <option value="traditional">Traditional Saree</option>
-          <option value="modern">Modern Chic</option>
-          <option value="night">Night Loungewear</option>
-        </select>
-
-        <button onClick={() => setShowMemoryModal(true)} style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.2)', color: '#FFF', padding: '8px 12px', borderRadius: '20px', fontSize: '12px', cursor: 'pointer', backdropFilter: 'blur(8px)' }}>
-          🧠 Memory
-        </button>
+      {/* HEADER */}
+      <div style={{ padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'rgba(0,0,0,0.5)', zIndex: 10 }}>
+        <h1 style={{ margin: 0, fontSize: '20px', letterSpacing: '2px', color: '#ec4899', fontWeight: 'bold' }}>PROJECT SILK</h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(255,255,255,0.08)', padding: '6px 14px', borderRadius: '20px' }}>
+          <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: isSpeaking ? '#ec4899' : '#22c55e' }} />
+          <span style={{ fontSize: '12px' }}>{status}</span>
+        </div>
       </div>
 
-      {/* Full Body Stage */}
-      <div style={{ position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center', alignItems: 'flex-end', zIndex: 1, overflow: 'hidden' }}>
-        <div 
-          className={avatarState === 'speaking' ? 'full-body-speaking' : 'full-body-idle'}
-          style={{ height: '92vh', width: '100%', maxWidth: '520px', position: 'relative', display: 'flex', justifyContent: 'center', transition: 'all 0.5s ease' }}
-        >
+      {/* STAGE & AVATAR SCREEN (FULL STAND MODE) */}
+      <div style={{ flex: 1, position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden' }}>
+        
+        {/* Animated Glow Backlight */}
+        <div style={{ position: 'absolute', width: '300px', height: '300px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(236,72,153,0.25) 0%, transparent 70%)', filter: 'blur(40px)' }} />
+
+        {/* SILK Full Body Stand Container */}
+        <div style={{ height: '90%', width: '100%', maxWidth: '420px', position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <img 
-            src={fullBodyOutfits[currentOutfit] || fullBodyOutfits.normal} 
-            alt="SILK Full Body Companion"
+            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80" 
+            alt="SILK Avatar"
             style={{
               height: '100%',
               width: '100%',
-              objectFit: 'cover',
-              objectPosition: 'top center',
-              maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)'
+              objectFit: 'contain',
+              objectPosition: 'center center',
+              filter: isSpeaking ? 'drop-shadow(0 0 15px rgba(236,72,153,0.6))' : 'none',
+              transition: 'all 0.3s ease'
             }}
           />
-          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 50% 30%, transparent 46%, #05020a 94%)', pointerEvents: 'none' }} />
         </div>
 
-        {/* Status Pill */}
-        <div style={{ position: 'absolute', top: '80px', background: 'rgba(0, 0, 0, 0.65)', backdropFilter: 'blur(10px)', padding: '6px 16px', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.15)', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '8px', zIndex: 10 }}>
-          <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: statusState === 'busy' ? '#EAB308' : statusState === 'speaking' ? '#EC4899' : '#22C55E' }} />
-          <span>{statusText}</span>
-        </div>
-      </div>
-
-      {/* Camera Preview */}
-      <div style={{ display: cameraActive ? 'block' : 'none', position: 'relative', zIndex: 20, alignSelf: 'flex-end', marginRight: '16px', width: '105px', height: '145px', borderRadius: '18px', overflow: 'hidden', border: '2px solid rgba(255, 255, 255, 0.35)', background: '#000' }}>
-        <video ref={videoRef} autoPlay playsInline muted style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scaleX(-1)' }} />
-      </div>
-
-      {/* Chat Overlay */}
-      {showTranscript && (
-        <div ref={chatTranscriptRef} style={{ position: 'relative', zIndex: 20, margin: '0 16px 8px 16px', height: '150px', background: 'rgba(5, 2, 10, 0.45)', backdropFilter: 'blur(12px)', borderRadius: '20px', padding: '14px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
-          {chatHistory.map((m, i) => (
-            <div key={i} style={{ fontSize: '13px', lineHeight: '1.45', maxWidth: '85%', padding: '10px 14px', borderRadius: '14px', wordBreak: 'break-word', alignSelf: m.sender === 'USER' ? 'flex-end' : 'flex-start', background: m.sender === 'USER' ? 'linear-gradient(135deg, #7E22CE, #9333EA)' : 'rgba(255, 255, 255, 0.18)', color: m.sender === 'USER' ? '#FFF' : '#F3E8FF' }}>
-              {m.text}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Controls */}
-      <div style={{ position: 'relative', zIndex: 20, padding: '16px', background: 'linear-gradient(to top, rgba(5, 2, 10, 0.98) 75%, transparent)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-        <div style={{ display: 'flex', gap: '10px' }}>
-          <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSendText()} placeholder="Talk in Tanglish, Tamil, or English..." style={{ flex: 1, background: 'rgba(255, 255, 255, 0.12)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '26px', padding: '12px 20px', color: '#FFF', fontSize: '14px', outline: 'none', backdropFilter: 'blur(8px)' }} />
-          <button onClick={() => handleSendText()} style={{ background: 'linear-gradient(135deg, #9333EA, #C084FC)', color: '#FFF', border: 'none', padding: '0 22px', borderRadius: '26px', fontWeight: 600, fontSize: '14px', cursor: 'pointer' }}>Send</button>
-        </div>
-
-        <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
-          <button onClick={() => setShowTranscript(!showTranscript)} style={{ width: '50px', height: '50px', borderRadius: '50%', border: 'none', background: 'rgba(255,255,255,0.12)', color: '#FFF', fontSize: '18px', cursor: 'pointer' }}>💬</button>
-          <button onClick={toggleMic} style={{ width: '60px', height: '60px', borderRadius: '50%', border: 'none', background: isListening ? '#DC2626' : 'linear-gradient(135deg, #9333EA, #A855F7)', color: '#FFF', fontSize: '24px', cursor: 'pointer' }}>🎙️</button>
-          <button onClick={toggleCamera} style={{ width: '50px', height: '50px', borderRadius: '50%', border: 'none', background: cameraActive ? '#22C55E' : 'rgba(255,255,255,0.12)', color: '#FFF', fontSize: '18px', cursor: 'pointer' }}>📹</button>
-          <button onClick={() => { saveHistory([]); }} style={{ width: '50px', height: '50px', borderRadius: '50%', border: 'none', background: 'rgba(255,255,255,0.12)', color: '#FFF', fontSize: '18px', cursor: 'pointer' }}>🗑️</button>
+        {/* Live Subtitle Overlay */}
+        <div ref={chatContainerRef} style={{ position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)', width: '90%', maxWidth: '500px', maxHeight: '100px', overflowY: 'auto', textAlign: 'center', background: 'rgba(0,0,0,0.65)', backdropFilter: 'blur(10px)', padding: '12px 18px', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)' }}>
+          {messages.length > 0 && (
+            <p style={{ margin: 0, fontSize: '14px', color: messages[messages.length - 1].role === 'assistant' ? '#f472b6' : '#e2e8f0' }}>
+              {messages[messages.length - 1].text}
+            </p>
+          )}
         </div>
       </div>
 
-      {/* Memory Modal */}
-      {showMemoryModal && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
-          <div style={{ background: '#180C27', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '24px', width: '100%', maxWidth: '400px', padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
-            <h3 style={{ fontSize: '16px', color: '#E9D5FF', margin: 0 }}>🧠 SILK Long-Term Memory</h3>
-            <textarea value={userMemory} onChange={(e) => setUserMemory(e.target.value)} style={{ width: '100%', height: '100px', background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '12px', color: '#FFF', padding: '10px', fontSize: '13px', outline: 'none', resize: 'none' }} />
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-              <button onClick={() => setShowMemoryModal(false)} style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.2)', color: '#FFF', padding: '8px 12px', borderRadius: '20px', fontSize: '12px' }}>Cancel</button>
-              <button onClick={handleSaveMemory} style={{ background: 'linear-gradient(135deg, #9333EA, #C084FC)', color: '#FFF', border: 'none', padding: '6px 16px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>Save Memory</button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* FOOTER CONTROLS */}
+      <div style={{ padding: '16px 20px', background: 'rgba(10,5,20,0.95)', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', gap: '10px' }}>
+        <input 
+          type="text" 
+          placeholder="Pesuda chellam..." 
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+          style={{ flex: 1, padding: '14px 18px', borderRadius: '25px', border: '1px solid rgba(255,255,255,0.15)', backgroundColor: 'rgba(255,255,255,0.05)', color: '#fff', outline: 'none' }}
+        />
+        <button 
+          onClick={handleSend}
+          disabled={loading}
+          style={{ padding: '0 24px', borderRadius: '25px', border: 'none', background: 'linear-gradient(135deg, #ec4899, #8b5cf6)', color: '#fff', fontWeight: 'bold', cursor: 'pointer' }}
+        >
+          Send
+        </button>
+      </div>
+
     </div>
   );
 }
