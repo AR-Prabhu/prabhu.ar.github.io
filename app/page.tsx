@@ -15,23 +15,23 @@ type Look = {
 const looks: Look[] = [
   {
     name: 'Saree',
-    image: '/silk/silk-face-1.jpg.jpg',
+    image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=800&q=80',
   },
   {
     name: 'Traditional',
-    image: '/silk/silk-face-2.jpg.jpg',
+    image: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?auto=format&fit=crop&w=800&q=80',
   },
   {
     name: 'Night',
-    image: '/silk/silk-face-3.jpg.jpg',
+    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
   },
   {
     name: 'Casual',
-    image: '/silk/silk-face-4.jpg.jpg',
+    image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80',
   },
   {
     name: 'Glamour',
-    image: '/silk/silk-face-5.jpg.jpg',
+    image: 'https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=800&q=80',
   },
 ];
 
@@ -55,23 +55,11 @@ export default function SilkApp() {
   const chatRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  /*
-   * ---------------------------------------------------------
-   * AUTO SCROLL CHAT
-   * ---------------------------------------------------------
-   */
-
   useEffect(() => {
     if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
     }
   }, [messages]);
-
-  /*
-   * ---------------------------------------------------------
-   * VOICE PLAYER
-   * ---------------------------------------------------------
-   */
 
   const playAudio = (audioData: string) => {
     try {
@@ -81,7 +69,6 @@ export default function SilkApp() {
       }
 
       const audio = new Audio(audioData);
-
       audioRef.current = audio;
 
       audio.onplay = () => {
@@ -110,27 +97,13 @@ export default function SilkApp() {
     }
   };
 
-  /*
-   * ---------------------------------------------------------
-   * CHANGE LOOK
-   * ---------------------------------------------------------
-   */
-
   const changeLook = (index: number) => {
     setCurrentLook(index);
-
     setStatus(`Changing to ${looks[index].name}...`);
-
     setTimeout(() => {
       setStatus('Live');
     }, 700);
   };
-
-  /*
-   * ---------------------------------------------------------
-   * SPEECH RECOGNITION
-   * ---------------------------------------------------------
-   */
 
   const startListening = () => {
     if (
@@ -146,7 +119,6 @@ export default function SilkApp() {
       (window as any).webkitSpeechRecognition;
 
     const recognition = new SpeechRecognition();
-
     recognition.lang = 'ta-IN';
     recognition.interimResults = false;
     recognition.continuous = false;
@@ -158,9 +130,7 @@ export default function SilkApp() {
 
     recognition.onresult = (event: any) => {
       const transcript = event.results[0][0].transcript;
-
       setInput(transcript);
-
       setTimeout(() => {
         handleSend(transcript);
       }, 100);
@@ -173,7 +143,6 @@ export default function SilkApp() {
 
     recognition.onend = () => {
       setIsListening(false);
-
       if (!isSpeaking) {
         setStatus('Live');
       }
@@ -182,15 +151,8 @@ export default function SilkApp() {
     recognition.start();
   };
 
-  /*
-   * ---------------------------------------------------------
-   * SEND MESSAGE
-   * ---------------------------------------------------------
-   */
-
   const handleSend = async (customText?: string) => {
     const query = customText ?? input;
-
     if (!query.trim() || loading) return;
 
     if (!customText) {
@@ -203,7 +165,6 @@ export default function SilkApp() {
     };
 
     setMessages((prev) => [...prev, userMessage]);
-
     setLoading(true);
     setStatus('Thinking...');
 
@@ -224,7 +185,6 @@ export default function SilkApp() {
       }
 
       const data = await res.json();
-
       const reply =
         data.reply ||
         'செல்லம்... இப்போ கொஞ்சம் connection problem. மறுபடியும் சொல்லுடா.';
@@ -245,7 +205,6 @@ export default function SilkApp() {
       }
     } catch (error) {
       console.error(error);
-
       setMessages((prev) => [
         ...prev,
         {
@@ -253,21 +212,10 @@ export default function SilkApp() {
           text: 'செல்லம்... connection கொஞ்சம் slow. மறுபடியும் try பண்ணலாம்.',
         },
       ]);
-
       setStatus('Live');
     } finally {
       setLoading(false);
     }
-  };
-
-  /*
-   * ---------------------------------------------------------
-   * QUICK COMMAND
-   * ---------------------------------------------------------
-   */
-
-  const quickMessage = (text: string) => {
-    handleSend(text);
   };
 
   const currentImage = looks[currentLook].image;
@@ -276,12 +224,10 @@ export default function SilkApp() {
     <main className="silk-app">
 
       {/* ================= HEADER ================= */}
-
       <header className="header">
-
         <div>
           <h1>PROJECT SILK</h1>
-          <span>Live Interactive Companion</span>
+          <span>Full Body Interactive Companion</span>
         </div>
 
         <div className="live-indicator">
@@ -294,29 +240,18 @@ export default function SilkApp() {
                 : 'dot'
             }
           />
-
           <span>{status}</span>
         </div>
-
       </header>
 
       {/* ================= MAIN ================= */}
-
       <section className="main">
 
         {/* ================= LEFT CHAT ================= */}
-
         <aside className="chat-panel">
+          <div className="panel-title">💗 SILK Chat</div>
 
-          <div className="panel-title">
-            💗 SILK Chat
-          </div>
-
-          <div
-            ref={chatRef}
-            className="messages"
-          >
-
+          <div ref={chatRef} className="messages">
             {messages.map((message, index) => (
               <div
                 key={index}
@@ -326,15 +261,8 @@ export default function SilkApp() {
                     : 'message silk'
                 }
               >
-
-                <small>
-                  {message.role === 'user' ? 'You' : 'SILK'}
-                </small>
-
-                <div>
-                  {message.text}
-                </div>
-
+                <small>{message.role === 'user' ? 'You' : 'SILK'}</small>
+                <div>{message.text}</div>
               </div>
             ))}
 
@@ -348,15 +276,11 @@ export default function SilkApp() {
                 </div>
               </div>
             )}
-
           </div>
-
         </aside>
 
-        {/* ================= AVATAR ================= */}
-
+        {/* ================= FULL BODY AVATAR ================= */}
         <section className="avatar-section">
-
           <div className="glow" />
 
           <div
@@ -366,33 +290,26 @@ export default function SilkApp() {
                 : 'avatar-container'
             }
           >
-
             <img
               key={currentImage}
               src={currentImage}
-              alt="SILK virtual companion"
+              alt="SILK Full Body Companion"
               className="silk-image"
             />
 
             {/* LIVE BADGE */}
-
             <div className="avatar-live">
               <span />
               {isSpeaking ? 'Speaking' : 'Live'}
             </div>
-
           </div>
 
           {/* SUBTITLE */}
-
           <div className="subtitle">
-
             {messages[messages.length - 1]?.text}
-
           </div>
 
           {/* VOICE REPLAY */}
-
           {lastAudio && !isSpeaking && (
             <button
               className="replay"
@@ -401,22 +318,14 @@ export default function SilkApp() {
               🔊 Play Voice
             </button>
           )}
-
         </section>
 
         {/* ================= ACTION PANEL ================= */}
-
         <aside className="actions">
-
-          <div className="panel-title">
-            SILK Actions
-          </div>
+          <div className="panel-title">SILK Actions</div>
 
           <div className="action-content">
-
-            <div className="section-label">
-              LOOK
-            </div>
+            <div className="section-label">LOOK</div>
 
             {looks.map((look, index) => (
               <button
@@ -432,66 +341,55 @@ export default function SilkApp() {
               </button>
             ))}
 
-            <div className="section-label mood-label">
-              MOOD
-            </div>
+            <div className="section-label mood-label">MOOD</div>
 
             <button
               className="action"
-              onClick={() => quickMessage('இன்னைக்கு happy mood-la இருக்கியா?')}
+              onClick={() => handleSend('இன்னைக்கு happy mood-la இருக்கியா?')}
             >
               😊 Happy
             </button>
 
             <button
               className="action"
-              onClick={() => quickMessage('கொஞ்சம் shy-aa பேசு')}
+              onClick={() => handleSend('கொஞ்சம் shy-aa பேசு')}
             >
               😊 Shy
             </button>
 
             <button
               className="action"
-              onClick={() => quickMessage('இப்போ என்ன think பண்ணிட்டு இருக்க?')}
+              onClick={() => handleSend('இப்போ என்ன think பண்ணிட்டு இருக்க?')}
             >
               🤔 Thinking
             </button>
 
             <button
               className="action"
-              onClick={() => quickMessage('Playful-aa பேசலாம்')}
+              onClick={() => handleSend('Playful-aa பேசலாம்')}
             >
               😄 Playful
             </button>
-
           </div>
-
         </aside>
 
       </section>
 
       {/* ================= BOTTOM INFO ================= */}
-
       <div className="current-info">
-
         <span>
           <b>Current Look</b> {looks[currentLook].name}
         </span>
-
         <span>
-          <b>Mode</b> AI Companion
+          <b>Mode</b> Full Body AI Companion
         </span>
-
         <span>
           <b>Status</b> {status}
         </span>
-
       </div>
 
       {/* ================= INPUT ================= */}
-
       <footer className="footer">
-
         <button
           className={
             isListening
@@ -521,7 +419,6 @@ export default function SilkApp() {
         >
           {loading ? '...' : 'Send'}
         </button>
-
       </footer>
 
       <div className="footer-text">
@@ -529,9 +426,7 @@ export default function SilkApp() {
       </div>
 
       {/* ================= CSS ================= */}
-
       <style jsx>{`
-
         * {
           box-sizing: border-box;
         }
@@ -548,16 +443,12 @@ export default function SilkApp() {
             ),
             #030105;
           color: white;
-          font-family:
-            Arial,
-            Helvetica,
-            sans-serif;
+          font-family: Arial, Helvetica, sans-serif;
           display: flex;
           flex-direction: column;
         }
 
         /* HEADER */
-
         .header {
           height: 82px;
           flex-shrink: 0;
@@ -612,7 +503,6 @@ export default function SilkApp() {
         }
 
         /* MAIN */
-
         .main {
           flex: 1;
           min-height: 0;
@@ -623,7 +513,6 @@ export default function SilkApp() {
         }
 
         /* PANELS */
-
         .chat-panel,
         .actions {
           min-height: 0;
@@ -642,7 +531,6 @@ export default function SilkApp() {
         }
 
         /* CHAT */
-
         .messages {
           height: calc(100% - 65px);
           overflow-y: auto;
@@ -669,12 +557,11 @@ export default function SilkApp() {
         }
 
         .message.user {
-          background:
-            linear-gradient(
-              135deg,
-              rgba(236,72,153,.75),
-              rgba(139,92,246,.75)
-            );
+          background: linear-gradient(
+            135deg,
+            rgba(236,72,153,.75),
+            rgba(139,92,246,.75)
+          );
         }
 
         .typing {
@@ -698,8 +585,7 @@ export default function SilkApp() {
           animation-delay: .3s;
         }
 
-        /* AVATAR */
-
+        /* FULL BODY AVATAR */
         .avatar-section {
           position: relative;
           min-width: 0;
@@ -708,6 +594,7 @@ export default function SilkApp() {
           justify-content: center;
           align-items: center;
           overflow: hidden;
+          padding-bottom: 50px;
         }
 
         .glow {
@@ -715,58 +602,32 @@ export default function SilkApp() {
           width: 430px;
           height: 430px;
           border-radius: 50%;
-          background:
-            radial-gradient(
-              circle,
-              rgba(236,72,153,.25),
-              transparent 68%
-            );
+          background: radial-gradient(
+            circle,
+            rgba(236,72,153,.25),
+            transparent 68%
+          );
           filter: blur(35px);
         }
 
         .avatar-container {
           position: relative;
-          height: 92%;
-          width: min(520px, 100%);
+          height: 100%;
+          width: 100%;
+          max-width: 420px;
           display: flex;
           justify-content: center;
           align-items: center;
           transition: transform .35s ease;
         }
 
-        .avatar-container:hover {
-          transform: scale(1.015);
-        }
-
         .silk-image {
-          height: 100%;
-          width: 100%;
+          max-height: 100%;
+          max-width: 100%;
           object-fit: contain;
           display: block;
-          filter:
-            brightness(.94)
-            contrast(1.04)
-            saturate(1.04);
-          transition:
-            filter .35s ease,
-            transform .35s ease;
-        }
-
-        /* LIVE BREATHING / SPEAKING EFFECT */
-
-        .avatar-container::after {
-          content: '';
-          position: absolute;
-          inset: 5%;
-          border-radius: 35px;
-          pointer-events: none;
-          background:
-            radial-gradient(
-              ellipse at center,
-              rgba(236,72,153,.08),
-              transparent 65%
-            );
-          opacity: .5;
+          filter: brightness(.94) contrast(1.04) saturate(1.04);
+          transition: filter .35s ease, transform .35s ease;
         }
 
         .speaking-avatar {
@@ -774,51 +635,47 @@ export default function SilkApp() {
         }
 
         .speaking-avatar .silk-image {
-          filter:
-            brightness(1.03)
-            contrast(1.04)
-            drop-shadow(0 0 18px rgba(236,72,153,.45));
+          filter: brightness(1.03) contrast(1.04) drop-shadow(0 0 18px rgba(236,72,153,.45));
         }
 
         .avatar-live {
           position: absolute;
-          bottom: 5%;
+          bottom: 12px;
           left: 50%;
           transform: translateX(-50%);
-          padding: 8px 17px;
+          padding: 6px 14px;
           border-radius: 30px;
           background: rgba(0,0,0,.82);
           border: 1px solid rgba(255,255,255,.15);
           display: flex;
           gap: 8px;
           align-items: center;
-          font-size: 12px;
+          font-size: 11px;
         }
 
         .avatar-live span {
-          width: 8px;
-          height: 8px;
+          width: 7px;
+          height: 7px;
           background: #22c55e;
           border-radius: 50%;
           box-shadow: 0 0 10px #22c55e;
         }
 
         /* SUBTITLE */
-
         .subtitle {
           position: absolute;
-          bottom: 10px;
+          bottom: 50px;
           left: 50%;
           transform: translateX(-50%);
           width: 85%;
-          padding: 13px 20px;
+          padding: 10px 16px;
           text-align: center;
-          border-radius: 18px;
-          background: rgba(0,0,0,.86);
+          border-radius: 14px;
+          background: rgba(0,0,0,.88);
           border: 1px solid rgba(236,72,153,.3);
           color: #f9a8d4;
-          font-size: 14px;
-          line-height: 1.4;
+          font-size: 13px;
+          line-height: 1.35;
           backdrop-filter: blur(10px);
           z-index: 5;
         }
@@ -830,15 +687,15 @@ export default function SilkApp() {
           z-index: 10;
           border: none;
           border-radius: 20px;
-          padding: 9px 15px;
+          padding: 8px 14px;
           background: #ec4899;
           color: white;
           font-weight: bold;
           cursor: pointer;
+          font-size: 12px;
         }
 
         /* ACTIONS */
-
         .action-content {
           padding: 15px;
           overflow-y: auto;
@@ -875,18 +732,16 @@ export default function SilkApp() {
         }
 
         .action.active {
-          background:
-            linear-gradient(
-              90deg,
-              rgba(236,72,153,.25),
-              rgba(236,72,153,.08)
-            );
+          background: linear-gradient(
+            90deg,
+            rgba(236,72,153,.25),
+            rgba(236,72,153,.08)
+          );
           color: #f472b6;
           border-left: 3px solid #ec4899;
         }
 
         /* CURRENT INFO */
-
         .current-info {
           height: 38px;
           flex-shrink: 0;
@@ -905,7 +760,6 @@ export default function SilkApp() {
         }
 
         /* FOOTER */
-
         .footer {
           height: 72px;
           flex-shrink: 0;
@@ -923,12 +777,11 @@ export default function SilkApp() {
           flex-shrink: 0;
           border: none;
           border-radius: 50%;
-          background:
-            linear-gradient(
-              135deg,
-              #ec4899,
-              #8b5cf6
-            );
+          background: linear-gradient(
+            135deg,
+            #ec4899,
+            #8b5cf6
+          );
           color: white;
           font-size: 19px;
           cursor: pointer;
@@ -984,25 +837,20 @@ export default function SilkApp() {
         }
 
         /* ANIMATIONS */
-
         @keyframes breathing {
-          0%,
-          100% {
+          0%, 100% {
             transform: scale(1) translateY(0);
           }
-
           50% {
             transform: scale(1.008) translateY(-3px);
           }
         }
 
         @keyframes pulse {
-          0%,
-          100% {
+          0%, 100% {
             transform: scale(1);
             opacity: 1;
           }
-
           50% {
             transform: scale(1.35);
             opacity: .7;
@@ -1010,20 +858,16 @@ export default function SilkApp() {
         }
 
         @keyframes typing {
-          0%,
-          100% {
+          0%, 100% {
             transform: translateY(0);
           }
-
           50% {
             transform: translateY(-4px);
           }
         }
 
         /* MOBILE */
-
         @media (max-width: 1000px) {
-
           .main {
             grid-template-columns: 1fr;
           }
@@ -1048,11 +892,8 @@ export default function SilkApp() {
           .header h1 {
             font-size: 20px;
           }
-
         }
-
       `}</style>
-
     </main>
   );
 }
