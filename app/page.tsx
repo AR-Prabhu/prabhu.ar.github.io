@@ -1,76 +1,226 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type Message = {
   role: 'user' | 'assistant';
   text: string;
 };
 
+type DressMode =
+  | 'saree'
+  | 'night'
+  | 'casual'
+  | 'glamour'
+  | 'default';
+
 export default function SilkApp() {
+  // ============================================================
+  // STATE
+  // ============================================================
+
   const [input, setInput] = useState('');
+
   const [loading, setLoading] = useState(false);
+
   const [status, setStatus] = useState('Live');
+
   const [isSpeaking, setIsSpeaking] = useState(false);
+
   const [isListening, setIsListening] = useState(false);
+
   const [lastAudio, setLastAudio] = useState<string | null>(null);
+
+  const [dressMode, setDressMode] =
+    useState<DressMode>('default');
 
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      text: 'வணக்கம் செல்லம்... நான் தான் உன் SILK. சொல்லுடா என்ன பேசணும்?'
+      text: 'வணக்கம் செல்லம்... நான் தான் SILK. சொல்லுடா, என்ன பேசணும்?'
     }
   ]);
 
-  const chatContainerRef = useRef<HTMLDivElement | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  // ============================================================
+  // REFS
+  // ============================================================
 
-  // --------------------------------------------------
+  const chatContainerRef =
+    useRef<HTMLDivElement | null>(null);
+
+  const audioRef =
+    useRef<HTMLAudioElement | null>(null);
+
+  const recognitionRef =
+    useRef<any>(null);
+
+  // ============================================================
   // AUTO SCROLL
-  // --------------------------------------------------
+  // ============================================================
 
   useEffect(() => {
-    const el = chatContainerRef.current;
-
-    if (el) {
-      el.scrollTo({
-        top: el.scrollHeight,
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
         behavior: 'smooth'
       });
     }
   }, [messages]);
 
-  // --------------------------------------------------
+  // ============================================================
   // CLEANUP AUDIO
-  // --------------------------------------------------
+  // ============================================================
 
   useEffect(() => {
     return () => {
       if (audioRef.current) {
         audioRef.current.pause();
-        audioRef.current = null;
+        audioRef.current.src = '';
+      }
+
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch {}
       }
     };
   }, []);
 
-  // --------------------------------------------------
-  // PLAY SILK VOICE
-  // --------------------------------------------------
+  // ============================================================
+  // DRESS COMMAND DETECTION
+  // ============================================================
 
-  const playAudio = (base64Audio: string) => {
+  const detectDressCommand = (text: string) => {
+    const lower = text.toLowerCase();
+
+    // Saree
+    if (
+      lower.includes('saree') ||
+      lower.includes('sari') ||
+      lower.includes('சேலை') ||
+      lower.includes('சாரி')
+    ) {
+      setDressMode('saree');
+      return;
+    }
+
+    // Night dress
+    if (
+      lower.includes('night dress') ||
+      lower.includes('nightwear') ||
+      lower.includes('night wear') ||
+      lower.includes('நைட் டிரஸ்') ||
+      lower.includes('நைட்டி')
+    ) {
+      setDressMode('night');
+      return;
+    }
+
+    // Casual
+    if (
+      lower.includes('casual') ||
+      lower.includes('casual dress')
+    ) {
+      setDressMode('casual');
+      return;
+    }
+
+    // Glamour
+    if (
+      lower.includes('glamour') ||
+      lower.includes('glamorous')
+    ) {
+      setDressMode('glamour');
+      return;
+    }
+  };
+
+  // ============================================================
+  // DRESS IMAGE
+  // ============================================================
+
+  const getDressImage = () => {
+    /*
+      IMPORTANT:
+
+      These are FUTURE asset names.
+
+      For now, if these files don't exist,
+      browser will fallback to silk-full-body.png.
+
+      Later we can upload:
+
+      /public/silk/
+        silk-full-body.png
+        silk-saree.png
+        silk-night.png
+        silk-casual.png
+        silk-glamour.png
+    */
+
+    switch (dressMode) {
+      case 'saree':
+        return '/silk/silk-saree.png';
+
+      case 'night':
+        return '/silk/silk-night.png';
+
+      case 'casual':
+        return '/silk/silk-casual.png';
+
+      case 'glamour':
+        return '/silk/silk-glamour.png';
+
+      default:
+        return '/silk/silk-full-body.png';
+    }
+  };
+
+  // ============================================================
+  // IMAGE FALLBACK
+  // ============================================================
+
+  const handleImageError = (
+    event: React.SyntheticEvent<HTMLImageElement>
+  ) => {
+    const img = event.currentTarget;
+
+    if (!img.src.endsWith('/silk/silk-full-body.png')) {
+      img.src = '/silk/silk-full-body.png';
+    }
+  };
+
+  // ============================================================
+  // AUDIO PLAYER
+  // ============================================================
+
+  const playAudio = async (base64Audio: string) => {
     try {
+      if (!base64Audio) {
+        return;
+      }
+
+      // Stop previous audio
       if (audioRef.current) {
         audioRef.current.pause();
         audioRef.current.currentTime = 0;
       }
 
-      const audio = new Audio(base64Audio);
+      const audio = new Audio();
+
+      audio.preload = 'auto';
+
+      audio.src = base64Audio;
 
       audioRef.current = audio;
 
+      // --------------------------------------------------------
+      // AUDIO EVENTS
+      // --------------------------------------------------------
+
       audio.onplay = () => {
         setIsSpeaking(true);
-        setStatus('Silk Speaking...');
+        setStatus('SILK Speaking...');
       };
 
       audio.onended = () => {
@@ -79,149 +229,285 @@ export default function SilkApp() {
       };
 
       audio.onerror = (event) => {
-        console.error('Audio playback error:', event);
+        console.error(
+          'Audio playback error:',
+          event
+        );
 
         setIsSpeaking(false);
         setStatus('Live');
       };
 
-      audio.play().catch((error) => {
-        console.error('Autoplay blocked:', error);
+      // --------------------------------------------------------
+      // LOAD
+      // --------------------------------------------------------
+
+      audio.load();
+
+      // --------------------------------------------------------
+      // PLAY
+      // --------------------------------------------------------
+
+      try {
+        await audio.play();
+      } catch (playError) {
+        console.warn(
+          'Autoplay blocked:',
+          playError
+        );
 
         setIsSpeaking(false);
-        setStatus('Click Play to Hear');
-      });
+        setStatus('Click Play Voice');
+      }
     } catch (error) {
-      console.error('Audio initialization error:', error);
+      console.error(
+        'Audio initialization error:',
+        error
+      );
+
+      setIsSpeaking(false);
+      setStatus('Live');
     }
   };
 
-  // --------------------------------------------------
+  // ============================================================
+  // STOP VOICE
+  // ============================================================
+
+  const stopAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+
+    setIsSpeaking(false);
+    setStatus('Live');
+  };
+
+  // ============================================================
   // MICROPHONE
-  // --------------------------------------------------
+  // ============================================================
 
   const startListening = () => {
-    if (typeof window === 'undefined') return;
+    if (isListening) {
+      try {
+        recognitionRef.current?.stop();
+      } catch {}
+
+      setIsListening(false);
+      setStatus('Live');
+
+      return;
+    }
+
+    if (
+      typeof window === 'undefined'
+    ) {
+      return;
+    }
 
     const SpeechRecognition =
       (window as any).SpeechRecognition ||
       (window as any).webkitSpeechRecognition;
 
     if (!SpeechRecognition) {
-      alert('உங்கள் Browser-ல் Mic வசதி support இல்லை.');
+      alert(
+        'இந்த browser-ல் microphone speech recognition support இல்லை.'
+      );
+
       return;
     }
 
-    const recognition = new SpeechRecognition();
-
-    recognition.lang = 'ta-IN';
-    recognition.interimResults = false;
-    recognition.continuous = false;
-
-    recognition.onstart = () => {
-      setIsListening(true);
-      setStatus('Listening...');
-    };
-
-    recognition.onresult = (event: any) => {
-      const transcript =
-        event.results?.[0]?.[0]?.transcript || '';
-
-      if (!transcript.trim()) return;
-
-      setInput(transcript);
-
-      handleSend(transcript);
-    };
-
-    recognition.onerror = (event: any) => {
-      console.error('Speech recognition error:', event);
-
-      setIsListening(false);
-      setStatus('Live');
-    };
-
-    recognition.onend = () => {
-      setIsListening(false);
-
-      if (!isSpeaking) {
-        setStatus('Live');
-      }
-    };
-
     try {
+      const recognition =
+        new SpeechRecognition();
+
+      recognitionRef.current = recognition;
+
+      recognition.lang = 'ta-IN';
+
+      recognition.continuous = false;
+
+      recognition.interimResults = false;
+
+      recognition.maxAlternatives = 1;
+
+      // --------------------------------------------------------
+      // START
+      // --------------------------------------------------------
+
+      recognition.onstart = () => {
+        setIsListening(true);
+        setStatus('Listening...');
+      };
+
+      // --------------------------------------------------------
+      // RESULT
+      // --------------------------------------------------------
+
+      recognition.onresult = (
+        event: any
+      ) => {
+        const transcript =
+          event.results?.[0]?.[0]?.transcript;
+
+        if (!transcript) {
+          return;
+        }
+
+        setInput(transcript);
+
+        detectDressCommand(transcript);
+
+        handleSend(transcript);
+      };
+
+      // --------------------------------------------------------
+      // ERROR
+      // --------------------------------------------------------
+
+      recognition.onerror = (
+        event: any
+      ) => {
+        console.error(
+          'Speech recognition error:',
+          event
+        );
+
+        setIsListening(false);
+        setStatus('Live');
+      };
+
+      // --------------------------------------------------------
+      // END
+      // --------------------------------------------------------
+
+      recognition.onend = () => {
+        setIsListening(false);
+
+        if (!isSpeaking && !loading) {
+          setStatus('Live');
+        }
+      };
+
       recognition.start();
     } catch (error) {
-      console.error('Recognition start error:', error);
+      console.error(
+        'Microphone error:',
+        error
+      );
 
       setIsListening(false);
       setStatus('Live');
     }
   };
 
-  // --------------------------------------------------
+  // ============================================================
   // SEND MESSAGE
-  // --------------------------------------------------
+  // ============================================================
 
-  const handleSend = async (customText?: string) => {
-    const query = (customText ?? input).trim();
+  const handleSend = async (
+    customText?: string
+  ) => {
+    const query =
+      customText !== undefined
+        ? customText
+        : input;
 
-    if (!query || loading) return;
+    if (!query.trim()) {
+      return;
+    }
+
+    if (loading) {
+      return;
+    }
+
+    const cleanQuery =
+      query.trim();
+
+    // ----------------------------------------------------------
+    // CHECK DRESS COMMAND
+    // ----------------------------------------------------------
+
+    detectDressCommand(cleanQuery);
+
+    // ----------------------------------------------------------
+    // CLEAR INPUT
+    // ----------------------------------------------------------
 
     if (!customText) {
       setInput('');
     }
 
+    // ----------------------------------------------------------
+    // USER MESSAGE
+    // ----------------------------------------------------------
+
     const userMessage: Message = {
       role: 'user',
-      text: query
+      text: cleanQuery
     };
 
-    setMessages((prev) => [
+    setMessages(prev => [
       ...prev,
       userMessage
     ]);
 
     setLoading(true);
+
     setStatus('Thinking...');
 
     try {
-      const history = messages.map((message) => ({
-        sender:
-          message.role === 'user'
-            ? 'USER'
-            : 'SILK',
-        text: message.text
-      }));
+      // --------------------------------------------------------
+      // API
+      // --------------------------------------------------------
 
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message: query,
-          mode: 'girlfriend',
-          memory: '',
-          history
-        })
-      });
+      const res = await fetch(
+        '/api/chat',
+        {
+          method: 'POST',
 
-      const data = await response.json();
+          headers: {
+            'Content-Type':
+              'application/json'
+          },
 
-      if (!response.ok) {
+          body: JSON.stringify({
+            message: cleanQuery,
+
+            history: messages
+          })
+        }
+      );
+
+      // --------------------------------------------------------
+      // RESPONSE
+      // --------------------------------------------------------
+
+      if (!res.ok) {
         throw new Error(
-          data?.details ||
-          data?.error ||
-          'Server error'
+          `Server error: ${res.status}`
         );
       }
 
-      const reply =
-        data?.reply ||
-        'செல்லம்... சரியா கேட்கல. மறுபடியும் சொல்லுடா?';
+      const data =
+        await res.json();
 
-      setMessages((prev) => [
+      // --------------------------------------------------------
+      // REPLY
+      // --------------------------------------------------------
+
+      const reply =
+        typeof data.reply === 'string' &&
+        data.reply.trim()
+          ? data.reply.trim()
+          : 'ஹ்ம்ம் செல்லம்... கொஞ்சம் நேரம் கழிச்சு மறுபடியும் சொல்லு டா.';
+
+      // --------------------------------------------------------
+      // ASSISTANT MESSAGE
+      // --------------------------------------------------------
+
+      setMessages(prev => [
         ...prev,
         {
           role: 'assistant',
@@ -229,21 +515,32 @@ export default function SilkApp() {
         }
       ]);
 
-      if (data?.audio) {
+      // --------------------------------------------------------
+      // AUDIO
+      // --------------------------------------------------------
+
+      if (
+        data.audio &&
+        typeof data.audio === 'string'
+      ) {
         setLastAudio(data.audio);
-        playAudio(data.audio);
+
+        await playAudio(data.audio);
       } else {
         setStatus('Live');
       }
     } catch (error) {
-      console.error('Chat error:', error);
+      console.error(
+        'Chat error:',
+        error
+      );
 
-      setMessages((prev) => [
+      setMessages(prev => [
         ...prev,
         {
           role: 'assistant',
           text:
-            'என்ன செல்லம்... connection-la konjam issue. மறுபடியும் try பண்ணுடா.'
+            'அச்சோ செல்லம்... connection-la கொஞ்சம் issue. மறுபடியும் try பண்ணுடா.'
         }
       ]);
 
@@ -253,256 +550,564 @@ export default function SilkApp() {
     }
   };
 
-  // --------------------------------------------------
-  // CURRENT SILK IMAGE
-  // --------------------------------------------------
+  // ============================================================
+  // CURRENT AVATAR ANIMATION STATE
+  // ============================================================
 
-  const silkImage =
-    '/silk/silk-face-1.jpg.jpg';
+  const avatarClass = [
+    'silk-avatar',
 
-  // --------------------------------------------------
+    isSpeaking
+      ? 'silk-speaking'
+      : '',
+
+    isListening
+      ? 'silk-listening'
+      : '',
+
+    loading
+      ? 'silk-thinking'
+      : ''
+  ]
+    .filter(Boolean)
+    .join(' ');
+
+  // ============================================================
   // UI
-  // --------------------------------------------------
+  // ============================================================
 
   return (
-    <div className="silk-app">
+    <main
+      style={{
+        width: '100vw',
+        height: '100vh',
+        background:
+          'radial-gradient(circle at center, #18051f 0%, #08030c 45%, #020104 100%)',
+        color: '#fff',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        fontFamily:
+          'Arial, Helvetica, sans-serif'
+      }}
+    >
+      {/* ======================================================
+          HEADER
+      ======================================================= */}
 
-      {/* ================================================
-          ANIMATION STYLES
-      ================================================= */}
+      <header
+        style={{
+          height: '72px',
+          flexShrink: 0,
+          padding: '0 26px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent:
+            'space-between',
+          borderBottom:
+            '1px solid rgba(255,255,255,0.08)',
+          background:
+            'rgba(0,0,0,0.45)',
+          backdropFilter:
+            'blur(15px)',
+          zIndex: 50
+        }}
+      >
+        <div>
+          <div
+            style={{
+              fontSize: '24px',
+              fontWeight: 800,
+              letterSpacing: '3px',
+              color: '#ec4899',
+              textShadow:
+                '0 0 20px rgba(236,72,153,0.45)'
+            }}
+          >
+            PROJECT SILK
+          </div>
+
+          <div
+            style={{
+              marginTop: '3px',
+              fontSize: '11px',
+              color: '#a1a1aa',
+              letterSpacing: '0.5px'
+            }}
+          >
+            Live Interactive Companion
+          </div>
+        </div>
+
+        {/* LIVE STATUS */}
+
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding:
+              '8px 15px',
+            borderRadius: '25px',
+            background:
+              'rgba(255,255,255,0.07)',
+            border:
+              '1px solid rgba(255,255,255,0.12)',
+            fontSize: '12px'
+          }}
+        >
+          <span
+            style={{
+              width: '8px',
+              height: '8px',
+              borderRadius: '50%',
+              background:
+                isSpeaking
+                  ? '#ec4899'
+                  : isListening
+                  ? '#eab308'
+                  : '#22c55e',
+              boxShadow:
+                '0 0 10px currentColor'
+            }}
+          />
+
+          <span>
+            {status}
+          </span>
+        </div>
+      </header>
+
+      {/* ======================================================
+          MAIN AVATAR AREA
+      ======================================================= */}
+
+      <section
+        style={{
+          flex: 1,
+          minHeight: 0,
+          position: 'relative',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          overflow: 'hidden'
+        }}
+      >
+        {/* BACKGROUND GLOW */}
+
+        <div
+          style={{
+            position: 'absolute',
+            width: '550px',
+            height: '550px',
+            borderRadius: '50%',
+            background:
+              'radial-gradient(circle, rgba(236,72,153,0.18) 0%, rgba(139,92,246,0.08) 35%, transparent 72%)',
+            filter: 'blur(35px)',
+            pointerEvents: 'none'
+          }}
+        />
+
+        {/* SECONDARY GLOW */}
+
+        <div
+          style={{
+            position: 'absolute',
+            width: '250px',
+            height: '450px',
+            borderRadius: '50%',
+            background:
+              'radial-gradient(ellipse, rgba(168,85,247,0.10), transparent 70%)',
+            filter: 'blur(30px)',
+            pointerEvents: 'none'
+          }}
+        />
+
+        {/* ==================================================
+            FULL BODY SILK
+        =================================================== */}
+
+        <div
+          className={avatarClass}
+          style={{
+            position: 'relative',
+            height: 'calc(100% - 20px)',
+            width: 'min(520px, 72vw)',
+            maxWidth: '520px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'flex-end',
+            zIndex: 5,
+            transformOrigin:
+              'center bottom'
+          }}
+        >
+          {/* AVATAR GLOW */}
+
+          <div
+            style={{
+              position: 'absolute',
+              inset: '8% 5% 0 5%',
+              borderRadius:
+                '45% 45% 10% 10%',
+              background:
+                isSpeaking
+                  ? 'radial-gradient(ellipse, rgba(236,72,153,0.24), transparent 68%)'
+                  : 'radial-gradient(ellipse, rgba(139,92,246,0.13), transparent 68%)',
+              filter: 'blur(30px)',
+              transition:
+                'all 0.4s ease',
+              pointerEvents: 'none'
+            }}
+          />
+
+          {/* =================================================
+              MAIN FULL BODY IMAGE
+
+              THIS IS THE IMPORTANT PART
+
+              Reference images are NOT displayed here.
+          ================================================== */}
+
+          <img
+            src={getDressImage()}
+            alt="SILK virtual companion"
+            onError={handleImageError}
+            draggable={false}
+            style={{
+              position: 'relative',
+              zIndex: 2,
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+              objectPosition:
+                'center bottom',
+              userSelect: 'none',
+              pointerEvents: 'none',
+
+              filter:
+                isSpeaking
+                  ? 'brightness(1.05) drop-shadow(0 0 22px rgba(236,72,153,0.42))'
+                  : 'brightness(0.94) drop-shadow(0 0 15px rgba(139,92,246,0.20))',
+
+              transition:
+                'filter 0.35s ease'
+            }}
+          />
+
+          {/* =================================================
+              LIVE INDICATOR
+          ================================================== */}
+
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '8%',
+              left: '50%',
+              transform:
+                'translateX(-50%)',
+              zIndex: 10,
+              padding:
+                '7px 15px',
+              borderRadius: '20px',
+              background:
+                'rgba(0,0,0,0.72)',
+              border:
+                '1px solid rgba(255,255,255,0.12)',
+              backdropFilter:
+                'blur(10px)',
+              fontSize: '11px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '7px'
+            }}
+          >
+            <span
+              style={{
+                width: '7px',
+                height: '7px',
+                borderRadius: '50%',
+                background:
+                  isSpeaking
+                    ? '#ec4899'
+                    : '#22c55e',
+                boxShadow:
+                  '0 0 10px currentColor'
+              }}
+            />
+
+            {isSpeaking
+              ? 'Speaking'
+              : isListening
+              ? 'Listening'
+              : 'Live'}
+          </div>
+        </div>
+
+        {/* ==================================================
+            REPLAY VOICE
+        =================================================== */}
+
+        {lastAudio &&
+          !isSpeaking && (
+            <button
+              onClick={() =>
+                playAudio(lastAudio)
+              }
+              style={{
+                position: 'absolute',
+                right: '25px',
+                top: '25px',
+                zIndex: 30,
+                border: '1px solid rgba(255,255,255,0.15)',
+                borderRadius: '22px',
+                padding:
+                  '9px 15px',
+                background:
+                  'linear-gradient(135deg,#ec4899,#8b5cf6)',
+                color: '#fff',
+                fontWeight: 700,
+                fontSize: '12px',
+                cursor: 'pointer',
+                boxShadow:
+                  '0 0 20px rgba(236,72,153,0.3)'
+              }}
+            >
+              🔊 Play Voice
+            </button>
+          )}
+
+        {/* STOP VOICE */}
+
+        {isSpeaking && (
+          <button
+            onClick={stopAudio}
+            style={{
+              position: 'absolute',
+              right: '25px',
+              top: '25px',
+              zIndex: 30,
+              border:
+                '1px solid rgba(255,255,255,0.15)',
+              borderRadius: '22px',
+              padding:
+                '9px 15px',
+              background:
+                'rgba(0,0,0,0.65)',
+              color: '#fff',
+              fontWeight: 700,
+              fontSize: '12px',
+              cursor: 'pointer'
+            }}
+          >
+            ⏹ Stop
+          </button>
+        )}
+
+        {/* ==================================================
+            SUBTITLE
+        =================================================== */}
+
+        <div
+          ref={chatContainerRef}
+          style={{
+            position: 'absolute',
+            left: '50%',
+            bottom: '18px',
+            transform:
+              'translateX(-50%)',
+            width: 'min(760px, 88vw)',
+            maxHeight: '105px',
+            overflowY: 'auto',
+            zIndex: 20,
+            padding:
+              '11px 18px',
+            borderRadius: '18px',
+            background:
+              'rgba(0,0,0,0.70)',
+            border:
+              '1px solid rgba(255,255,255,0.13)',
+            backdropFilter:
+              'blur(14px)',
+            boxShadow:
+              '0 10px 40px rgba(0,0,0,0.35)'
+          }}
+        >
+          {messages.length > 0 && (
+            <div
+              style={{
+                textAlign: 'center',
+                fontSize: '14px',
+                lineHeight: 1.5,
+                color:
+                  messages[
+                    messages.length - 1
+                  ].role ===
+                  'assistant'
+                    ? '#f9a8d4'
+                    : '#e4e4e7'
+              }}
+            >
+              {
+                messages[
+                  messages.length - 1
+                ].text
+              }
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ======================================================
+          FOOTER
+      ======================================================= */}
+
+      <footer
+        style={{
+          flexShrink: 0,
+          padding:
+            '12px 22px 16px',
+          background:
+            'rgba(8,3,13,0.94)',
+          borderTop:
+            '1px solid rgba(255,255,255,0.08)',
+          backdropFilter:
+            'blur(18px)',
+          zIndex: 50
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px'
+          }}
+        >
+          {/* MIC */}
+
+          <button
+            onClick={startListening}
+            title="Talk to SILK"
+            style={{
+              width: '50px',
+              height: '50px',
+              flexShrink: 0,
+              borderRadius: '50%',
+              border: 'none',
+              background:
+                isListening
+                  ? '#eab308'
+                  : 'linear-gradient(135deg,#ec4899,#8b5cf6)',
+              color: '#fff',
+              fontSize: '19px',
+              cursor: 'pointer',
+              boxShadow:
+                isListening
+                  ? '0 0 25px rgba(234,179,8,0.55)'
+                  : '0 0 20px rgba(236,72,153,0.20)',
+              transition:
+                'all 0.25s ease'
+            }}
+          >
+            {isListening
+              ? '⏹'
+              : '🎤'}
+          </button>
+
+          {/* INPUT */}
+
+          <input
+            type="text"
+            value={input}
+            onChange={e =>
+              setInput(
+                e.target.value
+              )
+            }
+            onKeyDown={e => {
+              if (
+                e.key === 'Enter'
+              ) {
+                handleSend();
+              }
+            }}
+            placeholder="பேசுடா செல்லம்... அல்லது type பண்ணு"
+            disabled={loading}
+            style={{
+              flex: 1,
+              minWidth: 0,
+              height: '48px',
+              padding:
+                '0 18px',
+              borderRadius: '25px',
+              border:
+                '1px solid rgba(255,255,255,0.13)',
+              outline: 'none',
+              background:
+                'rgba(255,255,255,0.06)',
+              color: '#fff',
+              fontSize: '14px',
+              boxSizing:
+                'border-box'
+            }}
+          />
+
+          {/* SEND */}
+
+          <button
+            onClick={() =>
+              handleSend()
+            }
+            disabled={
+              loading ||
+              !input.trim()
+            }
+            style={{
+              height: '44px',
+              padding:
+                '0 22px',
+              borderRadius: '23px',
+              border: 'none',
+              background:
+                loading ||
+                !input.trim()
+                  ? '#3f3f46'
+                  : '#ec4899',
+              color: '#fff',
+              fontWeight: 700,
+              fontSize: '13px',
+              cursor:
+                loading ||
+                !input.trim()
+                  ? 'not-allowed'
+                  : 'pointer',
+              flexShrink: 0
+            }}
+          >
+            {loading
+              ? '...'
+              : 'Send'}
+          </button>
+        </div>
+      </footer>
+
+      {/* ======================================================
+          ANIMATION CSS
+      ======================================================= */}
 
       <style jsx>{`
 
-        * {
-          box-sizing: border-box;
-        }
+        /* -----------------------------------------------
+           NATURAL BODY BREATHING
+        ------------------------------------------------ */
 
-        .silk-app {
-          position: relative;
-          width: 100vw;
-          height: 100vh;
-          overflow: hidden;
-
-          background:
-            radial-gradient(
-              circle at 50% 45%,
-              rgba(236,72,153,0.12),
-              transparent 38%
-            ),
-            #05020a;
-
-          color: white;
-
-          font-family:
-            Inter,
-            system-ui,
-            -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
-            sans-serif;
-
-          display: flex;
-          flex-direction: column;
-        }
-
-        /* ----------------------------------------------
-           HEADER
-        ---------------------------------------------- */
-
-        .header {
-          position: relative;
-          z-index: 20;
-
-          height: 64px;
-
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-
-          padding: 0 20px;
-
-          background:
-            linear-gradient(
-              to bottom,
-              rgba(0,0,0,0.88),
-              rgba(0,0,0,0.35)
-            );
-
-          border-bottom:
-            1px solid rgba(255,255,255,0.08);
-        }
-
-        .logo {
-          font-size: 18px;
-          font-weight: 800;
-          letter-spacing: 2px;
-
-          color: #ec4899;
-
-          text-shadow:
-            0 0 15px rgba(236,72,153,0.55);
-        }
-
-        .subtitle {
-          margin-top: 3px;
-
-          font-size: 10px;
-          color: #888;
-          letter-spacing: 0.5px;
-        }
-
-        .live-indicator {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-
-          padding: 7px 13px;
-
-          border-radius: 20px;
-
-          background:
-            rgba(255,255,255,0.07);
-
-          border:
-            1px solid rgba(255,255,255,0.10);
-
-          font-size: 11px;
-        }
-
-        .live-dot {
-          width: 8px;
-          height: 8px;
-
-          border-radius: 50%;
-
-          background: #22c55e;
-
-          box-shadow:
-            0 0 10px #22c55e;
-
+        .silk-avatar {
           animation:
-            livePulse 2s infinite;
+            silkBreathing
+            4.8s
+            ease-in-out
+            infinite;
         }
-
-        @keyframes livePulse {
-          0%,100% {
-            opacity: .55;
-            transform: scale(.85);
-          }
-
-          50% {
-            opacity: 1;
-            transform: scale(1.15);
-          }
-        }
-
-        /* ----------------------------------------------
-           MAIN STAGE
-        ---------------------------------------------- */
-
-        .stage {
-          position: relative;
-
-          flex: 1;
-
-          min-height: 0;
-
-          display: flex;
-
-          justify-content: center;
-          align-items: center;
-
-          overflow: hidden;
-
-          background:
-            radial-gradient(
-              ellipse at center,
-              rgba(236,72,153,0.08),
-              transparent 55%
-            );
-        }
-
-        /* ----------------------------------------------
-           BACKGROUND GLOW
-        ---------------------------------------------- */
-
-        .ambient-glow {
-          position: absolute;
-
-          width: 480px;
-          height: 480px;
-
-          border-radius: 50%;
-
-          background:
-            radial-gradient(
-              circle,
-              rgba(236,72,153,0.20),
-              rgba(139,92,246,0.08),
-              transparent 70%
-            );
-
-          filter: blur(45px);
-
-          animation:
-            ambientMove 8s ease-in-out infinite;
-        }
-
-        @keyframes ambientMove {
-
-          0%,100% {
-            transform:
-              scale(.95)
-              translateY(5px);
-          }
-
-          50% {
-            transform:
-              scale(1.08)
-              translateY(-8px);
-          }
-        }
-
-        /* ----------------------------------------------
-           SILK BODY / IMAGE
-        ---------------------------------------------- */
-
-        .silk-wrapper {
-          position: relative;
-
-          width: min(92vw, 520px);
-          height: calc(100% - 20px);
-
-          display: flex;
-
-          align-items: center;
-          justify-content: center;
-
-          z-index: 5;
-        }
-
-        .silk-body {
-          position: relative;
-
-          height: 96%;
-          width: 100%;
-
-          display: flex;
-
-          justify-content: center;
-          align-items: center;
-
-          transform-origin:
-            50% 82%;
-
-          animation:
-            silkBreathing 4.8s ease-in-out infinite;
-        }
-
-        /*
-          Subtle idle movement.
-          This gives the photo a soft "alive" feeling.
-        */
 
         @keyframes silkBreathing {
 
@@ -512,22 +1117,10 @@ export default function SilkApp() {
               scale(1);
           }
 
-          25% {
-            transform:
-              translateY(-3px)
-              scale(1.006);
-          }
-
           50% {
             transform:
-              translateY(-6px)
-              scale(1.012);
-          }
-
-          75% {
-            transform:
-              translateY(-3px)
-              scale(1.006);
+              translateY(-5px)
+              scale(1.008);
           }
 
           100% {
@@ -535,727 +1128,145 @@ export default function SilkApp() {
               translateY(0px)
               scale(1);
           }
+
         }
 
-        /*
-          Extra speaking movement.
-        */
+        /* -----------------------------------------------
+           SPEAKING
+        ------------------------------------------------ */
 
-        .speaking .silk-body {
+        .silk-speaking {
           animation:
-            silkSpeaking 2.7s ease-in-out infinite;
+            silkSpeaking
+            2.4s
+            ease-in-out
+            infinite;
         }
 
         @keyframes silkSpeaking {
 
-          0%,100% {
+          0% {
             transform:
-              translateY(0)
-              scale(1);
+              translateY(0px)
+              scale(1)
+              rotate(0deg);
           }
 
           25% {
             transform:
-              translateY(-4px)
-              scale(1.009)
-              rotate(-0.15deg);
+              translateY(-3px)
+              scale(1.006)
+              rotate(-0.25deg);
           }
 
           50% {
             transform:
-              translateY(-7px)
-              scale(1.014)
-              rotate(0.15deg);
+              translateY(-6px)
+              scale(1.012)
+              rotate(0.25deg);
           }
 
           75% {
             transform:
               translateY(-3px)
-              scale(1.007)
-              rotate(-0.1deg);
+              scale(1.006)
+              rotate(-0.15deg);
           }
+
+          100% {
+            transform:
+              translateY(0px)
+              scale(1)
+              rotate(0deg);
+          }
+
         }
 
-        /*
-          Listening = gentle attentive movement
-        */
+        /* -----------------------------------------------
+           LISTENING
+        ------------------------------------------------ */
 
-        .listening .silk-body {
+        .silk-listening {
           animation:
-            silkListening 3.5s ease-in-out infinite;
+            silkListening
+            2.8s
+            ease-in-out
+            infinite;
         }
 
         @keyframes silkListening {
 
-          0%,100% {
+          0% {
             transform:
-              translateY(0)
+              translateY(0px)
               rotate(0deg);
           }
 
-          35% {
+          30% {
             transform:
               translateY(-3px)
-              rotate(-0.25deg);
+              rotate(-0.4deg);
           }
 
-          70% {
+          60% {
             transform:
               translateY(-2px)
-              rotate(0.25deg);
-          }
-        }
-
-        .silk-image {
-          position: relative;
-
-          height: 100%;
-          width: 100%;
-
-          object-fit: contain;
-
-          display: block;
-
-          user-select: none;
-
-          -webkit-user-drag: none;
-
-          filter:
-            brightness(0.97)
-            contrast(1.03)
-            saturate(1.04)
-            drop-shadow(
-              0 20px 45px
-              rgba(0,0,0,0.65)
-            );
-
-          transition:
-            filter .4s ease;
-        }
-
-        .speaking .silk-image {
-
-          filter:
-            brightness(1.05)
-            contrast(1.04)
-            saturate(1.08)
-            drop-shadow(
-              0 0 28px
-              rgba(236,72,153,0.45)
-            );
-        }
-
-        /* ----------------------------------------------
-           LIGHT SWEEP
-        ---------------------------------------------- */
-
-        .light-sweep {
-          position: absolute;
-
-          width: 130%;
-          height: 20%;
-
-          left: -15%;
-          top: 35%;
-
-          background:
-            linear-gradient(
-              90deg,
-              transparent,
-              rgba(255,255,255,0.035),
-              transparent
-            );
-
-          transform:
-            rotate(-8deg);
-
-          pointer-events: none;
-
-          animation:
-            lightSweep 7s ease-in-out infinite;
-        }
-
-        @keyframes lightSweep {
-
-          0% {
-            transform:
-              translateX(-40%)
-              rotate(-8deg);
-            opacity: 0;
-          }
-
-          25% {
-            opacity: .8;
-          }
-
-          55% {
-            opacity: .8;
+              rotate(0.4deg);
           }
 
           100% {
             transform:
-              translateX(40%)
-              rotate(-8deg);
-            opacity: 0;
+              translateY(0px)
+              rotate(0deg);
           }
+
         }
 
-        /* ----------------------------------------------
-           SPEAKING RING
-        ---------------------------------------------- */
+        /* -----------------------------------------------
+           THINKING
+        ------------------------------------------------ */
 
-        .speaking-ring {
-
-          position: absolute;
-
-          width: 310px;
-          height: 310px;
-
-          border-radius: 50%;
-
-          border:
-            1px solid
-            rgba(236,72,153,0.18);
-
-          opacity: 0;
-
-          pointer-events: none;
-        }
-
-        .speaking .speaking-ring {
-
-          opacity: 1;
-
+        .silk-thinking {
           animation:
-            speakingRing 2s ease-out infinite;
+            silkThinking
+            3.2s
+            ease-in-out
+            infinite;
         }
 
-        @keyframes speakingRing {
+        @keyframes silkThinking {
 
           0% {
-            transform: scale(.75);
-            opacity: .6;
-          }
-
-          100% {
-            transform: scale(1.35);
-            opacity: 0;
-          }
-        }
-
-        /* ----------------------------------------------
-           STATUS
-        ---------------------------------------------- */
-
-        .status {
-
-          position: absolute;
-
-          left: 50%;
-          bottom: 125px;
-
-          transform:
-            translateX(-50%);
-
-          z-index: 15;
-
-          padding: 7px 15px;
-
-          border-radius: 22px;
-
-          background:
-            rgba(0,0,0,0.72);
-
-          backdrop-filter:
-            blur(10px);
-
-          border:
-            1px solid
-            rgba(255,255,255,0.12);
-
-          font-size: 11px;
-
-          white-space: nowrap;
-        }
-
-        .status-dot {
-
-          display: inline-block;
-
-          width: 7px;
-          height: 7px;
-
-          border-radius: 50%;
-
-          margin-right: 7px;
-
-          background: #22c55e;
-        }
-
-        .status-speaking .status-dot {
-          background: #ec4899;
-
-          box-shadow:
-            0 0 10px
-            rgba(236,72,153,.9);
-        }
-
-        .status-listening .status-dot {
-          background: #eab308;
-
-          box-shadow:
-            0 0 10px
-            rgba(234,179,8,.9);
-        }
-
-        /* ----------------------------------------------
-           SUBTITLE
-        ---------------------------------------------- */
-
-        .subtitle-box {
-
-          position: absolute;
-
-          left: 50%;
-          bottom: 20px;
-
-          transform:
-            translateX(-50%);
-
-          width: min(90%, 620px);
-
-          max-height: 90px;
-
-          overflow-y: auto;
-
-          padding: 11px 16px;
-
-          border-radius: 16px;
-
-          background:
-            rgba(0,0,0,0.78);
-
-          backdrop-filter:
-            blur(12px);
-
-          border:
-            1px solid
-            rgba(255,255,255,0.10);
-
-          z-index: 20;
-
-          text-align: center;
-        }
-
-        .subtitle-text {
-
-          margin: 0;
-
-          font-size: 14px;
-
-          line-height: 1.45;
-
-          color: #f9a8d4;
-        }
-
-        /* ----------------------------------------------
-           PLAY BUTTON
-        ---------------------------------------------- */
-
-        .play-button {
-
-          position: absolute;
-
-          top: 20px;
-          right: 20px;
-
-          z-index: 30;
-
-          border: none;
-
-          padding: 9px 15px;
-
-          border-radius: 22px;
-
-          color: white;
-
-          background:
-            linear-gradient(
-              135deg,
-              #ec4899,
-              #8b5cf6
-            );
-
-          font-weight: 700;
-
-          font-size: 12px;
-
-          cursor: pointer;
-
-          box-shadow:
-            0 0 20px
-            rgba(236,72,153,.30);
-        }
-
-        .play-button:hover {
-          transform: translateY(-1px);
-        }
-
-        /* ----------------------------------------------
-           FOOTER
-        ---------------------------------------------- */
-
-        .footer {
-
-          position: relative;
-
-          z-index: 30;
-
-          display: flex;
-
-          align-items: center;
-
-          gap: 10px;
-
-          padding: 10px 16px;
-
-          min-height: 68px;
-
-          background:
-            rgba(10,5,20,0.96);
-
-          border-top:
-            1px solid
-            rgba(255,255,255,0.08);
-        }
-
-        .mic-button {
-
-          width: 46px;
-          height: 46px;
-
-          flex-shrink: 0;
-
-          border: none;
-
-          border-radius: 50%;
-
-          color: white;
-
-          font-size: 18px;
-
-          cursor: pointer;
-
-          background:
-            linear-gradient(
-              135deg,
-              #ec4899,
-              #8b5cf6
-            );
-
-          box-shadow:
-            0 0 15px
-            rgba(236,72,153,.25);
-        }
-
-        .mic-button.listening-button {
-
-          background: #eab308;
-
-          box-shadow:
-            0 0 20px
-            rgba(234,179,8,.55);
-
-          animation:
-            micPulse 1.2s infinite;
-        }
-
-        @keyframes micPulse {
-
-          0%,100% {
-            transform: scale(1);
+            transform:
+              translateY(0px);
           }
 
           50% {
-            transform: scale(1.08);
+            transform:
+              translateY(-3px);
           }
+
+          100% {
+            transform:
+              translateY(0px);
+          }
+
         }
 
-        .text-input {
-
-          flex: 1;
-
-          height: 44px;
-
-          min-width: 0;
-
-          padding:
-            0 17px;
-
-          border-radius: 24px;
-
-          border:
-            1px solid
-            rgba(255,255,255,0.14);
-
-          outline: none;
-
-          background:
-            rgba(255,255,255,0.07);
-
-          color: white;
-
-          font-size: 14px;
-        }
-
-        .text-input::placeholder {
-          color: #777;
-        }
-
-        .text-input:focus {
-          border-color:
-            rgba(236,72,153,.55);
-
-          box-shadow:
-            0 0 15px
-            rgba(236,72,153,.10);
-        }
-
-        .send-button {
-
-          height: 42px;
-
-          padding:
-            0 20px;
-
-          border: none;
-
-          border-radius: 22px;
-
-          background:
-            linear-gradient(
-              135deg,
-              #ec4899,
-              #a855f7
-            );
-
-          color: white;
-
-          font-weight: 800;
-
-          cursor: pointer;
-        }
-
-        .send-button:disabled {
-          opacity: .45;
-          cursor: not-allowed;
-        }
-
-        /* ----------------------------------------------
+        /* -----------------------------------------------
            MOBILE
-        ---------------------------------------------- */
+        ------------------------------------------------ */
 
-        @media (max-width: 600px) {
+        @media (max-width: 700px) {
 
-          .header {
-            height: 58px;
-            padding: 0 14px;
+          header {
+            padding-left: 15px !important;
+            padding-right: 15px !important;
           }
 
-          .logo {
-            font-size: 16px;
-          }
-
-          .silk-wrapper {
-            width: 100%;
-          }
-
-          .status {
-            bottom: 118px;
-          }
-
-          .subtitle-box {
-            bottom: 14px;
-            max-height: 80px;
-          }
-
-          .footer {
-            padding:
-              9px 10px;
-          }
-
-          .mic-button {
-            width: 42px;
-            height: 42px;
-          }
-
-          .send-button {
-            padding:
-              0 15px;
-          }
         }
 
       `}</style>
-
-      {/* ================================================
-          HEADER
-      ================================================= */}
-
-      <header className="header">
-
-        <div>
-          <div className="logo">
-            PROJECT SILK
-          </div>
-
-          <div className="subtitle">
-            Live Interactive Companion
-          </div>
-        </div>
-
-        <div className="live-indicator">
-
-          <span className="live-dot" />
-
-          <span>
-            {status}
-          </span>
-
-        </div>
-
-      </header>
-
-      {/* ================================================
-          MAIN STAGE
-      ================================================= */}
-
-      <main
-        className={`
-          stage
-          ${isSpeaking ? 'speaking' : ''}
-          ${isListening ? 'listening' : ''}
-        `}
-      >
-
-        <div className="ambient-glow" />
-
-        <div className="speaking-ring" />
-
-        <div className="silk-wrapper">
-
-          <div className="silk-body">
-
-            <img
-              src={silkImage}
-              alt="SILK"
-              className="silk-image"
-              draggable={false}
-            />
-
-            <div className="light-sweep" />
-
-          </div>
-
-        </div>
-
-        {/* STATUS */}
-
-        <div
-          className={`
-            status
-            ${isSpeaking ? 'status-speaking' : ''}
-            ${isListening ? 'status-listening' : ''}
-          `}
-        >
-
-          <span className="status-dot" />
-
-          {status}
-
-        </div>
-
-        {/* REPLAY VOICE */}
-
-        {lastAudio && !isSpeaking && (
-
-          <button
-            className="play-button"
-            onClick={() => playAudio(lastAudio)}
-          >
-            🔊 Play Voice
-          </button>
-
-        )}
-
-        {/* SUBTITLE */}
-
-        <div
-          ref={chatContainerRef}
-          className="subtitle-box"
-        >
-
-          {messages.length > 0 && (
-
-            <p className="subtitle-text">
-
-              {
-                messages[
-                  messages.length - 1
-                ].text
-              }
-
-            </p>
-
-          )}
-
-        </div>
-
-      </main>
-
-      {/* ================================================
-          FOOTER
-      ================================================= */}
-
-      <footer className="footer">
-
-        <button
-          className={`
-            mic-button
-            ${isListening ? 'listening-button' : ''}
-          `}
-          onClick={startListening}
-          title="Speak to SILK"
-        >
-          🎤
-        </button>
-
-        <input
-          className="text-input"
-          type="text"
-          placeholder="பேசுடா செல்லம்... அல்லது Type பண்ணு"
-          value={input}
-          onChange={(event) =>
-            setInput(event.target.value)
-          }
-          onKeyDown={(event) => {
-
-            if (event.key === 'Enter') {
-              handleSend();
-            }
-
-          }}
-        />
-
-        <button
-          className="send-button"
-          onClick={() => handleSend()}
-          disabled={loading}
-        >
-          {loading ? '...' : 'Send'}
-        </button>
-
-      </footer>
-
-    </div>
+    </main>
   );
 }
