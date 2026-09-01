@@ -76,21 +76,20 @@ User Memory Context: ${memory ? memory : "None provided"}`;
         parts: [{ text: item.text }],
       }));
 
-    const chat = ai.chats.create({
-      model: "gemini-1.5-flash",
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: [
+        ...formattedHistory,
+        { role: "user", parts: [{ text: message.trim() }] }
+      ],
       config: {
         systemInstruction,
         temperature: 0.85,
         topP: 0.95,
       },
-      history: formattedHistory,
     });
 
-    const result = await chat.sendMessage({
-      message: message.trim(),
-    });
-
-    const responseText = result.text;
+    const responseText = response.text;
 
     if (!responseText) {
       throw new Error("Received empty text payload from Gemini model.");
