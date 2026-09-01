@@ -88,9 +88,19 @@ Guidelines:
     });
   } catch (error: any) {
     console.error('Chat API Error:', error);
-    return NextResponse.json(
-      { error: error.message || 'Internal Server Error' },
-      { status: 500 }
-    );
+    const errorMessage = error.message || '';
+    
+    // Gracefully handle rate limits (429 / Quota exhaustion) and other API errors without dumping raw JSON
+    if (errorMessage.includes('429') || errorMessage.includes('RESOURCE_EXHAUSTED') || errorMessage.includes('quota')) {
+      return NextResponse.json({
+        reply: 'செல்லம், இப்போதைக்கு AI கோட்டா (Quota) முடிஞ்சிருச்சு. கொஞ்சம் நேரம் கழிச்சு ட்ரை பண்ணுங்கடா!',
+        audio: null
+      });
+    }
+
+    return NextResponse.json({
+      reply: 'செல்லம்... தற்காலிகமாக இணைப்பில் சிறு பிரச்சனை. சிறிது நேரம் கழித்து பேசலாம்.',
+      audio: null
+    });
   }
 }
