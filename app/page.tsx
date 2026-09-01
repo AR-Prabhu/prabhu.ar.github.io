@@ -20,16 +20,15 @@ export default function SilkPage() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const chatTranscriptRef = useRef<HTMLDivElement | null>(null);
 
-  // Realistic Outfit Image Mapping
-  const outfitImages: Record<string, string> = {
-    normal: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
-    traditional: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=800&q=80",
-    modern: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80",
-    night: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80"
+  // Full-Body Realistic Character Models
+  const fullBodyOutfits: Record<string, string> = {
+    normal: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1000&q=80",
+    traditional: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=1000&q=80",
+    modern: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1000&q=80",
+    night: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1000&q=80"
   };
 
   useEffect(() => {
-    // Load local storage data
     const savedHistory = localStorage.getItem('silk_chat_history');
     if (savedHistory) {
       try { setChatHistory(JSON.parse(savedHistory)); } catch (e) {}
@@ -41,7 +40,6 @@ export default function SilkPage() {
       setUserMemory('User preferred language: Tanglish.');
     }
 
-    // Speech recognition setup
     const windowObj = window as any;
     const SpeechRecognition = windowObj.SpeechRecognition || windowObj.webkitSpeechRecognition;
     if (SpeechRecognition) {
@@ -80,31 +78,25 @@ export default function SilkPage() {
     setStatusText('Memory Saved');
   };
 
-  // ENHANCED REAL-LIVE VOICE ENGINE (Tanglish / Indian Voice Optimization)
   const speakText = (text: string) => {
     if (!('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
 
-    // Clean Tanglish for smoother pronunciation
     const cleanedText = text
       .replace(/chellam/gi, "chellaam")
       .replace(/da/gi, "daa")
       .replace(/di/gi, "dee");
 
     const utterance = new SpeechSynthesisUtterance(cleanedText);
-    
-    // Fine-tuned rate & pitch for realistic warmth
-    utterance.rate = 0.90; 
-    utterance.pitch = 1.18; 
+    utterance.rate = 0.90;
+    utterance.pitch = 1.18;
 
     const voices = window.speechSynthesis.getVoices();
-    
-    // Priority sequence: Indian Female Voices -> High-quality Natural Female Voices
     const naturalVoice = voices.find(v => 
       (v.lang.includes('ta') || v.lang.includes('en-IN')) && 
       (v.name.includes('Natural') || v.name.includes('Google') || v.name.includes('Female'))
     ) || voices.find(v => 
-      v.name.includes('Samantha') || v.name.includes('Zira') || v.name.includes('Victoria') || v.name.includes('Google US English')
+      v.name.includes('Samantha') || v.name.includes('Zira') || v.name.includes('Google US English')
     );
 
     if (naturalVoice) utterance.voice = naturalVoice;
@@ -202,89 +194,96 @@ export default function SilkPage() {
   };
 
   return (
-    <div style={{ height: '100vh', width: '100vw', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative', fontFamily: 'sans-serif', backgroundColor: '#09040e', color: '#FFF' }}>
+    <div style={{ height: '100vh', width: '100vw', overflow: 'hidden', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', position: 'relative', fontFamily: 'sans-serif', backgroundColor: '#05020a', color: '#FFF' }}>
       
-      {/* Dynamic Keyframe Animations */}
+      {/* Real Live Idle & Motion CSS Animations */}
       <style jsx global>{`
-        @keyframes pulseGlow {
-          0% { box-shadow: 0 0 25px rgba(168, 85, 247, 0.3); transform: scale(1); }
-          50% { box-shadow: 0 0 45px rgba(236, 72, 153, 0.6); transform: scale(1.02); }
-          100% { box-shadow: 0 0 25px rgba(168, 85, 247, 0.3); transform: scale(1); }
+        @keyframes liveBreathing {
+          0% { transform: scale(1) translateY(0px); }
+          50% { transform: scale(1.015) translateY(-4px); }
+          100% { transform: scale(1) translateY(0px); }
         }
-        @keyframes thinkPulse {
-          0% { opacity: 0.6; }
-          50% { opacity: 1; }
-          100% { opacity: 0.6; }
+        @keyframes liveTalkPulse {
+          0% { filter: drop-shadow(0 0 15px rgba(236, 72, 153, 0.4)); transform: scale(1.01); }
+          50% { filter: drop-shadow(0 0 35px rgba(236, 72, 153, 0.8)); transform: scale(1.025); }
+          100% { filter: drop-shadow(0 0 15px rgba(236, 72, 153, 0.4)); transform: scale(1.01); }
         }
-        .avatar-speaking {
-          animation: pulseGlow 1.8s infinite ease-in-out;
-          border-color: #ec4899 !important;
+        .full-body-idle {
+          animation: liveBreathing 4s infinite ease-in-out;
         }
-        .avatar-thinking {
-          animation: thinkPulse 1s infinite ease-in-out;
-          border-color: #eab308 !important;
+        .full-body-speaking {
+          animation: liveTalkPulse 1.2s infinite ease-in-out;
         }
       `}</style>
 
       {/* Header Bar */}
-      <div style={{ position: 'relative', zIndex: 10, display: 'flex', justifyContent: 'space-between', padding: '16px', background: 'linear-gradient(to bottom, rgba(11, 5, 18, 0.95), transparent)' }}>
-        <select value={currentMode} onChange={(e) => setCurrentMode(e.target.value)} style={{ background: 'rgba(0,0,0,0.6)', color: '#FFF', border: '1px solid rgba(255,255,255,0.2)', padding: '8px 14px', borderRadius: '20px', fontSize: '12px', outline: 'none' }}>
+      <div style={{ position: 'relative', zIndex: 20, display: 'flex', justifyContent: 'space-between', padding: '16px', background: 'linear-gradient(to bottom, rgba(5, 2, 10, 0.9), transparent)' }}>
+        <select value={currentMode} onChange={(e) => setCurrentMode(e.target.value)} style={{ background: 'rgba(0,0,0,0.6)', color: '#FFF', border: '1px solid rgba(255,255,255,0.2)', padding: '8px 14px', borderRadius: '20px', fontSize: '12px', outline: 'none', backdropFilter: 'blur(8px)' }}>
           <option value="girlfriend">Girlfriend Mode</option>
           <option value="wife">Wife Companion</option>
           <option value="bestie">Bestie Mode</option>
           <option value="support">Emotional Support</option>
         </select>
 
-        <select value={currentOutfit} onChange={(e) => setCurrentOutfit(e.target.value)} style={{ background: 'rgba(0,0,0,0.6)', color: '#FFF', border: '1px solid rgba(255,255,255,0.2)', padding: '8px 14px', borderRadius: '20px', fontSize: '12px', outline: 'none' }}>
+        <select value={currentOutfit} onChange={(e) => setCurrentOutfit(e.target.value)} style={{ background: 'rgba(0,0,0,0.6)', color: '#FFF', border: '1px solid rgba(255,255,255,0.2)', padding: '8px 14px', borderRadius: '20px', fontSize: '12px', outline: 'none', backdropFilter: 'blur(8px)' }}>
           <option value="normal">Normal Style</option>
           <option value="traditional">Traditional Saree</option>
           <option value="modern">Modern Chic</option>
           <option value="night">Night Loungewear</option>
         </select>
 
-        <button onClick={() => setShowMemoryModal(true)} style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.2)', color: '#FFF', padding: '8px 12px', borderRadius: '20px', fontSize: '12px', cursor: 'pointer' }}>
+        <button onClick={() => setShowMemoryModal(true)} style={{ background: 'rgba(0,0,0,0.6)', border: '1px solid rgba(255,255,255,0.2)', color: '#FFF', padding: '8px 12px', borderRadius: '20px', fontSize: '12px', cursor: 'pointer', backdropFilter: 'blur(8px)' }}>
           🧠 Memory
         </button>
       </div>
 
-      {/* Fullscreen Stage (PHOTOREALISTIC AVATAR UI) */}
-      <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
+      {/* FULL BODY REAL-FEEL STAGE */}
+      <div style={{ position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center', alignItems: 'flex-end', zIndex: 1, overflow: 'hidden' }}>
         <div 
-          className={`relative rounded-full transition-all duration-500 ${avatarState === 'speaking' ? 'avatar-speaking' : avatarState === 'thinking' ? 'avatar-thinking' : ''}`}
+          className={avatarState === 'speaking' ? 'full-body-speaking' : 'full-body-idle'}
           style={{
-            width: '260px',
-            height: '260px',
-            borderRadius: '50%',
-            overflow: 'hidden',
-            border: '4px solid rgba(168, 85, 247, 0.5)',
-            boxShadow: '0 0 35px rgba(168, 85, 247, 0.4)',
-            position: 'relative'
+            height: '92vh',
+            width: '100%',
+            maxWidth: '520px',
+            position: 'relative',
+            display: 'flex',
+            justify: 'center',
+            transition: 'all 0.5s ease'
           }}
         >
           <img 
-            src={outfitImages[currentOutfit] || outfitImages.normal} 
-            alt="SILK Realistic Companion"
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            src={fullBodyOutfits[currentOutfit] || fullBodyOutfits.normal} 
+            alt="SILK Full Body Companion"
+            style={{
+              height: '100%',
+              width: '100%',
+              objectFit: 'cover',
+              objectPosition: 'top center',
+              maskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)'
+            }}
           />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(88, 28, 135, 0.3), transparent)', pointerEvents: 'none' }} />
+          {/* Ambient Studio Lighting Glow */}
+          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 50% 30%, transparent 40%, #05020a 95%)', pointerEvents: 'none' }} />
         </div>
 
-        <div style={{ marginTop: '24px', background: 'rgba(0, 0, 0, 0.65)', padding: '8px 18px', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.15)', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+        {/* Floating Status Pill */}
+        <div style={{ position: 'absolute', top: '80px', background: 'rgba(0, 0, 0, 0.65)', backdropFilter: 'blur(10px)', padding: '6px 16px', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.15)', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '8px', zIndex: 10 }}>
           <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: statusState === 'busy' ? '#EAB308' : statusState === 'speaking' ? '#EC4899' : '#22C55E' }} />
           <span>{statusText}</span>
         </div>
       </div>
 
       {/* Camera Preview */}
-      <div style={{ display: cameraActive ? 'block' : 'none', position: 'relative', zIndex: 10, alignSelf: 'flex-end', marginRight: '16px', width: '105px', height: '145px', borderRadius: '18px', overflow: 'hidden', border: '2px solid rgba(255, 255, 255, 0.35)', background: '#000' }}>
+      <div style={{ display: cameraActive ? 'block' : 'none', position: 'relative', zIndex: 20, alignSelf: 'flex-end', marginRight: '16px', width: '105px', height: '145px', borderRadius: '18px', overflow: 'hidden', border: '2px solid rgba(255, 255, 255, 0.35)', background: '#000' }}>
         <video ref={videoRef} autoPlay playsInline muted style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scaleX(-1)' }} />
       </div>
 
-      {/* Transcript */}
+      {/* Floating Chat Overlay (APK Style UI) */}
       {showTranscript && (
-        <div ref={chatTranscriptRef} style={{ position: 'relative', zIndex: 10, margin: '0 16px 8px 16px', height: '170px', background: 'rgba(0, 0, 0, 0.55)', backdropFilter: 'blur(10px)', borderRadius: '20px', padding: '14px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', border: '1px solid rgba(255, 255, 255, 0.12)' }}>
+        <div ref={chatTranscriptRef} style={{ position: 'relative', zIndex: 20, margin: '0 16px 8px 16px', height: '150px', background: 'rgba(5, 2, 10, 0.45)', backdropFilter: 'blur(12px)', borderRadius: '20px', padding: '14px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
           {chatHistory.map((m, i) => (
-            <div key={i} style={{ fontSize: '13px', lineHeight: '1.45', maxWidth: '88%', padding: '10px 14px', borderRadius: '14px', wordBreak: 'break-word', alignSelf: m.sender === 'USER' ? 'flex-end' : 'flex-start', background: m.sender === 'USER' ? 'linear-gradient(135deg, #7E22CE, #9333EA)' : 'rgba(255, 255, 255, 0.15)', color: m.sender === 'USER' ? '#FFF' : '#F3E8FF' }}>
+            <div key={i} style={{ fontSize: '13px', lineHeight: '1.45', maxWidth: '85%', padding: '10px 14px', borderRadius: '14px', wordBreak: 'break-word', alignSelf: m.sender === 'USER' ? 'flex-end' : 'flex-start', background: m.sender === 'USER' ? 'linear-gradient(135deg, #7E22CE, #9333EA)' : 'rgba(255, 255, 255, 0.18)', color: m.sender === 'USER' ? '#FFF' : '#F3E8FF' }}>
               {m.text}
             </div>
           ))}
@@ -292,9 +291,9 @@ export default function SilkPage() {
       )}
 
       {/* Bottom Controls */}
-      <div style={{ position: 'relative', zIndex: 10, padding: '16px', background: 'linear-gradient(to top, rgba(11, 5, 18, 0.98) 85%, transparent)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div style={{ position: 'relative', zIndex: 20, padding: '16px', background: 'linear-gradient(to top, rgba(5, 2, 10, 0.98) 75%, transparent)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
         <div style={{ display: 'flex', gap: '10px' }}>
-          <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSendText()} placeholder="Talk in Tanglish, Tamil, or English..." style={{ flex: 1, background: 'rgba(255, 255, 255, 0.1)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '26px', padding: '12px 20px', color: '#FFF', fontSize: '14px', outline: 'none' }} />
+          <input type="text" value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSendText()} placeholder="Talk in Tanglish, Tamil, or English..." style={{ flex: 1, background: 'rgba(255, 255, 255, 0.12)', border: '1px solid rgba(255, 255, 255, 0.2)', borderRadius: '26px', padding: '12px 20px', color: '#FFF', fontSize: '14px', outline: 'none', backdropFilter: 'blur(8px)' }} />
           <button onClick={() => handleSendText()} style={{ background: 'linear-gradient(135deg, #9333EA, #C084FC)', color: '#FFF', border: 'none', padding: '0 22px', borderRadius: '26px', fontWeight: 600, fontSize: '14px', cursor: 'pointer' }}>Send</button>
         </div>
 
