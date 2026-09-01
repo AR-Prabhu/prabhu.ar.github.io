@@ -42,7 +42,7 @@ Core Character & Behavior:
 
 export async function POST(req: NextRequest) {
   try {
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.process ? process.env.GEMINI_API_KEY : undefined;
 
     if (!apiKey) {
       return NextResponse.json(
@@ -76,7 +76,7 @@ User Memory Context: ${memory ? memory : "None provided"}`;
         parts: [{ text: item.text }],
       }));
 
-    // Updated model name according to Google GenAI standards
+    // Updated active model string
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: [
