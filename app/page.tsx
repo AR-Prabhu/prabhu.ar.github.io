@@ -17,7 +17,7 @@ const LOOKS = [
 
 const MOODS = ['Happy', 'Shy', 'Excited', 'Calm', 'Loving'];
 
-export default function SilkCompanionPage() {
+export default function SilkApp() {
   const [messages, setMessages] = useState<Message[]>([
     { role: 'model', text: 'வணக்கம் செல்லம்... நான் தான் SILK. சொல்லுடா என்ன பேசணும்?' }
   ]);
@@ -321,7 +321,7 @@ export default function SilkCompanionPage() {
           <input
             type="text"
             value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
+            onChange={(e) =>setInputMessage(e.target.value)}
             placeholder="பேசுடா செல்லம்... அல்லது type பண்ணு..."
             className="flex-1 bg-transparent border-none outline-none px-4 text-sm text-pink-100 placeholder-pink-500/50"
           />
