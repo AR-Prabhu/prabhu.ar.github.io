@@ -89,7 +89,7 @@ section{ position:relative; padding:105px 0; background:#ffffff; }
     z-index:-3;
     background-size:cover;
     background-position:center;
-    opacity:0.95; /* Crystal 4K clarity */
+    opacity:0.95;
     transform:scale(1.03);
     transition:opacity 0.8s ease, background-image 0.8s ease, transform 10s ease;
     animation:heroZoom 10s linear infinite;
@@ -104,13 +104,12 @@ section{ position:relative; padding:105px 0; background:#ffffff; }
     position:absolute;
     inset:0;
     z-index:-2;
-    /* Ultra-refined transparent gradient so background industrial plants look high-end 4K */
     background:linear-gradient(90deg, rgba(255,255,255,.45) 0%, rgba(255,255,255,.25) 50%, rgba(255,255,255,.15) 100%);
 }
 
 .hero-grid{
     display:grid;
-    grid-template-columns:minmax(0,1.35fr) minmax(350px,.75fr);
+    grid-template-columns:minmax(0,1.35fr) minmax(360px,.75fr);
     gap:70px;
     align-items:center;
 }
@@ -130,7 +129,7 @@ section{ position:relative; padding:105px 0; background:#ffffff; }
     letter-spacing:-2.5px; 
     color:var(--navy); 
     margin-bottom:22px; 
-    text-shadow: 0 2px 12px rgba(255,255,255,0.95), 0 0 25px rgba(255,255,255,0.8); /* Ultra crisp text glow */
+    text-shadow: 0 2px 12px rgba(255,255,255,0.95), 0 0 25px rgba(255,255,255,0.8);
 }
 .hero-title span{ 
     display:block; 
@@ -158,7 +157,7 @@ section{ position:relative; padding:105px 0; background:#ffffff; }
 .btn-outline{ background:rgba(255,255,255,0.9); color:var(--navy); border:1px solid var(--border); backdrop-filter:blur(6px); font-weight:700; }
 .btn-outline:hover{ background:var(--gold); color:#ffffff; border-color:var(--gold); transform:translateY(-2px); }
 
-/* POSITIONING CARD WITH SQUARE PROFILE PHOTO */
+/* POSITIONING CARD WITH BIGGER RECTANGULAR PHOTO & NO BORDER */
 .position-card{
     padding:35px; background:rgba(255,255,255,0.95); backdrop-filter:blur(16px); border:2px solid var(--border); border-radius:16px;
     box-shadow:0 20px 40px rgba(0,0,0,.12); text-align:center; transition:.4s ease;
@@ -166,8 +165,8 @@ section{ position:relative; padding:105px 0; background:#ffffff; }
 .position-card:hover{ transform:translateY(-5px); border-color:var(--gold); box-shadow:0 25px 50px rgba(217,119,6,0.25); }
 
 .profile-photo{
-    width:100%; max-width:240px; height:240px; object-fit:cover; border-radius:12px;
-    border:3px solid var(--gold); margin:0 auto 24px auto; box-shadow:0 12px 30px rgba(217,119,6,0.25); background:#ffffff;
+    width:100%; max-width:280px; height:340px; object-fit:cover; border-radius:10px;
+    border:none; margin:0 auto 24px auto; box-shadow:0 12px 30px rgba(0,0,0,0.15); background:#ffffff;
 }
 
 .card-label{ color:var(--gold-dark); font-size:11px; font-weight:800; letter-spacing:1.8px; text-transform:uppercase; margin-bottom:18px; }
@@ -316,7 +315,7 @@ footer strong{ color:var(--gold); }
     .hero-title span{ font-size:20px; }
     .hero-description{ font-size:14px; }
     .section-title{ font-size:28px; }
-    .profile-photo { max-width: 180px; height: 180px; }
+    .profile-photo { max-width: 220px; height: 270px; }
     .industry-grid, .highlight-grid{ grid-template-columns:1fr; }
     .contact-grid{ grid-template-columns:1fr; }
     .contact-buttons{ flex-direction:column; }
@@ -377,9 +376,9 @@ footer strong{ color:var(--gold); }
                 </div>
             </div>
 
-            <!-- POSITIONING CARD WITH SQUARE PROFILE PHOTO -->
+            <!-- POSITIONING CARD WITH BIGGER RECTANGULAR PROFILE PHOTO -->
             <div class="position-card reveal">
-                <img src="assets/511.png" alt="Prabhu A R - Senior Quantity Surveyor" class="profile-photo">
+                <img src="assets/513.png" alt="Prabhu A R - Senior Quantity Surveyor" class="profile-photo">
                 <div class="card-label">Professional Positioning</div>
                 <ul class="position-list">
                     <li>
@@ -853,7 +852,6 @@ let currentImage = 0;
 
 heroBg.style.backgroundImage = `url("${heroImages[0]}")`;
 
-/* 5 seconds auto slideshow interval for background project photos */
 setInterval(() => {
     currentImage++;
     if(currentImage >= heroImages.length){
