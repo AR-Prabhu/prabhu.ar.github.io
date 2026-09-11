@@ -327,11 +327,11 @@ section{
     transform:scale(1.03);
 
     transition:
-        opacity 1.2s ease,
-        background-image 1.2s ease,
-        transform 5s ease;
+        opacity 1.5s ease,
+        background-image 1.5s ease,
+        transform 15s ease;
 
-    animation:heroZoom 5s linear infinite;
+    animation:heroZoom 15s linear infinite;
 }
 
 @keyframes heroZoom{
@@ -340,7 +340,7 @@ section{
     }
 
     100%{
-        transform:scale(1.08);
+        transform:scale(1.10);
     }
 }
 
@@ -353,9 +353,9 @@ section{
     background:
         linear-gradient(
             90deg,
-            rgba(4,18,35,.85) 0%,
-            rgba(5,23,43,.70) 42%,
-            rgba(5,22,41,.55) 100%
+            rgba(4,18,35,.96) 0%,
+            rgba(5,23,43,.86) 42%,
+            rgba(5,22,41,.72) 100%
         );
 }
 
@@ -368,8 +368,8 @@ section{
     background:
         linear-gradient(
             180deg,
-            rgba(4,14,27,.05),
-            rgba(4,14,27,.35)
+            rgba(4,14,27,.15),
+            rgba(4,14,27,.55)
         );
 }
 
@@ -513,7 +513,6 @@ section{
     height:92px;
 
     object-fit:cover;
-    object-position: top center;
 
     border-radius:50%;
 
@@ -3082,9 +3081,9 @@ footer strong{
 <script>
 
 /* =========================================================
-   HERO BACKGROUND SLIDESHOW & VISIBILITY ENHANCEMENTS
+   HERO BACKGROUND SLIDESHOW
    6 PROJECT IMAGES
-   Changes every 5 seconds with optimized overlays for clarity
+   Changes every 15 seconds
    ========================================================= */
 
 const heroImages = [
@@ -3109,7 +3108,7 @@ heroBg.style.backgroundImage =
     `url("${heroImages[0]}")`;
 
 
-/* Change image every 5 seconds (5000ms) */
+/* Change image every 15 seconds */
 
 setInterval(() => {
 
@@ -3119,7 +3118,7 @@ setInterval(() => {
         currentImage = 0;
     }
 
-    heroBg.style.opacity = "0.25";
+    heroBg.style.opacity = "0";
 
     setTimeout(() => {
 
@@ -3128,9 +3127,9 @@ setInterval(() => {
 
         heroBg.style.opacity = "1";
 
-    },500);
+    },700);
 
-},5000);
+},15000);
 
 
 
