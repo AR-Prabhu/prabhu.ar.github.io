@@ -73,7 +73,7 @@ section{ position:relative; padding:105px 0; background:#ffffff; }
 .section-title{ font-family:"Manrope",sans-serif; color:var(--navy); font-size:38px; line-height:1.15; letter-spacing:-1.2px; margin-bottom:15px; }
 .section-description{ max-width:780px; color:var(--text-muted); font-size:16px; line-height:1.75; margin-bottom:42px; }
 
-/* HERO WITH PROJECT BACKGROUND SLIDESHOW (FIXED) */
+/* HERO WITH HIGH CLARITY PROJECT BACKGROUND SLIDESHOW */
 .hero{
     min-height:760px;
     display:flex;
@@ -81,7 +81,7 @@ section{ position:relative; padding:105px 0; background:#ffffff; }
     padding-top:130px;
     padding-bottom:80px;
     overflow:hidden;
-    background:transparent; /* Removed solid white so background images show properly */
+    background:transparent;
 }
 
 .hero-bg{
@@ -90,7 +90,7 @@ section{ position:relative; padding:105px 0; background:#ffffff; }
     z-index:-3;
     background-size:cover;
     background-position:center;
-    opacity:0.65; /* High clarity for project photos */
+    opacity:0.85; /* Increased clarity so project photos pop out brilliantly */
     transform:scale(1.03);
     transition:opacity 0.8s ease, background-image 0.8s ease, transform 10s ease;
     animation:heroZoom 10s linear infinite;
@@ -105,8 +105,8 @@ section{ position:relative; padding:105px 0; background:#ffffff; }
     position:absolute;
     inset:0;
     z-index:-2;
-    /* Clean light overlay to make text readable while keeping project images vivid */
-    background:linear-gradient(90deg, rgba(255,255,255,.88) 0%, rgba(255,255,255,.83) 50%, rgba(255,255,255,.75) 100%);
+    /* Ultra-light soft gradient so background images remain crystal clear */
+    background:linear-gradient(90deg, rgba(255,255,255,.78) 0%, rgba(255,255,255,.70) 50%, rgba(255,255,255,.62) 100%);
 }
 
 .hero-grid{
@@ -116,10 +116,19 @@ section{ position:relative; padding:105px 0; background:#ffffff; }
     align-items:center;
 }
 
-.hero-content{ max-width:850px; }
-.hero-title{ font-family:"Manrope",sans-serif; font-size:clamp(50px,5.2vw,74px); line-height:.98; letter-spacing:-3px; color:var(--navy); margin-bottom:25px; }
-.hero-title span{ display:block; color:var(--gold-dark); font-size:clamp(28px,2.8vw,40px); line-height:1.12; letter-spacing:-1.2px; margin-top:20px; }
-.hero-description{ max-width:780px; color:var(--text-muted); font-size:16px; line-height:1.75; margin-bottom:28px; }
+.hero-content{ 
+    max-width:850px; 
+    background: rgba(255, 255, 255, 0.75); /* Soft glass effect for text clarity over bright background */
+    padding: 35px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+}
+
+.hero-title{ font-family:"Manrope",sans-serif; font-size:clamp(46px,4.8vw,68px); line-height:.98; letter-spacing:-2.5px; color:var(--navy); margin-bottom:22px; }
+.hero-title span{ display:block; color:var(--gold-dark); font-size:clamp(26px,2.6vw,38px); line-height:1.12; letter-spacing:-1px; margin-top:16px; }
+.hero-description{ max-width:780px; color:var(--text); font-size:15px; line-height:1.75; margin-bottom:25px; font-weight: 500; }
 .hero-buttons{ display:flex; gap:12px; flex-wrap:wrap; }
 
 .btn{ display:inline-flex; align-items:center; justify-content:center; gap:9px; min-height:48px; padding:0 19px; border-radius:6px; font-size:13px; font-weight:700; transition:.3s ease; cursor:pointer; }
@@ -130,10 +139,10 @@ section{ position:relative; padding:105px 0; background:#ffffff; }
 
 /* POSITIONING CARD WITH SQUARE PROFILE PHOTO */
 .position-card{
-    padding:35px; background:#ffffff; border:2px solid var(--border); border-radius:16px;
-    box-shadow:0 20px 40px rgba(0,0,0,.06); text-align:center; transition:.4s ease;
+    padding:35px; background:rgba(255,255,255,0.92); backdrop-filter:blur(10px); border:2px solid var(--border); border-radius:16px;
+    box-shadow:0 20px 40px rgba(0,0,0,.08); text-align:center; transition:.4s ease;
 }
-.position-card:hover{ transform:translateY(-5px); border-color:var(--gold); box-shadow:0 25px 50px rgba(217,119,6,0.12); }
+.position-card:hover{ transform:translateY(-5px); border-color:var(--gold); box-shadow:0 25px 50px rgba(217,119,6,0.15); }
 
 .profile-photo{
     width:100%; max-width:240px; height:240px; object-fit:cover; border-radius:12px;
@@ -272,8 +281,8 @@ footer strong{ color:var(--gold); }
     .container{ width:min(100% - 38px, var(--max-width)); }
     section{ padding:80px 0; }
     .hero{ min-height:auto; padding-top:120px; }
-    .hero-title{ font-size:46px; letter-spacing:-2px; }
-    .hero-title span{ font-size:26px; }
+    .hero-title{ font-size:42px; letter-spacing:-2px; }
+    .hero-title span{ font-size:24px; }
     .stats-grid{ grid-template-columns:repeat(2,1fr); gap:20px; }
     .stat{ border-right:none; }
     .digital-grid, .competency-grid, .projects-grid{ grid-template-columns:1fr; }
@@ -282,8 +291,8 @@ footer strong{ color:var(--gold); }
 }
 
 @media(max-width:550px){
-    .hero-title{ font-size:38px; }
-    .hero-title span{ font-size:22px; }
+    .hero-title{ font-size:34px; }
+    .hero-title span{ font-size:20px; }
     .hero-description{ font-size:14px; }
     .section-title{ font-size:28px; }
     .profile-photo { max-width: 180px; height: 180px; }
@@ -832,7 +841,7 @@ setInterval(() => {
     heroBg.style.opacity = "0";
     setTimeout(() => {
         heroBg.style.backgroundImage = `url("${heroImages[currentImage]}")`;
-        heroBg.style.opacity = "0.65";
+        heroBg.style.opacity = "0.85";
     }, 400);
 }, 5000);
 
