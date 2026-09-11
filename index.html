@@ -1,155 +1,178 @@
-from pathlib import Path
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prabhu A R | Senior Quantity Surveyor | Commercial Controls | EPC / EPCM / FEED</title>
 
-src = Path("/mnt/data/Prabhu_AR_Portfolio_Senior_QS_FINAL_V8_STATS_FIXED.html")
-out = Path("/mnt/data/Prabhu_AR_Portfolio_Senior_QS_FINAL_V9_FONT_POLISH_FINAL.html")
+<meta name="description" content="Prabhu A R — Senior Quantity Surveyor focused on Commercial Controls, Cost Management, Quantity Verification, Progress Measurement and Digital QS across Oil & Gas, Energy, Building and Infrastructure projects.">
+<meta name="keywords" content="Senior Quantity Surveyor, Commercial Controls, Oil & Gas, EPC, EPCM,  ADNOC, FIDIC, Cost Control, Quantity Verification, Digital QS, MRICS Pathway">
+<meta name="author" content="Prabhu A R">
 
-html = src.read_text(encoding="utf-8")
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-# Final typography/color polish:
-# Keep the colorful section backgrounds, but restore strong readable typography
-# inside all light/white cards and the light project section.
-polish = r"""
-<style id="final-font-polish">
-/* =========================================================
-   FINAL FONT POLISH — readable premium corporate contrast
-   ========================================================= */
-
-/* Light Project Portfolio section */
-.projects .section-title,
-.projects .section-description {
-    color: #10243d !important;
-}
-.projects .section-description {
-    color: #5b6d84 !important;
-}
-.projects .eyebrow {
-    color: #b07d25 !important;
-}
-
-/* White Experience cards — never use white text on white */
-.experience .timeline-item h3,
-.experience .timeline-item h4,
-.experience .timeline-item .timeline-company,
-.experience .timeline-item .role-intro,
-.experience .timeline-item .role-intro strong,
-.experience .timeline-item .responsibility h4,
-.experience .timeline-item .responsibility p {
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-.experience .timeline-item h3 {
-    color: #10243d !important;
-    font-family: "Space Grotesk", sans-serif !important;
-    font-size: 27px !important;
-    font-weight: 700 !important;
-}
-.experience .timeline-item .timeline-company {
-    color: #263b55 !important;
-    font-weight: 700 !important;
-}
-.experience .timeline-item .role-intro {
-    color: #5a6d84 !important;
-}
-.experience .timeline-item .role-intro strong {
-    color: #10243d !important;
-}
-.experience .timeline-item .responsibility {
-    background: #f8fbff !important;
-}
-.experience .timeline-item .responsibility h4 {
-    color: #10243d !important;
-}
-.experience .timeline-item .responsibility p {
-    color: #5b6d84 !important;
+<style>
+:root{
+    --bg-main:#eef2f6;
+    --bg-surface:#fffdf9;
+    --bg-card:#ffffff;
+    --bg-ivory:#f8f4ec;
+    --navy:#07152d;
+    --navy-light:#142744;
+    --gold:#b28a4a;
+    --gold-dark:#775b2e;
+    --gold-light:#f8f2e8;
+    --text:#17243a;
+    --text-muted:#596b84;
+    --border:rgba(178, 138, 74, 0.30);
+    --border-subtle:rgba(23, 36, 58, 0.13);
+    --max-width:1280px;
 }
 
-/* Project cards — stronger hierarchy */
-.projects .project-card .project-content h3 {
-    color: #10243d !important;
+*{ margin:0; padding:0; box-sizing:border-box; }
+html{ scroll-behavior:smooth; scroll-padding-top:88px; }
+body{ font-family:"Plus Jakarta Sans",sans-serif; background:var(--bg-main); color:var(--text); font-size:16px; line-height:1.75; overflow-x:hidden; }
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; }
+
+::-webkit-scrollbar{ width:8px; }
+::-webkit-scrollbar-track{ background:#e2e8f0; }
+::-webkit-scrollbar-thumb{ background:var(--gold); border-radius:4px; }
+
+/* NAVIGATION */
+.navbar{
+    position:fixed; top:0; left:0; width:100%; height:82px; z-index:1000;
+    background:rgba(8,18,37,0.96); backdrop-filter:blur(16px);
+    border-bottom:1px solid rgba(163, 130, 76, 0.2); box-shadow:0 4px 20px rgba(0,0,0,0.15);
 }
-.projects .project-card .project-content p {
-    color: #5b6d84 !important;
+.nav-inner{ max-width:var(--max-width); height:100%; margin:auto; padding:0 32px; display:flex; align-items:center; justify-content:space-between; gap:28px; }
+
+/* SOPHISTICATED CUSTOM PAR GEOMETRIC MONOGRAM */
+.logo{ display:flex; align-items:center; gap:14px; text-decoration:none; }
+.par-monogram-svg {
+    width: 56px;
+    height: 56px;
+    display: block;
 }
-.projects .project-card .project-location {
-    color: #087f8c !important;
-    font-weight: 800 !important;
+.logo-text-group {
+    display: flex;
+    flex-direction: column;
 }
-.projects .project-card .project-number {
-    color: #1464d2 !important;
+.logo-name {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #ffffff;
+    line-height: 1.1;
+}
+.logo-title {
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-top: 2px;
 }
 
-/* Career development white panel */
-.career-growth-box .career-growth-content h3 {
-    color: #10243d !important;
+.nav-links{ display:flex; align-items:center; gap:24px; }
+.nav-links a{ position:relative; color:#cbd5e1; font-size:13.5px; font-weight:600; letter-spacing:0.3px; transition:0.3s ease; }
+.nav-links a:hover, .nav-links a.active{ color:var(--gold); }
+.nav-links a::after{ content:""; position:absolute; left:0; bottom:-6px; width:0; height:2px; background:var(--gold); transition:0.3s ease; }
+.nav-links a:hover::after, .nav-links a.active::after{ width:100%; }
+.nav-actions{ display:flex; gap:12px; }
+.nav-btn{ padding:9px 18px; border:1px solid var(--gold); border-radius:2px; color:var(--gold); background:rgba(163,130,76,0.08); font-size:13px; font-weight:700; letter-spacing:0.5px; transition:0.3s ease; }
+.nav-btn:hover{ background:var(--gold); color:#ffffff; }
+.menu-btn{ display:none; border:1px solid rgba(255,255,255,0.2); background:transparent; color:#ffffff; padding:8px 12px; border-radius:2px; }
+
+/* SECTION RYTHM & SPACING */
+section{ position:relative; padding:112px 0; background:var(--bg-main); border-bottom:1px solid var(--border-subtle); }
+section:nth-of-type(even){ background:var(--bg-surface); }
+.profile{background:var(--bg-ivory)!important;}
+.competencies{background:#f2f5f8!important;}
+.digital{background:#fffdf9!important;}
+.ai-qs{background:#eef3f8!important;}
+.experience-section{background:#f1f4f7!important;}
+.projects-section{background:#fffdf9!important;}
+.container{ width:min(var(--max-width), calc(100% - 72px)); margin:auto; }
+.eyebrow{ display:flex; align-items:center; gap:14px; margin-bottom:14px; color:var(--gold-dark); font-size:12.5px; font-weight:800; letter-spacing:2px; text-transform:uppercase; font-family:"Space Grotesk",sans-serif; }
+.eyebrow::before{ content:""; width:32px; height:2px; background:var(--gold); }
+.section-title{ font-family:"Space Grotesk",sans-serif; color:var(--navy); font-size:43px; line-height:1.15; letter-spacing:-0.5px; margin-bottom:16px; font-weight:700; }
+.section-description{ max-width:900px; color:var(--text-muted); font-size:17px; line-height:1.8; margin-bottom:50px; font-weight:500; }
+
+/* HERO SECTION WITH DYNAMIC ROTATING BACKGROUND */
+.hero{
+    min-height:860px; display:flex; align-items:center; padding-top:140px; padding-bottom:90px; overflow:hidden; position:relative; background:var(--navy); border-bottom:none;
 }
-.career-growth-box .career-growth-content p {
-    color: #5b6d84 !important;
+.hero-bg-slider {
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
 }
-.career-growth-box .roadmap-step h4,
-.career-growth-box .roadmap-step p {
-    color: #10243d !important;
+.hero-slide {
+    position: absolute; inset: 0; background-size: cover; background-position: center;
+    opacity: 0; transition: opacity 1.8s ease-in-out;
+    animation: kenBurns 15s infinite alternate ease-in-out;
 }
-.career-growth-box .roadmap-step p {
-    color: #5b6d84 !important;
+.hero-slide.active { opacity: 0.3; }
+
+@keyframes kenBurns {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.06); }
 }
 
-/* Digital QS white cards */
-.digital-card h3,
-.digital-card p {
-    color: #10243d !important;
-}
-.digital-card p {
-    color: #5b6d84 !important;
+.hero-overlay {
+    position: absolute; inset: 0; z-index: 1; background: linear-gradient(115deg, rgba(4,15,32,0.95) 0%, rgba(7,21,43,0.86) 52%, rgba(10,28,54,0.76) 100%);
 }
 
-/* AI × QS white cards */
-.ai-qs-card h3 {
-    color: #10243d !important;
+.hero-grid{ position:relative; z-index:2; display:grid; grid-template-columns:minmax(0,1.35fr) minmax(380px,.75fr); gap:50px; align-items:center; }
+.hero-content{ max-width:840px; }
+.hero-title{ 
+    font-family:"Space Grotesk",sans-serif; font-size:clamp(42px, 4.2vw, 62px); line-height:1.1; letter-spacing:-1px; color:#ffffff; margin-bottom:22px; font-weight:700;
 }
-.ai-qs-card p {
-    color: #5b6d84 !important;
+.hero-title span{ 
+    display:block; color:#e2c48e; font-size:clamp(18px, 1.9vw, 24px); line-height:1.35; letter-spacing:0.5px; margin-top:16px; font-weight:600; text-transform: uppercase;
 }
+.hero-description{ max-width:750px; color:#cbd5e1; font-size:17px; line-height:1.8; margin-bottom:32px; font-weight:400; }
+.hero-buttons{ display:flex; gap:14px; flex-wrap:wrap; }
 
-/* Contact white card */
-.contact-card .contact-name {
-    color: #10243d !important;
-}
-.contact-card .contact-role {
-    color: #1464d2 !important;
-}
-.contact-card .contact-location,
-.contact-card .contact-item span {
-    color: #5b6d84 !important;
-}
+.btn{ display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:50px; padding:0 26px; border-radius:2px; font-size:14px; font-weight:700; letter-spacing:0.5px; transition:0.3s ease; cursor:pointer; }
+.btn-primary{ background:var(--gold); color:#ffffff; border:1px solid var(--gold); box-shadow:0 4px 16px rgba(163,130,76,0.3); }
+.btn-primary:hover{ background:var(--gold-dark); border-color:var(--gold-dark); transform:translateY(-1px); }
+.btn-outline{ background:rgba(255,255,255,0.03); color:#ffffff; border:1px solid rgba(255,255,255,0.2); font-weight:600; }
+.btn-outline:hover{ background:rgba(255,255,255,0.08); border-color:var(--gold); transform:translateY(-1px); }
 
-/* Make all reveal states safe: no accidental faded/white text after scroll */
-.projects .reveal,
-.experience .timeline-item .reveal,
-.experience .timeline-item,
-.career-growth-box,
-.digital-card,
-.ai-qs-card,
-.project-card {
-    visibility: visible;
+/* POSITIONING CARD */
+.position-card{
+    padding:36px; background:rgba(13,26,50,0.85); border:1px solid rgba(163,130,76,0.35); border-radius:4px;
+    box-shadow:0 24px 48px rgba(0,0,0,0.25); backdrop-filter:blur(12px);
 }
+.profile-photo{ width:100%; max-width:240px; height:320px; object-fit:cover; border-radius:2px; margin:0 auto 20px auto; box-shadow:0 8px 24px rgba(0,0,0,0.2); border:1px solid rgba(163,130,76,0.3); }
+.card-label{ color:#e2c48e; font-size:11.5px; font-weight:800; letter-spacing:2px; text-transform:uppercase; margin-bottom:18px; text-align:center; font-family:"Space Grotesk",sans-serif; }
+.position-list{ list-style:none; text-align:left; }
+.position-list li{ display:flex; align-items:flex-start; gap:12px; color:#e2e8f0; font-size:13.5px; line-height:1.6; margin-bottom:12px; font-weight:500; }
+.position-list i{ color:var(--gold); margin-top:3px; }
 
-/* Mobile */
-@media (max-width: 640px) {
-    .experience .timeline-item h3 {
-        font-size: 23px !important;
-    }
-    .projects .section-title {
-        font-size: 34px !important;
-    }
-}
-</style>
-"""
+/* STATS */
+.stats{ background:var(--navy); border-top:1px solid rgba(163,130,76,0.2); border-bottom:1px solid rgba(163,130,76,0.2); padding:40px 0; }
+.stats-grid{ display:grid; grid-template-columns:repeat(4,1fr); }
+.stat{ padding:4px 28px; border-right:1px solid rgba(255,255,255,0.08); }
+.stat:last-child{ border-right:none; }
+.stat-number{ color:#ffffff; font-family:"Space Grotesk",sans-serif; font-size:36px; font-weight:700; line-height:1.2; margin-bottom:4px; letter-spacing:-0.5px; }
+.stat-number span { color: var(--gold); }
+.stat-label{ color:#cbd5e1; font-size:15px; font-weight:700; }
+.stat-note{ color:#94a3b8; font-size:13px; margin-top:2px; font-weight:400; }
 
-html = html.replace("</head>", polish + "\n</head>", 1)
-out.write_text(html, encoding="utf-8")
+/* PROFILE STATEMENT */
+.statement{ margin-top:30px; padding:28px 32px; border-left:3px solid var(--gold); background:var(--gold-light); color:var(--navy); font-size:17px; line-height:1.8; font-weight:500; border-radius:0 4px 4px 0; border-top:1px solid var(--border); border-right:1px solid var(--border); border-bottom:1px solid var(--border); }
 
-print(f"Created: {out}")
-print(f"Size: {out.stat().st_size:,} bytes")
-print("Final font polish inserted successfully.")
-print("Project section title/description forced dark.")
-print("Experience white-card typography forced dark.")
+/* COMMERCIAL COMPETENCIES (TIER-1 EPC GRID) */
+.competency-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+.competency-card{ padding:32px; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:4px; box-shadow:0 4px 16px rgba(0,0,0,0.02); transition:0.3s ease; position:relative; overflow:hidden; }
+.competency-card::before{ content:""; position:absolute; top:0; left:0; width:100%; height:2px; background:transparent; transition:0.3s ease; }
+.competency-card:hover{ border-color:var(--border); box-shadow:0 12px 32px rgba(0,0,0,0.05); transform:translateY(-2px); }
+.competency-card:hover::before{ background:var(--gold); }
+.competency-icon{ width:48px; height:48px; display:flex; align-items:center; justify-content:center; color:var(--gold-dark); background:var(--gold-light); border:1px solid var(--border); border-radius:2px; margin-bottom:20px; font-size:18px; }
+.competency-card h3{ color:var(--navy); font-family:"Space Grotesk",sans-serif; font-size:
