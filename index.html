@@ -278,7 +278,7 @@ section{
     z-index:-3;
     background-size:cover;
     background-position:center;
-    opacity:0.25; /* Clear visibility of project background photos */
+    opacity:0.5; /* Increased visibility so background project photos are clearly seen */
     transform:scale(1.03);
     transition:opacity 1s ease, background-image 1s ease, transform 10s ease;
     animation:heroZoom 10s linear infinite;
@@ -293,8 +293,8 @@ section{
     position:absolute;
     inset:0;
     z-index:-2;
-    /* Soft light overlay so background project images are clearly visible */
-    background:linear-gradient(90deg, rgba(255,255,255,.92) 0%, rgba(255,255,255,.88) 50%, rgba(255,255,255,.82) 100%);
+    /* Balanced white overlay so text is readable while background project images remain very clear */
+    background:linear-gradient(90deg, rgba(255,255,255,.88) 0%, rgba(255,255,255,.84) 50%, rgba(255,255,255,.78) 100%);
 }
 
 .hero-grid{
@@ -379,7 +379,7 @@ section{
     transform:translateY(-2px);
 }
 
-/* POSITIONING CARD WITH LARGE PROFILE PHOTO */
+/* POSITIONING CARD WITH SQUARE PROFILE PHOTO */
 
 .position-card{
     padding:35px;
@@ -398,14 +398,15 @@ section{
 }
 
 .profile-photo{
-    /* LARGE CLEAR PROFILE PHOTO */
-    width:220px;
-    height:220px;
+    /* SQUARE / RECTANGLE PHOTO WITH ROUNDED CORNERS (NO MORE CIRCLE) */
+    width:100%;
+    max-width:240px;
+    height:240px;
     object-fit:cover;
-    border-radius:50%;
-    border:5px solid var(--gold);
+    border-radius:12px;
+    border:3px solid var(--gold);
     margin:0 auto 24px auto;
-    box-shadow:0 12px 30px rgba(217,119,6,0.25);
+    box-shadow:0 12px 30px rgba(217,119,6,0.2);
     background:#ffffff;
 }
 
@@ -1037,7 +1038,7 @@ footer strong{
     .hero-title span{ font-size:22px; }
     .hero-description{ font-size:14px; }
     .section-title{ font-size:28px; }
-    .profile-photo { width: 180px; height: 180px; }
+    .profile-photo { max-width: 180px; height: 180px; }
     .industry-grid, .highlight-grid{ grid-template-columns:1fr; }
     .contact-grid{ grid-template-columns:1fr; }
     .contact-buttons{ flex-direction:column; }
@@ -1098,9 +1099,9 @@ footer strong{
                 </div>
             </div>
 
-            <!-- POSITIONING CARD WITH CLEAR PROFILE PHOTO -->
+            <!-- POSITIONING CARD WITH SQUARE PROFILE PHOTO -->
             <div class="position-card reveal">
-                <img src="assets/1777210120513.png" alt="Prabhu A R - Senior Quantity Surveyor" class="profile-photo">
+                <img src="assets/513.png" alt="Prabhu A R - Senior Quantity Surveyor" class="profile-photo">
                 <div class="card-label">Professional Positioning</div>
                 <ul class="position-list">
                     <li>
@@ -1583,7 +1584,7 @@ setInterval(() => {
     heroBg.style.opacity = "0";
     setTimeout(() => {
         heroBg.style.backgroundImage = `url("${heroImages[currentImage]}")`;
-        heroBg.style.opacity = "0.25";
+        heroBg.style.opacity = "0.5";
     }, 500);
 }, 5000);
 
