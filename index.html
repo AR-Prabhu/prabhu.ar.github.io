@@ -1,84 +1,155 @@
 from pathlib import Path
-import re
 
-src = Path("/mnt/data/Prabhu_AR_Portfolio_Senior_QS_FINAL_V7_COLORFUL_FINAL.html")
-out = Path("/mnt/data/Prabhu_AR_Portfolio_Senior_QS_FINAL_V8_STATS_FIXED.html")
+src = Path("/mnt/data/Prabhu_AR_Portfolio_Senior_QS_FINAL_V8_STATS_FIXED.html")
+out = Path("/mnt/data/Prabhu_AR_Portfolio_Senior_QS_FINAL_V9_FONT_POLISH_FINAL.html")
 
 html = src.read_text(encoding="utf-8")
 
-# Force the stat values to remain visible even if reveal/animation state misbehaves.
-fix_css = r"""
-<style id="stats-visibility-fix">
-/* FINAL FIX — STATS NUMBERS MUST ALWAYS BE VISIBLE */
-.stats .stat,
-.stats .stat.reveal,
-.stats .stat-number,
-.stats .stat-number span,
-.stats .stat-label,
-.stats .stat-note {
+# Final typography/color polish:
+# Keep the colorful section backgrounds, but restore strong readable typography
+# inside all light/white cards and the light project section.
+polish = r"""
+<style id="final-font-polish">
+/* =========================================================
+   FINAL FONT POLISH — readable premium corporate contrast
+   ========================================================= */
+
+/* Light Project Portfolio section */
+.projects .section-title,
+.projects .section-description {
+    color: #10243d !important;
+}
+.projects .section-description {
+    color: #5b6d84 !important;
+}
+.projects .eyebrow {
+    color: #b07d25 !important;
+}
+
+/* White Experience cards — never use white text on white */
+.experience .timeline-item h3,
+.experience .timeline-item h4,
+.experience .timeline-item .timeline-company,
+.experience .timeline-item .role-intro,
+.experience .timeline-item .role-intro strong,
+.experience .timeline-item .responsibility h4,
+.experience .timeline-item .responsibility p {
     opacity: 1 !important;
     visibility: visible !important;
 }
+.experience .timeline-item h3 {
+    color: #10243d !important;
+    font-family: "Space Grotesk", sans-serif !important;
+    font-size: 27px !important;
+    font-weight: 700 !important;
+}
+.experience .timeline-item .timeline-company {
+    color: #263b55 !important;
+    font-weight: 700 !important;
+}
+.experience .timeline-item .role-intro {
+    color: #5a6d84 !important;
+}
+.experience .timeline-item .role-intro strong {
+    color: #10243d !important;
+}
+.experience .timeline-item .responsibility {
+    background: #f8fbff !important;
+}
+.experience .timeline-item .responsibility h4 {
+    color: #10243d !important;
+}
+.experience .timeline-item .responsibility p {
+    color: #5b6d84 !important;
+}
 
-.stats .stat-number {
-    display: block !important;
-    color: #ffffff !important;
-    font-family: "Space Grotesk", Arial, sans-serif !important;
-    font-size: 52px !important;
-    line-height: 1 !important;
+/* Project cards — stronger hierarchy */
+.projects .project-card .project-content h3 {
+    color: #10243d !important;
+}
+.projects .project-card .project-content p {
+    color: #5b6d84 !important;
+}
+.projects .project-card .project-location {
+    color: #087f8c !important;
     font-weight: 800 !important;
-    letter-spacing: -1.5px !important;
-    min-height: 52px !important;
-    margin: 0 0 10px 0 !important;
-    text-shadow: 0 3px 16px rgba(0,0,0,.30) !important;
+}
+.projects .project-card .project-number {
+    color: #1464d2 !important;
 }
 
-.stats .stat-number span {
-    display: inline !important;
-    color: #e1bd72 !important;
-    font-size: 1em !important;
+/* Career development white panel */
+.career-growth-box .career-growth-content h3 {
+    color: #10243d !important;
+}
+.career-growth-box .career-growth-content p {
+    color: #5b6d84 !important;
+}
+.career-growth-box .roadmap-step h4,
+.career-growth-box .roadmap-step p {
+    color: #10243d !important;
+}
+.career-growth-box .roadmap-step p {
+    color: #5b6d84 !important;
 }
 
-.stats .stat-label {
-    display: block !important;
-    color: #ffffff !important;
-    font-size: 14px !important;
-    line-height: 1.35 !important;
-    font-weight: 800 !important;
-    text-transform: uppercase !important;
-    letter-spacing: .45px !important;
+/* Digital QS white cards */
+.digital-card h3,
+.digital-card p {
+    color: #10243d !important;
+}
+.digital-card p {
+    color: #5b6d84 !important;
 }
 
-.stats .stat-note {
-    display: block !important;
-    color: #b7c6d9 !important;
-    font-size: 12px !important;
-    line-height: 1.5 !important;
-    margin-top: 7px !important;
+/* AI × QS white cards */
+.ai-qs-card h3 {
+    color: #10243d !important;
+}
+.ai-qs-card p {
+    color: #5b6d84 !important;
 }
 
-@media (max-width: 900px) {
-    .stats .stat-number { font-size: 46px !important; min-height: 46px !important; }
+/* Contact white card */
+.contact-card .contact-name {
+    color: #10243d !important;
 }
-@media (max-width: 600px) {
-    .stats .stat-number { font-size: 42px !important; min-height: 42px !important; }
+.contact-card .contact-role {
+    color: #1464d2 !important;
+}
+.contact-card .contact-location,
+.contact-card .contact-item span {
+    color: #5b6d84 !important;
+}
+
+/* Make all reveal states safe: no accidental faded/white text after scroll */
+.projects .reveal,
+.experience .timeline-item .reveal,
+.experience .timeline-item,
+.career-growth-box,
+.digital-card,
+.ai-qs-card,
+.project-card {
+    visibility: visible;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+    .experience .timeline-item h3 {
+        font-size: 23px !important;
+    }
+    .projects .section-title {
+        font-size: 34px !important;
+    }
 }
 </style>
 """
 
-html = html.replace("</head>", fix_css + "\n</head>", 1)
-
-# Make the first stat explicitly unambiguous.
-html = re.sub(
-    r'<div class="stat-number">\s*13\s*<span>\+</span>\s*</div>\s*<div class="stat-label">',
-    '<div class="stat-number">13<span>+</span></div><div class="stat-label">',
-    html,
-    count=1
-)
-
+html = html.replace("</head>", polish + "\n</head>", 1)
 out.write_text(html, encoding="utf-8")
 
 print(f"Created: {out}")
 print(f"Size: {out.stat().st_size:,} bytes")
-print("Verified first stat HTML:", '<div class="stat-number">13<span>+</span></div>' in html)
-print("Stats visibility fix added with !important opacity/visibility/display rules.")
+print("Final font polish inserted successfully.")
+print("Project section title/description forced dark.")
+print("Experience white-card typography forced dark.")
