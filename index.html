@@ -327,11 +327,11 @@ section{
     transform:scale(1.03);
 
     transition:
-        opacity 1.5s ease,
-        background-image 1.5s ease,
-        transform 15s ease;
+        opacity 1.2s ease,
+        background-image 1.2s ease,
+        transform 5s ease;
 
-    animation:heroZoom 15s linear infinite;
+    animation:heroZoom 5s linear infinite;
 }
 
 @keyframes heroZoom{
@@ -340,7 +340,7 @@ section{
     }
 
     100%{
-        transform:scale(1.10);
+        transform:scale(1.08);
     }
 }
 
@@ -353,9 +353,9 @@ section{
     background:
         linear-gradient(
             90deg,
-            rgba(4,18,35,.96) 0%,
-            rgba(5,23,43,.86) 42%,
-            rgba(5,22,41,.72) 100%
+            rgba(4,18,35,.85) 0%,
+            rgba(5,23,43,.70) 42%,
+            rgba(5,22,41,.55) 100%
         );
 }
 
@@ -368,8 +368,8 @@ section{
     background:
         linear-gradient(
             180deg,
-            rgba(4,14,27,.15),
-            rgba(4,14,27,.55)
+            rgba(4,14,27,.05),
+            rgba(4,14,27,.35)
         );
 }
 
@@ -513,6 +513,7 @@ section{
     height:92px;
 
     object-fit:cover;
+    object-position: top center;
 
     border-radius:50%;
 
@@ -1626,7 +1627,7 @@ footer strong{
             <div class="position-card reveal">
 
                 <img
-                    src="assets/1777210120513.png"
+                    src="assets/513.png"
                     alt="Prabhu A R - Senior Quantity Surveyor"
                     class="profile-photo"
                 >
@@ -3081,9 +3082,9 @@ footer strong{
 <script>
 
 /* =========================================================
-   HERO BACKGROUND SLIDESHOW
+   HERO BACKGROUND SLIDESHOW & VISIBILITY ENHANCEMENTS
    6 PROJECT IMAGES
-   Changes every 15 seconds
+   Changes every 5 seconds with optimized overlays for clarity
    ========================================================= */
 
 const heroImages = [
@@ -3108,7 +3109,7 @@ heroBg.style.backgroundImage =
     `url("${heroImages[0]}")`;
 
 
-/* Change image every 15 seconds */
+/* Change image every 5 seconds (5000ms) */
 
 setInterval(() => {
 
@@ -3118,7 +3119,7 @@ setInterval(() => {
         currentImage = 0;
     }
 
-    heroBg.style.opacity = "0";
+    heroBg.style.opacity = "0.25";
 
     setTimeout(() => {
 
@@ -3127,9 +3128,9 @@ setInterval(() => {
 
         heroBg.style.opacity = "1";
 
-    },700);
+    },500);
 
-},15000);
+},5000);
 
 
 
