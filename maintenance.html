@@ -19,15 +19,14 @@
     --bg-main:#ffffff;
     --bg-card:#ffffff;
     --bg-card-hover:#f8fafc;
-    --navy:#0b192c;
+    --navy:#06111e;
     --navy-light:#1e3e62;
     --gold:#d97706;
     --gold-dark:#b45309;
     --gold-light:#fef3c7;
-    --text:#1e293b;
-    --text-muted:#475569;
-    --text-light:#94a3b8;
-    --border:rgba(217, 119, 6, 0.25);
+    --text:#0f172a;
+    --text-muted:#334155;
+    --border:rgba(217, 119, 6, 0.35);
     --border-subtle:rgba(100, 116, 139, 0.15);
     --max-width:1280px;
     --body-size:14px;
@@ -68,12 +67,12 @@ button{ font-family:inherit; }
 /* COMMON SECTION */
 section{ position:relative; padding:105px 0; background:#ffffff; }
 .container{ width:min(var(--max-width), calc(100% - 64px)); margin:auto; }
-.eyebrow{ display:flex; align-items:center; gap:12px; margin-bottom:14px; color:var(--gold-dark); font-size:12px; font-weight:800; letter-spacing:2px; text-transform:uppercase; }
+.eyebrow{ display:flex; align-items:center; gap:12px; margin-bottom:14px; color:var(--gold-dark); font-size:12px; font-weight:800; letter-spacing:2px; text-transform:uppercase; text-shadow: 0 1px 3px rgba(255,255,255,0.95); }
 .eyebrow::before{ content:""; width:30px; height:2px; background:var(--gold); }
 .section-title{ font-family:"Manrope",sans-serif; color:var(--navy); font-size:38px; line-height:1.15; letter-spacing:-1.2px; margin-bottom:15px; }
 .section-description{ max-width:780px; color:var(--text-muted); font-size:16px; line-height:1.75; margin-bottom:42px; }
 
-/* HERO WITH HIGH CLARITY PROJECT BACKGROUND SLIDESHOW */
+/* HERO WITH ULTRA-HD 4K BACKGROUND & CRYSTAL TEXT CLARITY */
 .hero{
     min-height:760px;
     display:flex;
@@ -90,7 +89,7 @@ section{ position:relative; padding:105px 0; background:#ffffff; }
     z-index:-3;
     background-size:cover;
     background-position:center;
-    opacity:0.85; /* Increased clarity so project photos pop out brilliantly */
+    opacity:0.95;
     transform:scale(1.03);
     transition:opacity 0.8s ease, background-image 0.8s ease, transform 10s ease;
     animation:heroZoom 10s linear infinite;
@@ -105,54 +104,75 @@ section{ position:relative; padding:105px 0; background:#ffffff; }
     position:absolute;
     inset:0;
     z-index:-2;
-    /* Ultra-light soft gradient so background images remain crystal clear */
-    background:linear-gradient(90deg, rgba(255,255,255,.78) 0%, rgba(255,255,255,.70) 50%, rgba(255,255,255,.62) 100%);
+    background:linear-gradient(90deg, rgba(255,255,255,.45) 0%, rgba(255,255,255,.25) 50%, rgba(255,255,255,.15) 100%);
 }
 
 .hero-grid{
     display:grid;
-    grid-template-columns:minmax(0,1.35fr) minmax(350px,.75fr);
+    grid-template-columns:minmax(0,1.35fr) minmax(360px,.75fr);
     gap:70px;
     align-items:center;
 }
 
 .hero-content{ 
     max-width:850px; 
-    background: rgba(255, 255, 255, 0.75); /* Soft glass effect for text clarity over bright background */
-    padding: 35px;
-    border-radius: 16px;
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(8px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+    background: transparent;
+    padding: 0;
+    border: none;
+    box-shadow: none;
 }
 
-.hero-title{ font-family:"Manrope",sans-serif; font-size:clamp(46px,4.8vw,68px); line-height:.98; letter-spacing:-2.5px; color:var(--navy); margin-bottom:22px; }
-.hero-title span{ display:block; color:var(--gold-dark); font-size:clamp(26px,2.6vw,38px); line-height:1.12; letter-spacing:-1px; margin-top:16px; }
-.hero-description{ max-width:780px; color:var(--text); font-size:15px; line-height:1.75; margin-bottom:25px; font-weight: 500; }
+.hero-title{ 
+    font-family:"Manrope",sans-serif; 
+    font-size:clamp(46px,4.8vw,68px); 
+    line-height:.98; 
+    letter-spacing:-2.5px; 
+    color:var(--navy); 
+    margin-bottom:22px; 
+    text-shadow: 0 2px 12px rgba(255,255,255,0.95), 0 0 25px rgba(255,255,255,0.8);
+}
+.hero-title span{ 
+    display:block; 
+    color:var(--gold-dark); 
+    font-size:clamp(26px,2.6vw,38px); 
+    line-height:1.12; 
+    letter-spacing:-1px; 
+    margin-top:16px; 
+    text-shadow: 0 1px 10px rgba(255,255,255,0.95);
+}
+.hero-description{ 
+    max-width:780px; 
+    color:#06111e; 
+    font-size:15px; 
+    line-height:1.75; 
+    margin-bottom:25px; 
+    font-weight: 700; 
+    text-shadow: 0 1px 8px rgba(255,255,255,0.95);
+}
 .hero-buttons{ display:flex; gap:12px; flex-wrap:wrap; }
 
 .btn{ display:inline-flex; align-items:center; justify-content:center; gap:9px; min-height:48px; padding:0 19px; border-radius:6px; font-size:13px; font-weight:700; transition:.3s ease; cursor:pointer; }
-.btn-primary{ background:var(--gold); color:#ffffff; border:1px solid var(--gold); }
-.btn-primary:hover{ background:var(--gold-dark); transform:translateY(-2px); box-shadow:0 4px 12px rgba(217,119,6,0.25); }
-.btn-outline{ background:#ffffff; color:var(--navy); border:1px solid var(--border); }
+.btn-primary{ background:var(--gold); color:#ffffff; border:1px solid var(--gold); box-shadow:0 4px 15px rgba(217,119,6,0.35); }
+.btn-primary:hover{ background:var(--gold-dark); transform:translateY(-2px); box-shadow:0 6px 18px rgba(217,119,6,0.45); }
+.btn-outline{ background:rgba(255,255,255,0.9); color:var(--navy); border:1px solid var(--border); backdrop-filter:blur(6px); font-weight:700; }
 .btn-outline:hover{ background:var(--gold); color:#ffffff; border-color:var(--gold); transform:translateY(-2px); }
 
-/* POSITIONING CARD WITH SQUARE PROFILE PHOTO */
+/* POSITIONING CARD WITH TALLER RECTANGULAR PHOTO & NO BORDER */
 .position-card{
-    padding:35px; background:rgba(255,255,255,0.92); backdrop-filter:blur(10px); border:2px solid var(--border); border-radius:16px;
-    box-shadow:0 20px 40px rgba(0,0,0,.08); text-align:center; transition:.4s ease;
+    padding:35px; background:rgba(255,255,255,0.95); backdrop-filter:blur(16px); border:2px solid var(--border); border-radius:16px;
+    box-shadow:0 20px 40px rgba(0,0,0,.12); text-align:center; transition:.4s ease;
 }
-.position-card:hover{ transform:translateY(-5px); border-color:var(--gold); box-shadow:0 25px 50px rgba(217,119,6,0.15); }
+.position-card:hover{ transform:translateY(-5px); border-color:var(--gold); box-shadow:0 25px 50px rgba(217,119,6,0.25); }
 
 .profile-photo{
-    width:100%; max-width:240px; height:240px; object-fit:cover; border-radius:12px;
-    border:3px solid var(--gold); margin:0 auto 24px auto; box-shadow:0 12px 30px rgba(217,119,6,0.2); background:#ffffff;
+    width:100%; max-width:300px; height:400px; object-fit:cover; border-radius:10px;
+    border:none; margin:0 auto 24px auto; box-shadow:0 12px 30px rgba(0,0,0,0.15); background:#ffffff;
 }
 
 .card-label{ color:var(--gold-dark); font-size:11px; font-weight:800; letter-spacing:1.8px; text-transform:uppercase; margin-bottom:18px; }
 .position-list{ list-style:none; text-align:left; }
-.position-list li{ display:flex; align-items:flex-start; gap:11px; color:var(--text); font-size:14px; line-height:1.55; margin-bottom:14px; }
-.position-list i{ color:var(--gold); margin-top:4px; }
+.position-list li{ display:flex; align-items:flex-start; gap:11px; color:var(--text); font-size:14px; line-height:1.55; margin-bottom:14px; font-weight: 600; }
+.position-list i{ color:var(--gold); margin-top:4px; font-weight: 900; }
 
 /* STATS */
 .stats{ background:#ffffff; border-top:1px solid var(--border-subtle); border-bottom:1px solid var(--border-subtle); padding:34px 0; }
@@ -295,7 +315,7 @@ footer strong{ color:var(--gold); }
     .hero-title span{ font-size:20px; }
     .hero-description{ font-size:14px; }
     .section-title{ font-size:28px; }
-    .profile-photo { max-width: 180px; height: 180px; }
+    .profile-photo { max-width: 240px; height: 320px; }
     .industry-grid, .highlight-grid{ grid-template-columns:1fr; }
     .contact-grid{ grid-template-columns:1fr; }
     .contact-buttons{ flex-direction:column; }
@@ -356,9 +376,9 @@ footer strong{ color:var(--gold); }
                 </div>
             </div>
 
-            <!-- POSITIONING CARD WITH SQUARE PROFILE PHOTO -->
+            <!-- POSITIONING CARD WITH TALLER RECTANGULAR PROFILE PHOTO -->
             <div class="position-card reveal">
-                <img src="assets/513.png" alt="Prabhu A R - Senior Quantity Surveyor" class="profile-photo">
+                <img src="assets/091923.png" alt="Prabhu A R - Senior Quantity Surveyor" class="profile-photo">
                 <div class="card-label">Professional Positioning</div>
                 <ul class="position-list">
                     <li>
@@ -800,7 +820,7 @@ footer strong{ color:var(--gold); }
                 <a href="mailto:arprabhu511@gmail.com" class="btn btn-primary">
                     <i class="fa-solid fa-envelope"></i> Email Me
                 </a>
-                <a href="https://www.linkedin.com/in/prabhuar-2557811a4" target="_blank" class="btn btn-outline">
+                <a href="https://www.linkedin.com/in/prbhuar-2557811a4" target="_blank" class="btn btn-outline">
                     <i class="fa-brands fa-linkedin-in"></i> LinkedIn
                 </a>
                 <a href="assets/Prabhu_A_R_CV.pdf" target="_blank" class="btn btn-outline">
@@ -832,7 +852,6 @@ let currentImage = 0;
 
 heroBg.style.backgroundImage = `url("${heroImages[0]}")`;
 
-/* 5 seconds auto slideshow interval for background project photos */
 setInterval(() => {
     currentImage++;
     if(currentImage >= heroImages.length){
@@ -841,7 +860,7 @@ setInterval(() => {
     heroBg.style.opacity = "0";
     setTimeout(() => {
         heroBg.style.backgroundImage = `url("${heroImages[currentImage]}")`;
-        heroBg.style.opacity = "0.85";
+        heroBg.style.opacity = "0.95";
     }, 400);
 }, 5000);
 
