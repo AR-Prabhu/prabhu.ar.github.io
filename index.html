@@ -278,9 +278,9 @@ section{
     z-index:-3;
     background-size:cover;
     background-position:center;
-    opacity:0.5; /* Increased visibility so background project photos are clearly seen */
+    opacity:0.65; /* High clarity so background project photos are vivid and clear */
     transform:scale(1.03);
-    transition:opacity 1s ease, background-image 1s ease, transform 10s ease;
+    transition:opacity 0.8s ease, background-image 0.8s ease, transform 10s ease;
     animation:heroZoom 10s linear infinite;
 }
 
@@ -293,8 +293,8 @@ section{
     position:absolute;
     inset:0;
     z-index:-2;
-    /* Balanced white overlay so text is readable while background project images remain very clear */
-    background:linear-gradient(90deg, rgba(255,255,255,.88) 0%, rgba(255,255,255,.84) 50%, rgba(255,255,255,.78) 100%);
+    /* Soft white gradient overlay ensuring high text readability while keeping background images crystal clear */
+    background:linear-gradient(90deg, rgba(255,255,255,.85) 0%, rgba(255,255,255,.80) 50%, rgba(255,255,255,.72) 100%);
 }
 
 .hero-grid{
@@ -398,7 +398,7 @@ section{
 }
 
 .profile-photo{
-    /* SQUARE / RECTANGLE PHOTO WITH ROUNDED CORNERS (NO MORE CIRCLE) */
+    /* SQUARE / RECTANGLE PHOTO WITH ROUNDED CORNERS */
     width:100%;
     max-width:240px;
     height:240px;
@@ -1575,7 +1575,7 @@ let currentImage = 0;
 
 heroBg.style.backgroundImage = `url("${heroImages[0]}")`;
 
-/* 5 seconds auto slideshow interval for background project photos */
+/* 5 seconds auto slideshow interval for background project photos with high clarity */
 setInterval(() => {
     currentImage++;
     if(currentImage >= heroImages.length){
@@ -1584,8 +1584,8 @@ setInterval(() => {
     heroBg.style.opacity = "0";
     setTimeout(() => {
         heroBg.style.backgroundImage = `url("${heroImages[currentImage]}")`;
-        heroBg.style.opacity = "0.5";
-    }, 500);
+        heroBg.style.opacity = "0.65";
+    }, 400);
 }, 5000);
 
 const menuBtn = document.getElementById("menuBtn");
