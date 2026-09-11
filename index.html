@@ -1,279 +1,84 @@
 from pathlib import Path
 import re
 
-src = Path("/mnt/data/Prabhu_AR_Portfolio_Senior_QS_FINAL_V5.html")
-out = Path("/mnt/data/Prabhu_AR_Portfolio_Senior_QS_FINAL_V6_DARK_PREMIUM.html")
+src = Path("/mnt/data/Prabhu_AR_Portfolio_Senior_QS_FINAL_V7_COLORFUL_FINAL.html")
+out = Path("/mnt/data/Prabhu_AR_Portfolio_Senior_QS_FINAL_V8_STATS_FIXED.html")
 
 html = src.read_text(encoding="utf-8")
 
-override_css = r"""
-/* =========================================================
-   V6 — PREMIUM DARK COMMERCIAL PORTFOLIO THEME
-   Strong contrast / no washed-out white sections
-   ========================================================= */
-
-:root{
-  --bg-main:#0b1729;
-  --bg-surface:#0f2036;
-  --bg-card:#132842;
-  --bg-ivory:#101f34;
-  --navy:#07152d;
-  --navy-light:#19304d;
-  --gold:#d7b56d;
-  --gold-dark:#b99045;
-  --gold-light:rgba(215,181,109,.10);
-  --text:#f4f7fb;
-  --text-muted:#aebdd1;
-  --border:rgba(215,181,109,.28);
-  --border-subtle:rgba(255,255,255,.10);
-  --paper:#142a44;
-  --ink:#f4f7fb;
+# Force the stat values to remain visible even if reveal/animation state misbehaves.
+fix_css = r"""
+<style id="stats-visibility-fix">
+/* FINAL FIX — STATS NUMBERS MUST ALWAYS BE VISIBLE */
+.stats .stat,
+.stats .stat.reveal,
+.stats .stat-number,
+.stats .stat-number span,
+.stats .stat-label,
+.stats .stat-note {
+    opacity: 1 !important;
+    visibility: visible !important;
 }
 
-/* Global */
-html,body{background:#0b1729;color:#f4f7fb;}
-body{color:#f4f7fb;}
-section{
-  background:#0b1729 !important;
-  color:#f4f7fb;
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-section:nth-of-type(even){background:#0f2036 !important;}
-.container{position:relative;z-index:2;}
-.section-title{color:#ffffff !important;}
-.section-description{color:#aebdd1 !important;}
-.eyebrow{color:#d7b56d !important;}
-.eyebrow::before{background:#d7b56d !important;}
-
-/* Stats — directly fixes the washed-out screenshot */
-.stats{
-  background:
-    radial-gradient(circle at 15% 20%, rgba(215,181,109,.08), transparent 32%),
-    linear-gradient(135deg,#09162a 0%,#10243d 52%,#0b1a30 100%) !important;
-  color:#ffffff !important;
-  padding:58px 0 !important;
-  border-top:1px solid rgba(215,181,109,.24) !important;
-  border-bottom:1px solid rgba(215,181,109,.24) !important;
-}
-.stats-grid{gap:0 !important;}
-.stat{
-  padding:8px 34px 8px 28px;
-  border-right:1px solid rgba(255,255,255,.10);
-}
-.stat:last-child{border-right:none;}
-.stat-number{
-  font-family:"Space Grotesk",sans-serif !important;
-  font-size:58px !important;
-  line-height:1 !important;
-  font-weight:700 !important;
-  letter-spacing:-2px !important;
-  color:#ffffff !important;
-  text-shadow:0 8px 30px rgba(0,0,0,.28);
-}
-.stat-number span{color:#d7b56d !important;}
-.stat-label{
-  margin-top:14px !important;
-  color:#f3f6fa !important;
-  font-size:14px !important;
-  font-weight:800 !important;
-  letter-spacing:.4px !important;
-  text-transform:uppercase;
-}
-.stat-note{
-  margin-top:6px !important;
-  color:#9fb0c7 !important;
-  font-size:12px !important;
-  line-height:1.6 !important;
+.stats .stat-number {
+    display: block !important;
+    color: #ffffff !important;
+    font-family: "Space Grotesk", Arial, sans-serif !important;
+    font-size: 52px !important;
+    line-height: 1 !important;
+    font-weight: 800 !important;
+    letter-spacing: -1.5px !important;
+    min-height: 52px !important;
+    margin: 0 0 10px 0 !important;
+    text-shadow: 0 3px 16px rgba(0,0,0,.30) !important;
 }
 
-/* Profile */
-.profile{
-  background:
-    radial-gradient(circle at 85% 15%, rgba(215,181,109,.07), transparent 30%),
-    linear-gradient(180deg,#101f34 0%,#0d1b2e 100%) !important;
-}
-.statement{
-  background:linear-gradient(135deg,rgba(215,181,109,.10),rgba(255,255,255,.035)) !important;
-  color:#e9eef5 !important;
-  border:1px solid rgba(215,181,109,.25) !important;
-  border-left:3px solid #d7b56d !important;
+.stats .stat-number span {
+    display: inline !important;
+    color: #e1bd72 !important;
+    font-size: 1em !important;
 }
 
-/* Commercial competencies */
-.competencies{
-  background:
-    linear-gradient(135deg,#0c1b2f 0%,#12263f 100%) !important;
-}
-.pillar{
-  background:linear-gradient(160deg,#142a44 0%,#10233b 100%) !important;
-  border:1px solid rgba(255,255,255,.10) !important;
-  box-shadow:0 18px 45px rgba(0,0,0,.18) !important;
-}
-.pillar h3{color:#ffffff !important;}
-.pillar p{color:#aebdd1 !important;}
-.pillar span{background:#d7b56d !important;}
-
-/* Digital QS */
-.digital{
-  background:
-    radial-gradient(circle at 90% 10%, rgba(215,181,109,.06), transparent 28%),
-    #0b1729 !important;
-}
-.digital-card{
-  background:linear-gradient(160deg,#142a44 0%,#10233b 100%) !important;
-  border:1px solid rgba(255,255,255,.10) !important;
-  box-shadow:0 18px 45px rgba(0,0,0,.20) !important;
-}
-.digital-card h3{color:#ffffff !important;}
-.digital-card p{color:#aebdd1 !important;}
-.digital-tag{
-  background:rgba(255,255,255,.045) !important;
-  border-color:rgba(215,181,109,.25) !important;
-  color:#dce5f0 !important;
-}
-.tech-badge{
-  background:#10233b !important;
-  border-color:rgba(255,255,255,.10) !important;
-  color:#dce5f0 !important;
+.stats .stat-label {
+    display: block !important;
+    color: #ffffff !important;
+    font-size: 14px !important;
+    line-height: 1.35 !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: .45px !important;
 }
 
-/* AI × QS */
-.ai-qs{
-  background:
-    radial-gradient(circle at 10% 20%, rgba(215,181,109,.08), transparent 30%),
-    linear-gradient(135deg,#0d1c30 0%,#132940 100%) !important;
-}
-.ai-qs-intro{
-  background:linear-gradient(145deg,#142a44,#10233b) !important;
-  border-color:rgba(215,181,109,.25) !important;
-  box-shadow:0 18px 45px rgba(0,0,0,.18);
-}
-.ai-qs-intro h3{color:#ffffff !important;}
-.ai-qs-intro p{color:#aebdd1 !important;}
-.ai-mark{background:#07152d !important;}
-.ai-qs-card{
-  background:linear-gradient(160deg,#142a44 0%,#10233b 100%) !important;
-  border-color:rgba(255,255,255,.10) !important;
-  box-shadow:0 18px 45px rgba(0,0,0,.18) !important;
-}
-.ai-qs-card h3{color:#ffffff !important;}
-.ai-qs-card p{color:#aebdd1 !important;}
-
-/* Career / MRICS */
-.career{
-  background:#0f2036 !important;
-}
-.career-card,
-.roadmap,
-.roadmap-step{
-  background:linear-gradient(160deg,#142a44 0%,#10233b 100%) !important;
-  border-color:rgba(255,255,255,.10) !important;
-  color:#f4f7fb !important;
-}
-.roadmap-step h4,
-.career-card h3{color:#ffffff !important;}
-.roadmap-step p,
-.career-card p{color:#aebdd1 !important;}
-
-/* Experience */
-.experience{
-  background:
-    linear-gradient(180deg,#0b1729 0%,#0e1d32 100%) !important;
-}
-.timeline-item{
-  background:linear-gradient(160deg,#142a44 0%,#10233b 100%) !important;
-  border-color:rgba(255,255,255,.10) !important;
-  box-shadow:0 18px 45px rgba(0,0,0,.22) !important;
-}
-.timeline-item h3,
-.timeline-item h4{color:#ffffff !important;}
-.timeline-item p{color:#aebdd1 !important;}
-.timeline-date{
-  background:rgba(215,181,109,.10) !important;
-  border-color:rgba(215,181,109,.30) !important;
-  color:#e3c988 !important;
-}
-.responsibility{
-  background:rgba(255,255,255,.035) !important;
-  border-color:rgba(255,255,255,.09) !important;
-}
-.responsibility:hover{
-  background:rgba(215,181,109,.07) !important;
-  border-color:rgba(215,181,109,.35) !important;
-}
-.responsibility h4{color:#ffffff !important;}
-.responsibility p{color:#aebdd1 !important;}
-.responsibility-icon{
-  background:#10233b !important;
-  border-color:rgba(215,181,109,.35) !important;
-  color:#d7b56d !important;
+.stats .stat-note {
+    display: block !important;
+    color: #b7c6d9 !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    margin-top: 7px !important;
 }
 
-/* Selected projects */
-.projects{
-  background:#0f2036 !important;
+@media (max-width: 900px) {
+    .stats .stat-number { font-size: 46px !important; min-height: 46px !important; }
 }
-.project-card{
-  background:linear-gradient(160deg,#142a44 0%,#10233b 100%) !important;
-  border-color:rgba(255,255,255,.10) !important;
-  box-shadow:0 18px 45px rgba(0,0,0,.20) !important;
+@media (max-width: 600px) {
+    .stats .stat-number { font-size: 42px !important; min-height: 42px !important; }
 }
-.project-card h3,
-.project-card h4{color:#ffffff !important;}
-.project-card p{color:#aebdd1 !important;}
-
-/* Contact */
-.contact{
-  background:#0b1729 !important;
-}
-.contact-card{
-  background:linear-gradient(145deg,#142a44,#0f2036) !important;
-  border-color:rgba(215,181,109,.24) !important;
-  box-shadow:0 24px 60px rgba(0,0,0,.25) !important;
-}
-.contact-card h3{color:#ffffff !important;}
-.contact-card p{color:#aebdd1 !important;}
-
-/* Links / accents */
-a{transition:.25s ease;}
-strong,b{color:#f5f7fb;}
-.gold,.accent{color:#d7b56d !important;}
-
-/* Scrollbar */
-::-webkit-scrollbar-track{background:#07152d;}
-::-webkit-scrollbar-thumb{background:#b99045;}
-
-/* Mobile */
-@media(max-width:900px){
-  .stat{border-right:none;border-bottom:1px solid rgba(255,255,255,.09);padding:20px 10px;}
-  .stat:last-child{border-bottom:none;}
-  .stat-number{font-size:48px !important;}
-}
-@media(max-width:600px){
-  .stats{padding:42px 0 !important;}
-  .stat-number{font-size:44px !important;}
-  .stat-label{font-size:12px !important;}
-  .stat-note{font-size:11px !important;}
-}
+</style>
 """
 
-# Inject the override before </head>, keeping the original HTML/content intact.
-injection = "\n<style>\n" + override_css + "\n</style>\n"
-html_v6 = html.replace("</head>", injection + "</head>", 1)
+html = html.replace("</head>", fix_css + "\n</head>", 1)
 
-# Also make the document title/description align with the broader positioning.
-html_v6 = html_v6.replace(
-    "<title>Prabhu A R | Senior Quantity Surveyor | Oil & Gas | Energy | EPC / EPCM | Commercial Controls</title>",
-    "<title>Prabhu A R | Senior Quantity Surveyor | Commercial Controls | EPC / EPCM / FEED</title>"
-)
-html_v6 = html_v6.replace(
-    'Prabhu A R — Senior Quantity Surveyor focused on Commercial Controls, Cost Management, Quantity Verification, Progress Measurement and Digital QS across Oil & Gas, Energy, Industrial and Building projects.',
-    'Prabhu A R — Senior Quantity Surveyor focused on Commercial Controls, Cost Management, Quantity Verification, Progress Measurement and Digital QS across Oil & Gas, Energy, Building and Infrastructure projects.'
+# Make the first stat explicitly unambiguous.
+html = re.sub(
+    r'<div class="stat-number">\s*13\s*<span>\+</span>\s*</div>\s*<div class="stat-label">',
+    '<div class="stat-number">13<span>+</span></div><div class="stat-label">',
+    html,
+    count=1
 )
 
-out.write_text(html_v6, encoding="utf-8")
+out.write_text(html, encoding="utf-8")
 
 print(f"Created: {out}")
 print(f"Size: {out.stat().st_size:,} bytes")
-print("Theme updated: premium dark navy/slate, high-contrast white typography, champagne-gold accents.")
-print("Stats updated: large white values, brighter labels, readable muted notes.")
+print("Verified first stat HTML:", '<div class="stat-number">13<span>+</span></div>' in html)
+print("Stats visibility fix added with !important opacity/visibility/display rules.")
