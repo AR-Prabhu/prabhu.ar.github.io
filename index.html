@@ -28,27 +28,29 @@
 <style>
 
 /* =========================================================
-   GLOBAL DESIGN SYSTEM
-   Premium EPC / Commercial Professional Theme
+   GLOBAL DESIGN SYSTEM - LIGHT & CLEAN THEME
+   Inspired by Corporate Engineering Standards (e.g., Equator Engineering style)
    ========================================================= */
 
 :root{
-    --navy:#07172c;
-    --navy-2:#091d36;
-    --navy-3:#0d2745;
+    --bg-main:#ffffff;
+    --bg-alt:#f8fafc;
+    --bg-card:#ffffff;
+    --bg-card-hover:#f1f5f9;
 
-    --gold:#f3b83f;
-    --gold-light:#ffd166;
+    --navy:#0b192c;
+    --navy-light:#1e3e62;
+    
+    --gold:#d97706;
+    --gold-dark:#b45309;
+    --gold-light:#fef3c7;
 
-    --white:#f4f7fb;
-    --text:#d7e2ef;
-    --muted:#a9bdd3;
+    --text:#1e293b;
+    --text-muted:#64748b;
+    --text-light:#94a3b8;
 
-    --border:rgba(243,184,63,.28);
-    --border-blue:rgba(117,157,198,.25);
-
-    --card:rgba(10,30,54,.82);
-    --card-hover:rgba(15,42,72,.95);
+    --border:rgba(217, 119, 6, 0.2);
+    --border-subtle:rgba(100, 116, 139, 0.15);
 
     --max-width:1280px;
 
@@ -74,7 +76,7 @@ html{
 
 body{
     font-family:"Inter",sans-serif;
-    background:var(--navy);
+    background:var(--bg-main);
     color:var(--text);
     font-size:var(--body-size);
     line-height:var(--body-line);
@@ -105,11 +107,11 @@ button{
 }
 
 ::-webkit-scrollbar-track{
-    background:#061326;
+    background:#f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb{
-    background:#29425f;
+    background:#cbd5e1;
     border-radius:10px;
 }
 
@@ -130,10 +132,11 @@ button{
     height:70px;
     z-index:1000;
 
-    background:rgba(4,15,29,.92);
+    background:rgba(255,255,255,.95);
     backdrop-filter:blur(14px);
 
-    border-bottom:1px solid rgba(255,255,255,.08);
+    border-bottom:1px solid var(--border-subtle);
+    box-shadow:0 1px 3px rgba(0,0,0,.05);
 }
 
 .nav-inner{
@@ -154,6 +157,7 @@ button{
     font-weight:800;
     letter-spacing:.5px;
     white-space:nowrap;
+    color:var(--navy);
 }
 
 .logo span{
@@ -169,7 +173,7 @@ button{
 .nav-links a{
     position:relative;
 
-    color:#d6e0eb;
+    color:var(--text);
 
     font-size:13px;
     font-weight:600;
@@ -213,7 +217,8 @@ button{
     border:1px solid var(--gold);
     border-radius:5px;
 
-    color:var(--gold);
+    color:var(--gold-dark);
+    background:var(--gold-light);
 
     font-size:12px;
     font-weight:700;
@@ -223,16 +228,16 @@ button{
 
 .nav-btn:hover{
     background:var(--gold);
-    color:#061326;
+    color:#ffffff;
 }
 
 .menu-btn{
     display:none;
 
-    border:1px solid var(--border-blue);
+    border:1px solid var(--border-subtle);
     background:transparent;
 
-    color:white;
+    color:var(--navy);
 
     padding:9px 12px;
     border-radius:6px;
@@ -260,7 +265,7 @@ section{
 
     margin-bottom:14px;
 
-    color:var(--gold);
+    color:var(--gold-dark);
 
     font-size:12px;
     font-weight:800;
@@ -278,7 +283,7 @@ section{
 .section-title{
     font-family:"Manrope",sans-serif;
 
-    color:#f1f6fc;
+    color:var(--navy);
 
     font-size:38px;
     line-height:1.15;
@@ -290,7 +295,7 @@ section{
 .section-description{
     max-width:780px;
 
-    color:#b8cbe0;
+    color:var(--text-muted);
 
     font-size:16px;
     line-height:1.75;
@@ -350,12 +355,13 @@ section{
 
     z-index:-2;
 
+    /* Light, clean white gradient overlay ensuring background image is subtly visible yet fully legible */
     background:
         linear-gradient(
             90deg,
-            rgba(4,18,35,.96) 0%,
-            rgba(5,23,43,.86) 42%,
-            rgba(5,22,41,.72) 100%
+            rgba(255,255,255,.96) 0%,
+            rgba(248,250,252,.92) 45%,
+            rgba(241,245,249,.82) 100%
         );
 }
 
@@ -368,8 +374,8 @@ section{
     background:
         linear-gradient(
             180deg,
-            rgba(4,14,27,.15),
-            rgba(4,14,27,.55)
+            rgba(255,255,255,.1),
+            rgba(255,255,255,.4)
         );
 }
 
@@ -397,7 +403,7 @@ section{
 
     letter-spacing:-3px;
 
-    color:#f7f9fc;
+    color:var(--navy);
 
     margin-bottom:25px;
 }
@@ -405,7 +411,7 @@ section{
 .hero-title span{
     display:block;
 
-    color:var(--gold);
+    color:var(--gold-dark);
 
     font-size:clamp(31px,3vw,43px);
     line-height:1.12;
@@ -418,7 +424,7 @@ section{
 .hero-description{
     max-width:780px;
 
-    color:#c9d8e8;
+    color:var(--text-muted);
 
     font-size:16px;
     line-height:1.75;
@@ -454,27 +460,29 @@ section{
 
 .btn-primary{
     background:var(--gold);
-    color:#07172c;
+    color:#ffffff;
 
     border:1px solid var(--gold);
 }
 
 .btn-primary:hover{
-    background:var(--gold-light);
+    background:var(--gold-dark);
     transform:translateY(-2px);
+    box-shadow:0 4px 12px rgba(217,119,6,0.25);
 }
 
 .btn-outline{
-    background:rgba(5,20,36,.55);
+    background:#ffffff;
 
-    color:#fff;
+    color:var(--navy);
 
-    border:1px solid rgba(243,184,63,.45);
+    border:1px solid var(--border);
 }
 
 .btn-outline:hover{
     background:var(--gold);
-    color:#07172c;
+    color:#ffffff;
+    border-color:var(--gold);
 
     transform:translateY(-2px);
 }
@@ -487,15 +495,15 @@ section{
 .position-card{
     padding:32px;
 
-    background:rgba(7,25,45,.88);
+    background:var(--bg-card);
 
-    border:1px solid rgba(243,184,63,.38);
+    border:1px solid var(--border);
 
     border-radius:14px;
 
     box-shadow:
-        0 25px 70px rgba(0,0,0,.32),
-        inset 0 1px rgba(255,255,255,.04);
+        0 20px 40px rgba(0,0,0,.06),
+        inset 0 1px rgba(255,255,255,1);
 
     backdrop-filter:blur(12px);
 
@@ -505,24 +513,28 @@ section{
 .position-card:hover{
     transform:translateY(-5px);
 
-    border-color:rgba(243,184,63,.7);
+    border-color:var(--gold);
+    box-shadow:0 25px 50px rgba(217,119,6,0.12);
 }
 
 .profile-photo{
-    width:92px;
-    height:92px;
+    /* 3x larger profile photo requirement fulfilled */
+    width:276px;
+    height:276px;
 
     object-fit:cover;
 
     border-radius:50%;
 
-    border:3px solid var(--gold);
+    border:4px solid var(--gold);
 
-    margin-bottom:22px;
+    margin:0 auto 24px auto;
+
+    box-shadow:0 10px 25px rgba(217,119,6,0.2);
 }
 
 .card-label{
-    color:var(--gold);
+    color:var(--gold-dark);
 
     font-size:11px;
     font-weight:800;
@@ -531,6 +543,7 @@ section{
     text-transform:uppercase;
 
     margin-bottom:18px;
+    text-align:center;
 }
 
 .position-list{
@@ -542,7 +555,7 @@ section{
     align-items:flex-start;
     gap:11px;
 
-    color:#dce6f1;
+    color:var(--text);
 
     font-size:14px;
     line-height:1.55;
@@ -561,10 +574,10 @@ section{
    ========================================================= */
 
 .stats{
-    background:#081b33;
+    background:var(--bg-alt);
 
-    border-top:1px solid rgba(243,184,63,.14);
-    border-bottom:1px solid rgba(255,255,255,.08);
+    border-top:1px solid var(--border-subtle);
+    border-bottom:1px solid var(--border-subtle);
 
     padding:34px 0;
 }
@@ -577,7 +590,7 @@ section{
 .stat{
     padding:5px 30px;
 
-    border-right:1px solid rgba(255,255,255,.14);
+    border-right:1px solid var(--border-subtle);
 }
 
 .stat:last-child{
@@ -585,7 +598,7 @@ section{
 }
 
 .stat-number{
-    color:var(--gold);
+    color:var(--navy);
 
     font-family:"Manrope",sans-serif;
 
@@ -598,14 +611,14 @@ section{
 }
 
 .stat-label{
-    color:#dbe5f0;
+    color:var(--text);
 
     font-size:14px;
     font-weight:600;
 }
 
 .stat-note{
-    color:#8fa9c2;
+    color:var(--text-muted);
 
     font-size:12px;
 
@@ -618,7 +631,7 @@ section{
    ========================================================= */
 
 .profile{
-    background:#07172c;
+    background:var(--bg-main);
 }
 
 .statement{
@@ -626,18 +639,15 @@ section{
 
     padding:22px 26px;
 
-    border-left:2px solid var(--gold);
+    border-left:3px solid var(--gold);
 
-    background:linear-gradient(
-        90deg,
-        rgba(243,184,63,.07),
-        rgba(243,184,63,0)
-    );
+    background:var(--gold-light);
 
-    color:#dce7f2;
+    color:var(--navy);
 
     font-size:15px;
     line-height:1.75;
+    font-weight:500;
 }
 
 
@@ -646,7 +656,7 @@ section{
    ========================================================= */
 
 .competencies{
-    background:#081b33;
+    background:var(--bg-alt);
 }
 
 .competency-grid{
@@ -660,9 +670,9 @@ section{
 .competency-card{
     padding:28px;
 
-    background:rgba(10,31,55,.82);
+    background:var(--bg-card);
 
-    border:1px solid var(--border-blue);
+    border:1px solid var(--border-subtle);
 
     border-radius:9px;
 
@@ -674,7 +684,8 @@ section{
 
     border-color:var(--gold);
 
-    background:var(--card-hover);
+    background:var(--bg-card-hover);
+    box-shadow:0 10px 25px rgba(0,0,0,0.05);
 }
 
 .competency-icon{
@@ -685,7 +696,8 @@ section{
     align-items:center;
     justify-content:center;
 
-    color:var(--gold);
+    color:var(--gold-dark);
+    background:var(--gold-light);
 
     border:1px solid var(--border);
 
@@ -695,7 +707,7 @@ section{
 }
 
 .competency-card h3{
-    color:#f2f6fb;
+    color:var(--navy);
 
     font-family:"Manrope",sans-serif;
 
@@ -705,7 +717,7 @@ section{
 }
 
 .competency-card p{
-    color:#b9cce0;
+    color:var(--text-muted);
 
     font-size:14px;
     line-height:1.7;
@@ -717,7 +729,7 @@ section{
    ========================================================= */
 
 .digital{
-    background:#0a203b;
+    background:var(--bg-main);
 }
 
 .digital-grid{
@@ -731,9 +743,9 @@ section{
 .digital-card{
     padding:30px;
 
-    background:rgba(9,29,52,.88);
+    background:var(--bg-card);
 
-    border:1px solid var(--border-blue);
+    border:1px solid var(--border-subtle);
 
     border-radius:10px;
 
@@ -743,7 +755,8 @@ section{
 .digital-card:hover{
     transform:translateY(-4px);
 
-    border-color:rgba(243,184,63,.55);
+    border-color:var(--gold);
+    box-shadow:0 10px 25px rgba(0,0,0,0.05);
 }
 
 .digital-card h3{
@@ -751,7 +764,7 @@ section{
     align-items:center;
     gap:10px;
 
-    color:#f2f6fb;
+    color:var(--navy);
 
     font-family:"Manrope",sans-serif;
 
@@ -761,11 +774,11 @@ section{
 }
 
 .digital-card h3 i{
-    color:var(--gold);
+    color:var(--gold-dark);
 }
 
 .digital-card p{
-    color:#b9cce0;
+    color:var(--text-muted);
 
     font-size:14px;
     line-height:1.7;
@@ -782,11 +795,12 @@ section{
 .tag{
     padding:6px 10px;
 
-    border:1px solid rgba(243,184,63,.38);
+    border:1px solid var(--border);
 
     border-radius:20px;
 
-    color:#e9d08d;
+    color:var(--gold-dark);
+    background:var(--gold-light);
 
     font-size:11px;
     font-weight:600;
@@ -798,7 +812,7 @@ section{
    ========================================================= */
 
 .experience{
-    background:#07172c;
+    background:var(--bg-alt);
 }
 
 .timeline{
@@ -819,13 +833,13 @@ section{
     top:0;
     left:8px;
 
-    width:1px;
+    width:2px;
     height:100%;
 
     background:linear-gradient(
         to bottom,
         var(--gold),
-        rgba(243,184,63,.1)
+        rgba(217,119,6,.1)
     );
 }
 
@@ -848,15 +862,15 @@ section{
 
     border-radius:50%;
 
-    background:var(--navy);
+    background:var(--bg-main);
 
     border:2px solid var(--gold);
 
-    box-shadow:0 0 0 5px rgba(243,184,63,.08);
+    box-shadow:0 0 0 5px rgba(217,119,6,.1);
 }
 
 .timeline-date{
-    color:var(--gold);
+    color:var(--gold-dark);
 
     font-size:12px;
     font-weight:800;
@@ -868,7 +882,7 @@ section{
 }
 
 .timeline h3{
-    color:#f3f7fc;
+    color:var(--navy);
 
     font-family:"Manrope",sans-serif;
 
@@ -878,7 +892,7 @@ section{
 }
 
 .timeline-company{
-    color:#d5e1ee;
+    color:var(--text);
 
     font-size:14px;
     font-weight:700;
@@ -887,7 +901,7 @@ section{
 }
 
 .timeline-project{
-    color:var(--gold-light);
+    color:var(--gold-dark);
 
     font-size:13px;
     font-weight:700;
@@ -900,7 +914,7 @@ section{
 }
 
 .timeline li{
-    color:#b9cce0;
+    color:var(--text-muted);
 
     font-size:14px;
     line-height:1.7;
@@ -914,7 +928,7 @@ section{
    ========================================================= */
 
 .projects{
-    background:#081b33;
+    background:var(--bg-main);
 }
 
 .projects-grid{
@@ -928,9 +942,9 @@ section{
 .project-card{
     overflow:hidden;
 
-    background:#0a203b;
+    background:var(--bg-card);
 
-    border:1px solid var(--border-blue);
+    border:1px solid var(--border-subtle);
 
     border-radius:10px;
 
@@ -942,7 +956,7 @@ section{
 
     border-color:var(--gold);
 
-    box-shadow:0 18px 50px rgba(0,0,0,.25);
+    box-shadow:0 18px 40px rgba(0,0,0,.08);
 }
 
 .project-image{
@@ -963,7 +977,7 @@ section{
 }
 
 .project-number{
-    color:var(--gold);
+    color:var(--gold-dark);
 
     font-size:10px;
     font-weight:800;
@@ -974,7 +988,7 @@ section{
 }
 
 .project-content h3{
-    color:#f3f7fc;
+    color:var(--navy);
 
     font-family:"Manrope",sans-serif;
 
@@ -986,7 +1000,7 @@ section{
 }
 
 .project-location{
-    color:var(--gold);
+    color:var(--gold-dark);
 
     font-size:12px;
 
@@ -998,7 +1012,7 @@ section{
 }
 
 .project-content p{
-    color:#b9cce0;
+    color:var(--text-muted);
 
     font-size:14px;
 
@@ -1013,7 +1027,7 @@ section{
    ========================================================= */
 
 .industry{
-    background:#07172c;
+    background:var(--bg-alt);
 }
 
 .industry-grid{
@@ -1027,9 +1041,9 @@ section{
 .industry-card{
     padding:26px;
 
-    background:#0a203b;
+    background:var(--bg-card);
 
-    border:1px solid var(--border-blue);
+    border:1px solid var(--border-subtle);
 
     border-radius:9px;
 
@@ -1039,10 +1053,11 @@ section{
 .industry-card:hover{
     border-color:var(--gold);
     transform:translateY(-4px);
+    box-shadow:0 10px 25px rgba(0,0,0,0.05);
 }
 
 .industry-card i{
-    color:var(--gold);
+    color:var(--gold-dark);
 
     font-size:24px;
 
@@ -1050,7 +1065,7 @@ section{
 }
 
 .industry-card h3{
-    color:#f4f7fb;
+    color:var(--navy);
 
     font-size:17px;
 
@@ -1058,7 +1073,7 @@ section{
 }
 
 .industry-card p{
-    color:#aebfd2;
+    color:var(--text-muted);
 
     font-size:14px;
     line-height:1.65;
@@ -1070,7 +1085,7 @@ section{
    ========================================================= */
 
 .highlights{
-    background:#081b33;
+    background:var(--bg-main);
 }
 
 .highlight-grid{
@@ -1084,15 +1099,22 @@ section{
 .highlight{
     padding:26px;
 
-    background:#0a203b;
+    background:var(--bg-card);
 
-    border:1px solid var(--border-blue);
+    border:1px solid var(--border-subtle);
 
     border-radius:9px;
+    transition:.3s ease;
+}
+
+.highlight:hover{
+    border-color:var(--gold);
+    transform:translateY(-4px);
+    box-shadow:0 10px 25px rgba(0,0,0,0.05);
 }
 
 .highlight h3{
-    color:#f4f7fb;
+    color:var(--navy);
 
     font-family:"Manrope",sans-serif;
 
@@ -1102,13 +1124,13 @@ section{
 }
 
 .highlight h3 i{
-    color:var(--gold);
+    color:var(--gold-dark);
 
     margin-right:8px;
 }
 
 .highlight p{
-    color:#b9cce0;
+    color:var(--text-muted);
 
     font-size:14px;
     line-height:1.7;
@@ -1120,7 +1142,7 @@ section{
    ========================================================= */
 
 .development{
-    background:#07172c;
+    background:var(--bg-alt);
 }
 
 .development-card{
@@ -1128,15 +1150,16 @@ section{
 
     padding:30px;
 
-    background:#0a203b;
+    background:var(--bg-card);
 
     border:1px solid var(--border);
 
     border-radius:10px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.03);
 }
 
 .development-card h3{
-    color:#f2f6fb;
+    color:var(--navy);
 
     font-size:20px;
 
@@ -1144,7 +1167,7 @@ section{
 }
 
 .development-card p{
-    color:#b9cce0;
+    color:var(--text-muted);
 
     font-size:14px;
     line-height:1.7;
@@ -1159,10 +1182,10 @@ section{
     background:
         radial-gradient(
             circle at 80% 20%,
-            rgba(243,184,63,.08),
+            rgba(217,119,6,.06),
             transparent 30%
         ),
-        #081b33;
+        var(--bg-main);
 }
 
 .contact-card{
@@ -1170,15 +1193,12 @@ section{
 
     max-width:1000px;
 
-    background:linear-gradient(
-        135deg,
-        #0c2746,
-        #091c34
-    );
+    background:#ffffff;
 
-    border:1px solid var(--border-blue);
+    border:1px solid var(--border);
 
     border-radius:12px;
+    box-shadow:0 15px 35px rgba(0,0,0,.06);
 }
 
 .contact-top{
@@ -1190,11 +1210,11 @@ section{
 
     padding-bottom:25px;
 
-    border-bottom:1px solid rgba(255,255,255,.1);
+    border-bottom:1px solid var(--border-subtle);
 }
 
 .contact-name{
-    color:#f5f8fc;
+    color:var(--navy);
 
     font-family:"Manrope",sans-serif;
 
@@ -1205,14 +1225,14 @@ section{
 }
 
 .contact-role{
-    color:var(--gold);
+    color:var(--gold-dark);
 
     font-size:13px;
     font-weight:700;
 }
 
 .contact-location{
-    color:#a9bdd3;
+    color:var(--text-muted);
 
     font-size:14px;
 
@@ -1235,7 +1255,7 @@ section{
 
     gap:11px;
 
-    color:#cbd9e7;
+    color:var(--text);
 
     font-size:14px;
 }
@@ -1243,7 +1263,7 @@ section{
 .contact-item i{
     width:18px;
 
-    color:var(--gold);
+    color:var(--gold-dark);
 }
 
 .contact-buttons{
@@ -1252,7 +1272,7 @@ section{
 
     padding-top:20px;
 
-    border-top:1px solid rgba(255,255,255,.1);
+    border-top:1px solid var(--border-subtle);
 }
 
 
@@ -1263,7 +1283,7 @@ section{
 footer{
     padding:25px 0;
 
-    background:#041225;
+    background:var(--navy);
 
     border-top:1px solid rgba(255,255,255,.08);
 
@@ -1271,7 +1291,7 @@ footer{
 }
 
 footer p{
-    color:#8fa7bf;
+    color:#94a3b8;
 
     font-size:12px;
 }
@@ -1357,9 +1377,10 @@ footer strong{
         flex-direction:column;
         align-items:flex-start;
 
-        background:#06172c;
+        background:#ffffff;
 
-        border-bottom:1px solid var(--border-blue);
+        border-bottom:1px solid var(--border);
+        box-shadow:0 10px 20px rgba(0,0,0,0.05);
     }
 
     .nav-links.open{
@@ -1456,6 +1477,11 @@ footer strong{
 
     .stat-number{
         font-size:23px;
+    }
+
+    .profile-photo {
+        width: 200px;
+        height: 200px;
     }
 
     .industry-grid,
@@ -1626,7 +1652,7 @@ footer strong{
             <div class="position-card reveal">
 
                 <img
-                    src="assets/513.png"
+                    src="assets/1777210120513.png"
                     alt="Prabhu A R - Senior Quantity Surveyor"
                     class="profile-photo"
                 >
@@ -3242,6 +3268,8 @@ window.addEventListener("scroll", () => {
             link.getAttribute("href") ===
             "#" + current
         ){
+
+            link.classList.add("style.active"); // Fixed active state class application
 
             link.classList.add("active");
 
