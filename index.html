@@ -87,8 +87,8 @@ section{ position:relative; padding:105px 0; background:#ffffff; }
     position:absolute;
     inset:0;
     z-index:0;
-    background:url('assets/1.jpg') no-repeat center center/cover;
-    opacity:0.08;
+    background:url('assets/hero.png') no-repeat center center/cover;
+    opacity:0.12;
 }
 
 .hero-grid{
@@ -210,30 +210,6 @@ section{ position:relative; padding:105px 0; background:#ffffff; }
 .project-location{ color:var(--gold-dark); font-size:12px; font-weight:700; text-transform:uppercase; margin-bottom:15px; }
 .project-content p{ color:var(--text-muted); font-size:14px; line-height:1.65; margin-bottom:17px; }
 
-/* INDUSTRY */
-.industry{ background:#ffffff; }
-.industry-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
-.industry-card{ padding:26px; background:#ffffff; border:1px solid var(--border-subtle); border-radius:9px; box-shadow:0 4px 15px rgba(0,0,0,0.02); transition:.3s ease; }
-.industry-card:hover{ border-color:var(--gold); transform:translateY(-4px); box-shadow:0 10px 25px rgba(0,0,0,0.05); }
-.industry-card i{ color:var(--gold-dark); font-size:24px; margin-bottom:16px; }
-.industry-card h3{ color:var(--navy); font-size:17px; margin-bottom:8px; }
-.industry-card p{ color:var(--text-muted); font-size:14px; line-height:1.65; }
-
-/* HIGHLIGHTS */
-.highlights{ background:#ffffff; }
-.highlight-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
-.highlight{ padding:26px; background:#ffffff; border:1px solid var(--border-subtle); border-radius:9px; box-shadow:0 4px 15px rgba(0,0,0,0.02); transition:.3s ease; }
-.highlight:hover{ border-color:var(--gold); transform:translateY(-4px); box-shadow:0 10px 25px rgba(0,0,0,0.05); }
-.highlight h3{ color:var(--navy); font-family:"Manrope",sans-serif; font-size:17px; margin-bottom:10px; }
-.highlight h3 i{ color:var(--gold-dark); margin-right:8px; }
-.highlight p{ color:var(--text-muted); font-size:14px; line-height:1.7; }
-
-/* PROFESSIONAL DEVELOPMENT */
-.development{ background:#ffffff; }
-.development-card{ max-width:900px; padding:30px; background:#ffffff; border:1px solid var(--border); border-radius:10px; box-shadow:0 10px 25px rgba(0,0,0,0.03); }
-.development-card h3{ color:var(--navy); font-size:20px; margin-bottom:10px; }
-.development-card p{ color:var(--text-muted); font-size:14px; line-height:1.7; }
-
 /* CONTACT */
 .contact{ background:#ffffff; }
 .contact-card{ padding:35px; max-width:1000px; background:#ffffff; border:1px solid var(--border); border-radius:12px; box-shadow:0 15px 35px rgba(0,0,0,.05); }
@@ -262,7 +238,6 @@ footer strong{ color:var(--gold); }
     .position-card{ max-width:600px; margin:0 auto; }
     .competency-grid{ grid-template-columns:repeat(2,1fr); }
     .projects-grid{ grid-template-columns:repeat(2,1fr); }
-    .industry-grid, .highlight-grid{ grid-template-columns:repeat(2,1fr); }
 }
 
 @media(max-width:800px){
@@ -283,7 +258,6 @@ footer strong{ color:var(--gold); }
     .stats-grid{ grid-template-columns:repeat(2,1fr); gap:20px; }
     .stat{ border-right:none; }
     .digital-grid, .competency-grid, .projects-grid{ grid-template-columns:1fr; }
-    .industry-grid, .highlight-grid{ grid-template-columns:1fr 1fr; }
     .contact-top{ flex-direction:column; }
 }
 
@@ -292,7 +266,6 @@ footer strong{ color:var(--gold); }
     .hero-title span{ font-size:18px; }
     .section-title{ font-size:28px; }
     .profile-photo { max-width: 240px; height: 320px; }
-    .industry-grid, .highlight-grid{ grid-template-columns:1fr; }
     .contact-grid{ grid-template-columns:1fr; }
     .contact-buttons{ flex-direction:column; }
     .btn{ width:100%; }
@@ -580,180 +553,85 @@ footer strong{ color:var(--gold); }
 
 <section class="projects" id="projects">
     <div class="container">
-        <div class="eyebrow reveal">Selected Project Exposure</div>
-        <h2 class="section-title reveal">Landmark Energy & Infrastructure Projects.</h2>
-        <p class="section-description reveal">Portfolio-level representation of major industrial plants, power facilities, and building projects.</p>
+        <div class="eyebrow reveal">Key Project Portfolio</div>
+        <h2 class="section-title reveal">Major Developments Delivered</h2>
+        <p class="section-description reveal">
+            A snapshot of marquee industrial, energy, and commercial infrastructure projects executed across multiple international jurisdictions.
+        </p>
         <div class="projects-grid">
-            <article class="project-card reveal">
-                <img src="assets/1.jpg" alt="ADNOC BFN project" class="project-image">
+            <div class="project-card reveal">
+                <img src="assets/1.jpg" alt="BAB Far North Project" class="project-image">
                 <div class="project-content">
                     <div class="project-number">PROJECT 01</div>
-                    <h3>ADNOC BFN – BAB Far North Development</h3>
-                    <div class="project-location">UAE · FEED / EPCM</div>
-                    <p>Current EPCM oversight covering quantity validation, interim certifications, variation mitigation, and multi-discipline coordination.</p>
-                    <div class="tags"><span class="tag">Quantity Audit</span><span class="tag">EPCM Controls</span></div>
+                    <h3>BAB Far North (BFN) Development</h3>
+                    <div class="project-location">ADNOC · Abu Dhabi, UAE</div>
+                    <p>Providing high-level EPCM commercial controls, contractor valuations, and rigorous structural quantity auditing for major oil & gas surface facilities.</p>
                 </div>
-            </article>
-            <article class="project-card reveal">
-                <img src="assets/2.jpg" alt="Qurayyah Expansion CCGT IPP" class="project-image">
+            </div>
+            <div class="project-card reveal">
+                <img src="assets/2.jpg" alt="Qurayyah Expansion Project" class="project-image">
                 <div class="project-content">
                     <div class="project-number">PROJECT 02</div>
                     <h3>Qurayyah Expansion CCGT IPP</h3>
-                    <div class="project-location">Saudi Arabia · Power EPC</div>
-                    <p>Comprehensive civil and structural QS responsibilities including MTOs, rate analysis, billing reconciliation, and client invoicing.</p>
-                    <div class="tags"><span class="tag">Power Plant</span><span class="tag">Subcontract Billing</span></div>
+                    <div class="project-location">Saudi Arabia</div>
+                    <p>Managed comprehensive civil BOQs, structural MTOs, sub-contractor billing frameworks, and fast-track field variations for a major power plant expansion.</p>
                 </div>
-            </article>
-            <article class="project-card reveal">
-                <img src="assets/3.jpg" alt="Hail and Ghasha P2" class="project-image">
+            </div>
+            <div class="project-card reveal">
+                <img src="assets/3.jpg" alt="Refinery & Industrial Projects" class="project-image">
                 <div class="project-content">
                     <div class="project-number">PROJECT 03</div>
-                    <h3>Hail & Ghasha P2</h3>
-                    <div class="project-location">UAE · Oil & Gas</div>
-                    <p>High-value GCC energy sector exposure focusing on rigorous quantity tracking and compliance monitoring.</p>
-                    <div class="tags"><span class="tag">Oil & Gas</span><span class="tag">Commercial Audit</span></div>
+                    <h3>Refinery & Process Plants</h3>
+                    <div class="project-location">UAE · KSA · Qatar · Bahrain</div>
+                    <p>Delivered pre-contract estimates, tender evaluations, and risk mitigation strategies across multiple oil, gas, and heavy industrial plant builds.</p>
                 </div>
-            </article>
-            <article class="project-card reveal">
-                <img src="assets/4.jpg" alt="NFE EPC-1" class="project-image">
-                <div class="project-content">
-                    <div class="project-number">PROJECT 04</div>
-                    <h3>NFE EPC-1</h3>
-                    <div class="project-location">Qatar · LNG / EPC</div>
-                    <p>Commercial support and precise take-off management within world-scale LNG infrastructure workflows.</p>
-                    <div class="tags"><span class="tag">LNG Infrastructure</span><span class="tag">QTO Management</span></div>
-                </div>
-            </article>
-            <article class="project-card reveal">
-                <img src="assets/5.jpg" alt="Tanazib Gas Plant" class="project-image">
-                <div class="project-content">
-                    <div class="project-number">PROJECT 05</div>
-                    <h3>Tanazib Gas Plant</h3>
-                    <div class="project-location">Saudi Arabia · Oil & Gas</div>
-                    <p>Onsite commercial operations, document control, quantity tracking, and contractor alignment.</p>
-                    <div class="tags"><span class="tag">Gas Plant</span><span class="tag">Contract Admin</span></div>
-                </div>
-            </article>
-            <article class="project-card reveal">
-                <img src="assets/6.jpg" alt="Petronas RAPID" class="project-image">
-                <div class="project-content">
-                    <div class="project-number">PROJECT 06</div>
-                    <h3>Petronas RAPID</h3>
-                    <div class="project-location">Malaysia · Petrochemical</div>
-                    <p>Petrochemical complex commercial controls, cost reporting, and structural progress tracking.</p>
-                    <div class="tags"><span class="tag">Petrochemical</span><span class="tag">Cost Monitoring</span></div>
-                </div>
-            </article>
-        </div>
-    </div>
-</section>
-
-<section class="industry">
-    <div class="container">
-        <div class="eyebrow reveal">Industry Domains</div>
-        <h2 class="section-title reveal">Multi-sector commercial mastery.</h2>
-        <div class="industry-grid">
-            <div class="industry-card reveal">
-                <i class="fa-solid fa-oil-well"></i>
-                <h3>Oil & Gas</h3>
-                <p>Upstream, downstream, and processing plant environments.</p>
             </div>
-            <div class="industry-card reveal">
-                <i class="fa-solid fa-industry"></i>
-                <h3>Petrochemical</h3>
-                <p>Refineries, polymer plants, and heavy industrial units.</p>
-            </div>
-            <div class="industry-card reveal">
-                <i class="fa-solid fa-bolt"></i>
-                <h3>Power Generation</h3>
-                <p>CCGT, IPP plants, and major electrical infrastructure.</p>
-            </div>
-            <div class="industry-card reveal">
-                <i class="fa-solid fa-building"></i>
-                <h3>Buildings & Civil</h3>
-                <p>Commercial structures, multi-story layouts, and civils.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="highlights">
-    <div class="container">
-        <div class="eyebrow reveal">Execution Framework</div>
-        <h2 class="section-title reveal">From drawings to bottom-line security.</h2>
-        <div class="highlight-grid">
-            <div class="highlight reveal">
-                <h3><i class="fa-solid fa-ruler"></i> Measure</h3>
-                <p>Precision take-offs backed by AI-assisted drawing parsing and engineering verification.</p>
-            </div>
-            <div class="highlight reveal">
-                <h3><i class="fa-solid fa-check-double"></i> Verify</h3>
-                <p>Rigorous checks of contractor claims against actual site progress and baseline documents.</p>
-            </div>
-            <div class="highlight reveal">
-                <h3><i class="fa-solid fa-scale-balanced"></i> Protect</h3>
-                <p>Effective mitigation of scope creep, unjustified variations, and commercial exposure.</p>
-            </div>
-            <div class="highlight reveal">
-                <h3><i class="fa-solid fa-chart-column"></i> Control</h3>
-                <p>Transparent cost reporting and predictable cash flow management throughout execution.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="development">
-    <div class="container">
-        <div class="eyebrow reveal">Professional Standards</div>
-        <h2 class="section-title reveal">Continuous professional growth.</h2>
-        <div class="development-card reveal">
-            <h3>RICS / MRICS Professional Pathway</h3>
-            <p>Actively advancing through the RICS chartership framework, focusing on advanced quantity surveying practice, contract law, commercial ethics, and international best standards.</p>
         </div>
     </div>
 </section>
 
 <section class="contact" id="contact">
     <div class="container">
-        <div class="eyebrow reveal">Contact</div>
-        <h2 class="section-title reveal">Let's connect.</h2>
+        <div class="eyebrow reveal">Get In Touch</div>
+        <h2 class="section-title reveal">Let’s Connect</h2>
+        <p class="section-description reveal">
+            Open to senior quantity surveying, commercial management, and project controls leadership opportunities worldwide.
+        </p>
         <div class="contact-card reveal">
             <div class="contact-top">
                 <div>
                     <div class="contact-name">Prabhu A R</div>
-                    <div class="contact-role">Senior Quantity Surveyor | Commercial Controls Specialist</div>
-                    <div class="contact-location">Abu Dhabi, United Arab Emirates · Open to Global Assignments</div>
+                    <div class="contact-role">Senior Quantity Surveyor | Commercial Controls | EPC & EPCM</div>
+                    <div class="contact-location"><i class="fa-solid fa-location-dot" style="color:var(--gold-dark); margin-right:6px;"></i> Currently based in United Arab Emirates (Open to Relocation / International Assignments)</div>
                 </div>
+                <a href="assets/Prabhu_A_R_CV.pdf" class="btn btn-primary" target="_blank">
+                    <i class="fa-solid fa-download"></i> Download Full CV
+                </a>
             </div>
             <div class="contact-grid">
                 <div class="contact-item">
                     <i class="fa-solid fa-envelope"></i>
-                    <a href="mailto:arprabhu511@gmail.com">arprabhu511@gmail.com</a>
-                </div>
-                <div class="contact-item">
-                    <i class="fa-solid fa-phone"></i>
-                    <a href="tel:+971501053602">+971 50 105 3602</a>
-                </div>
-                <div class="contact-item">
-                    <i class="fa-solid fa-location-dot"></i> Abu Dhabi, United Arab Emirates
+                    <span>Available via LinkedIn & Direct Inquiry</span>
                 </div>
                 <div class="contact-item">
                     <i class="fa-brands fa-linkedin"></i>
-                    <a href="https://www.linkedin.com/in/prabhuar-2557811a4" target="_blank">linkedin.com/in/prabhuar-2557811a4</a>
+                    <a href="https://www.linkedin.com/in/prabhuar-2557811a4" target="_blank" style="color:var(--gold-dark); font-weight:700;">linkedin.com/in/prabhuar-2557811a4</a>
                 </div>
                 <div class="contact-item">
-                    <i class="fa-solid fa-file-shield"></i> Passport details available on request
+                    <i class="fa-solid fa-globe"></i>
+                    <span>Portfolio: prabhu.ar.github.io</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fa-solid fa-briefcase"></i>
+                    <span>13+ Years Global Experience</span>
                 </div>
             </div>
             <div class="contact-buttons">
-                <a href="mailto:arprabhu511@gmail.com" class="btn btn-primary">
-                    <i class="fa-solid fa-envelope"></i> Email Me
+                <a href="mailto:prabhuar.qs@gmail.com" class="btn btn-primary">
+                    <i class="fa-solid fa-paper-plane"></i> Send Direct Message
                 </a>
-                <a href="https://www.linkedin.com/in/prabhuar-2557811a4" target="_blank" class="btn btn-outline">
-                    <i class="fa-brands fa-linkedin-in"></i> LinkedIn
-                </a>
-                <a href="assets/Prabhu_A_R_CV.pdf" target="_blank" class="btn btn-outline">
-                    <i class="fa-solid fa-file-pdf"></i> Download CV
+                <a href="https://www.linkedin.com/in/prabhuar-2557811a4" class="btn btn-outline" target="_blank">
+                    <i class="fa-brands fa-linkedin-in"></i> Connect on LinkedIn
                 </a>
             </div>
         </div>
@@ -762,56 +640,40 @@ footer strong{ color:var(--gold); }
 
 <footer>
     <div class="container">
-        <p>© 2026 <strong>Prabhu A R</strong>. Senior Quantity Surveyor · Commercial Controls · EPC & EPCM · Digital QS</p>
+        <p>© 2026 <strong>Prabhu A R</strong>. All Rights Reserved. Built with precision for Industrial & Infrastructure Commercial Excellence.</p>
     </div>
 </footer>
 
 <script>
-const menuBtn = document.getElementById("menuBtn");
-const navLinks = document.getElementById("navLinks");
-
-menuBtn.addEventListener("click", () => {
-    navLinks.classList.toggle("open");
-});
-
-document.querySelectorAll(".nav-links a").forEach(link => {
-    link.addEventListener("click", () => {
-        navLinks.classList.remove("open");
+    // Mobile Menu Toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    
+    menuBtn.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
     });
-});
 
-const revealElements = document.querySelectorAll(".reveal");
-const revealObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if(entry.isIntersecting){
-            entry.target.classList.add("show");
-            revealObserver.unobserve(entry.target);
+    // Close mobile menu on link click
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('open');
+        });
+    });
+
+    // Scroll Reveal Animation
+    function reveal() {
+        const reveals = document.querySelectorAll('.reveal');
+        for (let i = 0; i < reveals.length; i++) {
+            let windowHeight = window.innerHeight;
+            let elementTop = reveals[i].getBoundingClientRect().top;
+            let elementVisible = 100;
+            if (elementTop < windowHeight - elementVisible) {
+                reveals[i].classList.add('show');
+            }
         }
-    });
-}, { threshold:.12 });
-
-revealElements.forEach(element => {
-    revealObserver.observe(element);
-});
-
-const sections = document.querySelectorAll("section[id]");
-const navItems = document.querySelectorAll(".nav-links a");
-
-window.addEventListener("scroll", () => {
-    let current = "";
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop - 130;
-        if(window.scrollY >= sectionTop){
-            current = section.getAttribute("id");
-        }
-    });
-    navItems.forEach(link => {
-        link.classList.remove("active");
-        if(link.getAttribute("href") === "#" + current){
-            link.classList.add("active");
-        }
-    });
-});
+    }
+    window.addEventListener('scroll', reveal);
+    window.addEventListener('load', reveal);
 </script>
 
 </body>
