@@ -1,1 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prabhu A R | Under Maintenance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{
+    --navy:#07172c;
+    --gold:#f3b83f;
+    --text:#d7e2ef;
+    --muted:#a9bdd3;
+    --card:rgba(10,30,54,.82);
+    --border:rgba(243,184,63,.28);
+}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+body{
+    font-family:"Inter",sans-serif;
+    background:var(--navy);
+    color:var(--text);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+}
+.maintenance-card{
+    max-width:540px;
+    width:100%;
+    padding:45px 35px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    text-align:center;
+    box-shadow:0 25px 50px rgba(0,0,0,.4);
+    backdrop-filter:blur(10px);
+}
+.icon-box{
+    width:70px;
+    height:70px;
+    margin:0 auto 24px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(243,184,63,.1);
+    border:2px solid var(--gold);
+    border-radius:50%;
+    color:var(--gold);
+    font-size:28px;
+}
+h1{
+    font-family:"Manrope",sans-serif;
+    font-size:26px;
+    color:#f4f7fb;
+    margin-bottom:12px;
+}
+h1 span{
+    color:var(--gold);
+}
+p{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.7;
+    margin-bottom:30px;
+}
+.contact-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 24px;
+    background:var(--gold);
+    color:#07172c;
+    font-size:13px;
+    font-weight:700;
+    border-radius:6px;
+    text-decoration:none;
+    transition:.3s ease;
+}
+.contact-btn:hover{
+    background:#ffd166;
+    transform:translateY(-2px);
+}
+</style>
+</head>
+<body>
 
+<div class="maintenance-card">
+    <div class="icon-box">
+        <i class="fa-solid fa-gears"></i>
+    </div>
+    
+    <h1>Portfolio Under <span>Maintenance</span></h1>
+    
+    <p>
+        We are currently updating our digital commercial portfolio and asset systems. 
+        We will be back online shortly. For urgent professional inquiries, 
+        you can reach out directly via email or LinkedIn.
+    </p>
+
+    <a href="mailto:arprabhu511@gmail.com" class="contact-btn">
+        <i class="fa-solid fa-envelope"></i> Get in Touch
+    </a>
+</div>
+
+</body>
+</html>
