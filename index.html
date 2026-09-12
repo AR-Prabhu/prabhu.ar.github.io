@@ -101,7 +101,9 @@ p{margin:0;color:var(--muted)}
 .hero{
   min-height:760px;
   padding:150px 0 80px;
-  background:#fff;
+  background:#fff url('assets/hero.png') no-repeat center center;
+  background-size:cover;
+  position:relative;
   overflow:hidden;
 }
 .hero-bg-slider{position:absolute;inset:0;z-index:0;overflow:hidden}
@@ -112,7 +114,7 @@ p{margin:0;color:var(--muted)}
   filter:saturate(.65);
 }
 .hero-slide.active{opacity:.10}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,.96) 52%,rgba(255,255,255,.88) 100%);z-index:1}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,0.75) 0%,rgba(255,255,255,0.72) 52%,rgba(255,255,255,0.68) 100%);z-index:1}
 .hero .container{position:relative;z-index:2}
 .hero-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(320px,.7fr);gap:55px;align-items:center}
 .hero-content{max-width:900px}
@@ -358,14 +360,6 @@ footer strong{color:#fff}
 </header>
 
 <section class="hero" id="home">
-    <div class="hero-bg-slider" id="heroSlider">
-        <div class="hero-slide active" style="background-image:url('assets/1.jpg');"></div>
-        <div class="hero-slide" style="background-image:url('assets/2.jpg');"></div>
-        <div class="hero-slide" style="background-image:url('assets/3.jpg');"></div>
-        <div class="hero-slide" style="background-image:url('assets/4.jpg');"></div>
-        <div class="hero-slide" style="background-image:url('assets/5.jpg');"></div>
-        <div class="hero-slide" style="background-image:url('assets/6.jpg');"></div>
-    </div>
     <div class="hero-overlay"></div>
     <div class="container">
         <div class="hero-grid">
@@ -816,7 +810,7 @@ footer strong{color:#fff}
                 </div>
             </div>
             <div class="contact-buttons">
-                <a href="mailto:arprabhu511@gmail.com" class="btn btn-primary">
+                <a href="mailto:arprabhu511@gmail.com" class="vbtn btn-primary">
                     <i class="fa-solid fa-paper-plane"></i> Send Direct Message
                 </a>
                 <a href="https://www.linkedin.com/in/prabhu-a-r-2557811a4/" class="btn btn-outline" target="_blank" style="background:var(--navy); color:#ffffff; border-color:var(--navy);">
@@ -847,20 +841,6 @@ footer strong{color:#fff}
             navLinks.classList.remove('open');
         });
     });
-
-    // Dynamic Rotating Hero Background Slider (15s interval)
-    const slides = document.querySelectorAll('.hero-slide');
-    let currentSlide = 0;
-
-    function nextSlide() {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-    }
-
-    if(slides.length > 0) {
-        setInterval(nextSlide, 15000);
-    }
 
     // Scroll Reveal Animation
     function reveal() {
@@ -894,21 +874,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  const slides = document.querySelectorAll('.hero-slide');
-  if (slides.length > 1) {
-    let current = 0;
-    setInterval(function () {
-      slides[current].classList.remove('active');
-      current = (current + 1) % slides.length;
-      slides[current].classList.add('active');
-    }, 7000);
-  }
-
   const reveals = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
     reveals.forEach(function(el){ el.classList.add('reveal-ready'); });
     const observer = new IntersectionObserver(function(entries, obs){
-      entries.forEach(function(entry){
+      entries.files?.forEach || entries.forEach(function(entry){
         if (entry.isIntersecting) {
           entry.target.classList.add('show');
           obs.unobserve(entry.target);
