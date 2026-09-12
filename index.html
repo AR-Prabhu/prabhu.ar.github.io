@@ -143,7 +143,8 @@ p{margin:0;color:var(--muted)}
 .position-list{list-style:none;margin:0;padding:0}
 .position-list li{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px;font-weight:600;color:var(--navy)}
 .position-list li:last-child{border-bottom:0}
-.position-list i{color:var(--gold);margin-top:5px}
+.position-card .profile-photo{width:270px;height:325px;display:block;margin:0 auto 18px;border-radius:0;object-fit:cover;border:0;box-shadow:none}
+.position-list i{color:var(--gold);margin-top:3px;width:18px;min-width:18px;text-align:center;font-size:14px}
 
 /* STATS */
 .stats{background:#fff;padding:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
@@ -268,6 +269,7 @@ footer strong{color:#fff}
   .commercial-pillars,.positioning-grid,.competencies-grid,.digital-grid,.ai-qs-grid,.projects-grid{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:800px){
+  .position-card .profile-photo{width:230px;height:285px}
   .container,.nav-inner{width:min(100% - 30px,var(--max))}
   .navbar{height:70px}
   .nav-links{display:none;position:absolute;top:70px;left:0;right:0;background:#fff;padding:18px 20px;flex-direction:column;align-items:flex-start;border-bottom:1px solid var(--line);box-shadow:0 10px 25px rgba(11,31,58,.08)}
@@ -298,9 +300,9 @@ footer strong{color:#fff}
     .ai-qs-card h3{display:flex;align-items:center;gap:18px;}
     
 /* SOFTWARE STORY LOGOS — vector marks, no external icon dependency */
-.tech-brand{display:flex;align-items:center;gap:14px;}
-.tech-logo{width:76px;height:76px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex:0 0 76px;box-shadow:0 10px 22px rgba(11,31,58,.14);overflow:hidden;}
-.tech-logo svg{width:58px;height:58px;display:block;}
+.tech-brand{display:flex;align-items:center;gap:12px;}
+.tech-logo{width:66px;height:66px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex:0 0 66px;box-shadow:0 8px 18px rgba(11,31,58,.13);overflow:hidden;}
+.tech-logo svg{width:50px;height:50px;display:block;}
 .tech-logo.autocad{background:#e3262e;color:#fff;}
 .tech-logo.bluebeam{background:#0877b9;color:#fff;}
 .tech-logo.navis{background:#286db0;color:#fff;}
@@ -401,35 +403,35 @@ footer strong{color:#fff}
                 <div class="card-label">Core Professional Focus</div>
                 <ul class="position-list">
                     <li>
-                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-briefcase"></i>
                         <span>Commercial & Cost Control Management — EPC / EPCM / FEED</span>
                     </li>
                     <li>
-                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-ruler-combined"></i>
                         <span>BOQ · MTO · QTO · BBS · Drawing Reconciliation</span>
                     </li>
                     <li>
-                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-chart-line"></i>
                         <span>Progress Measurement · Valuation · Client Billing · Payment Assessment</span>
                     </li>
                     <li>
-                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-chart-pie"></i>
                         <span>Cost Tracking · Forecasting · Rate Analysis · Commercial Reporting</span>
                     </li>
                     <li>
-                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-file-signature"></i>
                         <span>Variations · Change Orders · Claims / EOT · Contract Support</span>
                     </li>
                     <li>
-                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-people-arrows"></i>
                         <span>Subcontract Administration · Procurement · Commercial Coordination</span>
                     </li>
                     <li>
-                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-industry"></i>
                         <span>Oil & Gas · Energy · Building & Infrastructure Projects</span>
                     </li>
                     <li>
-                        <i class="fa-solid fa-check"></i>
+                        <i class="fa-solid fa-microchip"></i>
                         <span>Digital QS · AI-Assisted Measurement · QTO Workflows</span>
                     </li>
                 </ul>
