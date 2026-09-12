@@ -101,21 +101,24 @@ p{margin:0;color:var(--muted)}
 .hero{
   min-height:760px;
   padding:150px 0 80px;
-  background-image: url('assets/hero.png');
-  background-size: cover;
-  background-position: center;
-  position: relative;
+  background:#fff;
   overflow:hidden;
 }
-.hero-bg-slider{position:absolute;inset:0;z-index:0;overflow:hidden;display:none;}
+.hero-bg-slider{position:absolute;inset:0;z-index:0;overflow:hidden}
 .hero-slide{
   position:absolute;inset:0;
   background-size:cover;background-position:center;
   opacity:0;transition:opacity 1.2s ease;
-  filter:saturate(.65);
+  filter:saturate(.78) contrast(1.02);
 }
-.hero-slide.active{opacity:.10}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.95) 0%,rgba(255,255,255,.92) 52%,rgba(255,255,255,.85) 100%);z-index:1}
+.hero-slide.active{opacity:.80}
+.hero-overlay{
+  position:absolute;inset:0;z-index:1;
+  background:linear-gradient(90deg,
+    rgba(255,255,255,.22) 0%,
+    rgba(255,255,255,.10) 48%,
+    rgba(255,255,255,.03) 100%);
+}
 .hero .container{position:relative;z-index:2}
 .hero-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(320px,.7fr);gap:55px;align-items:center}
 .hero-content{max-width:900px}
@@ -361,13 +364,8 @@ footer strong{color:#fff}
 </header>
 
 <section class="hero" id="home">
-    <div class="hero-bg-slider" id="heroSlider">
-        <div class="hero-slide active" style="background-image:url('assets/1.jpg');"></div>
-        <div class="hero-slide" style="background-image:url('assets/2.jpg');"></div>
-        <div class="hero-slide" style="background-image:url('assets/3.jpg');"></div>
-        <div class="hero-slide" style="background-image:url('assets/4.jpg');"></div>
-        <div class="hero-slide" style="background-image:url('assets/5.jpg');"></div>
-        <div class="hero-slide" style="background-image:url('assets/6.jpg');"></div>
+    <div class="hero-bg-slider" id="heroSlider" aria-hidden="true">
+        <div class="hero-slide active" style="background-image:url('assets/hero.png');"></div>
     </div>
     <div class="hero-overlay"></div>
     <div class="container">
@@ -851,6 +849,9 @@ footer strong{color:#fff}
         });
     });
 
+    // Dynamic Rotating Hero Background Slider (15s interval)
+    // Hero background is intentionally a single fixed portfolio theme image.
+
     // Scroll Reveal Animation
     function reveal() {
         const reveals = document.querySelectorAll('.reveal');
@@ -859,7 +860,7 @@ footer strong{color:#fff}
             let elementTop = reveals[i].getBoundingClientRect().top;
             let elementVisible = 100;
             if (elementTop < windowHeight - elementVisible) {
-                reveals.classList.add('show');
+                reveals[i].classList.add('show');
             }
         }
     }
@@ -881,6 +882,16 @@ document.addEventListener('DOMContentLoaded', function () {
         navLinks.classList.remove('open');
       });
     });
+  }
+
+  const slides = document.querySelectorAll('.hero-slide');
+  if (slides.length > 1) {
+    let current = 0;
+    setInterval(function () {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }, 7000);
   }
 
   const reveals = document.querySelectorAll('.reveal');
