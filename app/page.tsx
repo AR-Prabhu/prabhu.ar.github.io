@@ -8,11 +8,11 @@ interface Message {
 }
 
 const LOOKS = [
-  { name: 'Saree', path: '/public/silk/saree.jpg', file: 'saree.jpg' },
-  { name: 'Traditional', path: '/public/silk/traditional.jpg', file: 'traditional.jpg' },
-  { name: 'Night', path: '/public/silk/night.jpg', file: 'night.jpg' },
-  { name: 'Casual', path: '/public/silk/casual.jpg', file: 'casual.jpg' },
-  { name: 'Glamour', path: '/public/silk/glamour.jpg', file: 'glamour.jpg' },
+  { name: 'Saree', path: '/silk/saree.jpg', file: 'saree.jpg' },
+  { name: 'Traditional', path: '/silk/traditional.jpg', file: 'traditional.jpg' },
+  { name: 'Night', path: '/silk/night.jpg', file: 'night.jpg' },
+  { name: 'Casual', path: '/silk/casual.jpg', file: 'casual.jpg' },
+  { name: 'Glamour', path: '/silk/glamour.jpg', file: 'glamour.jpg' },
 ];
 
 const MOODS = ['Happy', 'Shy', 'Excited', 'Calm', 'Loving'];
@@ -32,11 +32,12 @@ export default function SilkApp() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const avatarContainerRef = useRef<HTMLDivElement>(null);
 
-  // Web Audio API refs
+  // Web Audio API refs with corrected TypeScript type
   const audioContextRef = useRef<AudioContext | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
   const sourceNodeRef = useRef<MediaElementAudioSourceNode | null>(null);
   const animationFrameRef = useRef<number | null>(null);
+  const processedAudioElementsRef = useRef<WeakSet<HTMLAudioElement>>(new WeakSet());
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -44,7 +45,7 @@ export default function SilkApp() {
     }
   }, [messages, isLoading]);
 
-  // Handle Audio-Reactive Animation Loop & Safe Source Linking
+  // Handle Audio-Reactive Animation Loop & Safe Single-Source Linking
   const startAudioReactivity = (audioEl: HTMLAudioElement) => {
     try {
       if (!audioContextRef.current) {
@@ -61,21 +62,23 @@ export default function SilkApp() {
         analyserRef.current.fftSize = 256;
       }
 
-      // Safely cleanup previous source node to prevent memory leaks and duplicate creation errors
-      if (sourceNodeRef.current) {
-        try {
-          sourceNodeRef.current.disconnect();
-        } catch (e) {
-          // ignore disconnect errors if already disconnected
+      // Ensure createMediaElementSource is NEVER called twice for the same HTMLAudioElement instance
+      if (!processedAudioElementsRef.current.has(audioEl)) {
+        if (sourceNodeRef.current) {
+          try {
+            sourceNodeRef.current.disconnect();
+          } catch (e) {
+            // ignore disconnect errors
+          }
+          sourceNodeRef.current = null;
         }
-        sourceNodeRef.current = null;
-      }
 
-      // Create a fresh MediaElementAudioSource for this new Audio element and link to analyser
-      if (audioContextRef.current && analyserRef.current) {
-        sourceNodeRef.current = audioContextRef.current.createMediaElementSource(audioEl);
-        sourceNodeRef.current.connect(analyserRef.current);
-        analyserRef.current.connect(audioContextRef.current.destination);
+        if (audioContextRef.current && analyserRef.current) {
+          sourceNodeRef.current = audioContextRef.current.createMediaElementSource(audioEl);
+          sourceNodeRef.current.connect(analyserRef.current);
+          analyserRef.current.connect(audioContextRef.current.destination);
+          processedAudioElementsRef.current.add(audioEl);
+        }
       }
 
       const bufferLength = analyserRef.current?.frequencyBinCount || 128;
@@ -194,7 +197,6 @@ export default function SilkApp() {
     }
   };
 
-  // Get active image filename based on look
   const activeLookObj = LOOKS.find((l) => l.name === currentLook) || LOOKS[1];
   const imageSrc = `/silk/${activeLookObj.file}`;
 
@@ -256,7 +258,6 @@ export default function SilkApp() {
               alt={`SILK - ${currentLook}`}
               className="w-full h-full object-contain object-center bg-black/80"
             />
-            {/* Live speech subtitle / status overlay */}
             <div className="absolute bottom-3 left-3 right-3 bg-black/70 backdrop-blur-md border border-pink-900/50 p-2.5 rounded-xl text-center">
               <p className="text-xs text-pink-200 font-medium italic line-clamp-2">
                 {messages[messages.length - 1]?.role === 'model' ? messages[messages.length - 1].text : 'Ready to talk, செல்லம்...'}
