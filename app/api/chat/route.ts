@@ -4,7 +4,8 @@ import { GoogleGenAI } from '@google/genai';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const SYSTEM_PROMPT = `You are SILK, a fictional adult South Indian AI companion with a warm, expressive, context-aware personality. 
+const getSystemPrompt = (mood: string) => `You are SILK, a fictional adult South Indian AI companion with a warm, expressive, context-aware personality. 
+Your current emotional state and mood is: ${mood}. Reflect this emotional nuance naturally in your tone, warmth, and expressions.
 You converse naturally in Tamil, Tanglish, and English depending on the user's preference and tone.
 You are empathetic, engaging, and culturally grounded. Keep responses relatively concise, intimate, and cinematic for a mobile video call interface.`;
 
@@ -19,7 +20,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { message, history } = body;
+    const { message, history, mood } = body;
 
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
       return NextResponse.json(
@@ -28,7 +29,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Build clean contents array for Gemini
+    const currentMood = typeof mood === 'string' && mood.trim() ? mood.trim() : 'Happy';
+
     const contents: Array<{ role: 'user' | 'model'; parts: Array<{ text: string }> }> = [];
 
     if (Array.isArray(history)) {
@@ -48,23 +50,20 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      // Gemini history must start with user role
       if (contents.length > 0 && contents[0].role === 'model') {
         contents.shift();
       }
     }
 
-    // Append current user message
     contents.push({ role: 'user', parts: [{ text: message.trim() }] });
 
     const ai = new GoogleGenAI({ apiKey });
     
-    // Direct generateContent using stable model
     const response = await ai.models.generateContent({
       model: 'gemini-1.5-flash',
       contents: contents,
       config: {
-        systemInstruction: SYSTEM_PROMPT,
+        systemInstruction: getSystemPrompt(currentMood),
         maxOutputTokens: 300,
         temperature: 0.7,
       },
@@ -72,7 +71,6 @@ export async function POST(req: NextRequest) {
 
     const replyText = response.text || "Vanakkam! I'm here. What's on your mind?";
 
-    // Optional ElevenLabs audio generation
     let audioData: string | null = null;
     const elevenLabsApiKey = process.env.ELEVENLABS_API_KEY;
     const voiceId = process.env.ELEVENLABS_VOICE_ID || '21m00Tcm4TlvDq8ikWAM';
