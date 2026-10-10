@@ -1,11 +1,9 @@
+import './globals.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'SILK AI Companion',
-  description: 'Mobile-first SILK AI Voice & Chat Companion',
-  manifest: '/manifest.json',
-  viewport: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no',
-  themeColor: '#0B0512',
+  title: 'Project SILK - AI Companion',
+  description: 'Cinematic AI companion web app',
 };
 
 export default function RootLayout({
@@ -15,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body style={{ margin: 0, padding: 0, backgroundColor: '#0B0512' }}>
+      <body className="bg-slate-950 text-slate-100 min-h-screen antialiased selection:bg-rose-500 selection:text-white">
         {children}
       </body>
     </html>
