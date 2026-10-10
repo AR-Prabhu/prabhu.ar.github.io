@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
     }
 
     const ai = new GoogleGenAI({ apiKey });
-    const modelName = 'gemini-2.5-flash';
+    const modelName = 'gemini-3.8-flash';
 
     const chat = ai.chats.create({
       model: modelName,
