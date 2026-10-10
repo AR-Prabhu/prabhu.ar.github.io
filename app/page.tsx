@@ -28,11 +28,12 @@ export default function SilkCompanionPage() {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorBanner, setErrorBanner] = useState<string | null>(null);
+  const [imgError, setImgError] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const activeLookObj = LOOKS.find(l => l.name === currentLook) || LOOKS[0];
-  const imageSrc = activeLookObj.path;
+  const imageSrc = imgError ? '/silk/images.jpg' : activeLookObj.path;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -118,7 +119,8 @@ export default function SilkCompanionPage() {
             <img 
               src={imageSrc} 
               alt={currentLook}
-              className={`w-full h-full transition-all duration-500 animate-pulse [animation-duration:6s] ${
+              onError={() => setImgError(true)}
+              className={`w-full h-full transition-all duration-500 idle-breath ${
                 framing === 'closeup' ? 'object-cover scale-125 object-top' :
                 framing === 'full' ? 'object-contain scale-95' : 'object-cover scale-100 object-center'
               }`}
@@ -160,7 +162,10 @@ export default function SilkCompanionPage() {
               {LOOKS.map((look) => (
                 <button
                   key={look.name}
-                  onClick={() => setCurrentLook(look.name)}
+                  onClick={() => {
+                    setImgError(false);
+                    setCurrentLook(look.name);
+                  }}
                   className={`py-2 px-1 text-xs rounded-lg font-medium transition-all truncate ${
                     currentLook === look.name
                       ? 'bg-gradient-to-r from-rose-600 to-pink-600 text-white shadow-md shadow-rose-900/40'
@@ -212,7 +217,7 @@ export default function SilkCompanionPage() {
             </div>
           )}
 
-          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin">
             {messages.map((msg, idx) => (
               <div 
                 key={idx} 
