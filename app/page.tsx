@@ -4,11 +4,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Send, Sparkles, ShieldAlert, Video } from 'lucide-react';
 
 const LOOKS = [
-  { name: 'Saree', path: '/silk/images.jpg', file: 'images.jpg' },
-  { name: 'Traditional', path: '/silk/images (1).jpg', file: 'images (1).jpg' },
-  { name: 'Night', path: '/silk/images (2).jpg', file: 'images (2).jpg' },
-  { name: 'Casual', path: '/silk/images (3).jpg', file: 'images (3).jpg' },
-  { name: 'Glamour', path: '/silk/521fd0ae32dce3627ef48f18f54a1ba3.jpg', file: '521fd0ae32dce3627ef48f18f54a1ba3.jpg' },
+  { name: 'Saree', path: '/silk/silk-face-1.jpg.jpg' },
+  { name: 'Traditional', path: '/silk/silk-face-2.jpg.jpg' },
+  { name: 'Night', path: '/silk/silk-face-3.jpg.jpg' },
+  { name: 'Casual', path: '/silk/silk-face-4.jpg.jpg' },
+  { name: 'Glamour', path: '/silk/silk-face-5.jpg.jpg' },
 ];
 
 const MOODS = ['Happy', 'Shy', 'Excited', 'Calm', 'Loving'];
@@ -28,12 +28,11 @@ export default function SilkCompanionPage() {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorBanner, setErrorBanner] = useState<string | null>(null);
-  const [imgError, setImgError] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const activeLookObj = LOOKS.find(l => l.name === currentLook) || LOOKS[0];
-  const imageSrc = imgError ? '/silk/images.jpg' : activeLookObj.path;
+  const imageSrc = activeLookObj.path;
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -119,7 +118,6 @@ export default function SilkCompanionPage() {
             <img 
               src={imageSrc} 
               alt={currentLook}
-              onError={() => setImgError(true)}
               className={`w-full h-full transition-all duration-500 idle-breath ${
                 framing === 'closeup' ? 'object-cover scale-125 object-top' :
                 framing === 'full' ? 'object-contain scale-95' : 'object-cover scale-100 object-center'
@@ -162,10 +160,7 @@ export default function SilkCompanionPage() {
               {LOOKS.map((look) => (
                 <button
                   key={look.name}
-                  onClick={() => {
-                    setImgError(false);
-                    setCurrentLook(look.name);
-                  }}
+                  onClick={() => setCurrentLook(look.name)}
                   className={`py-2 px-1 text-xs rounded-lg font-medium transition-all truncate ${
                     currentLook === look.name
                       ? 'bg-gradient-to-r from-rose-600 to-pink-600 text-white shadow-md shadow-rose-900/40'
