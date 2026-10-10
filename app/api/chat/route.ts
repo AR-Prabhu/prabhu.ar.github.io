@@ -70,7 +70,6 @@ export async function POST(req: NextRequest) {
       history: sanitizedHistory,
       config: {
         systemInstruction: SYSTEM_PROMPT,
-        temperature: 0.7,
         maxOutputTokens: 500,
       },
     });
