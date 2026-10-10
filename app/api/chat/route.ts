@@ -70,12 +70,11 @@ export async function POST(req: NextRequest) {
     }
 
     const ai = new GoogleGenAI({ apiKey });
-    const modelName = 'gemini-2.5-flash';
 
     let response;
     try {
       response = await ai.models.generateContent({
-        model: modelName,
+        model: 'gemini-2.5-flash',
         contents: contents,
         config: {
           systemInstruction: getSystemPrompt(currentMood),
@@ -85,15 +84,7 @@ export async function POST(req: NextRequest) {
     } catch (geminiErr: any) {
       console.error('Gemini API Exception:', geminiErr);
       const status = geminiErr.status || 500;
-      let errMessage = geminiErr.message || 'Gemini model service error.';
-      if (status === 401 || status === 403) {
-        errMessage = 'Authentication failed with Gemini API. Check your GEMINI_API_KEY.';
-      } else if (status === 404) {
-        errMessage = `The Gemini model (${modelName}) was not found or is unavailable for your API key.`;
-      } else if (status === 429) {
-        errMessage = 'Gemini API rate limit exceeded. Please try again shortly.';
-      }
-      return NextResponse.json({ error: errMessage, code: 'GEMINI_ERROR' }, { status: status >= 400 && status < 600 ? status : 500 });
+      return NextResponse.json({ error: geminiErr.message || 'Gemini error', code: 'GEMINI_ERROR' }, { status: status >= 400 && status < 600 ? status : 500 });
     }
 
     const replyText = response.text ? response.text.trim() : '';
