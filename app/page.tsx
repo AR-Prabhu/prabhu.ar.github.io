@@ -1,163 +1,46 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-
-interface Message {
-  role: 'user' | 'model';
-  text: string;
-}
+import { Send, Sparkles, ShieldAlert, Video } from 'lucide-react';
 
 const LOOKS = [
-  { name: 'Saree', path: '/silk/saree.jpg', file: 'saree.jpg' },
-  { name: 'Traditional', path: '/silk/traditional.jpg', file: 'traditional.jpg' },
-  { name: 'Night', path: '/silk/night.jpg', file: 'night.jpg' },
-  { name: 'Casual', path: '/silk/casual.jpg', file: 'casual.jpg' },
-  { name: 'Glamour', path: '/silk/glamour.jpg', file: 'glamour.jpg' },
+  { name: 'Saree', path: '/silk/images.jpg', file: 'images.jpg' },
+  { name: 'Traditional', path: '/silk/images (1).jpg', file: 'images (1).jpg' },
+  { name: 'Night', path: '/silk/images (2).jpg', file: 'images (2).jpg' },
+  { name: 'Casual', path: '/silk/images (3).jpg', file: 'images (3).jpg' },
+  { name: 'Glamour', path: '/silk/521fd0ae32dce3627ef48f18f54a1ba3.jpg', file: '521fd0ae32dce3627ef48f18f54a1ba3.jpg' },
 ];
 
 const MOODS = ['Happy', 'Shy', 'Excited', 'Calm', 'Loving'];
 
-export default function SilkApp() {
+interface Message {
+  role: 'user' | 'assistant';
+  text: string;
+}
+
+export default function SilkCompanionPage() {
+  const [currentLook, setCurrentLook] = useState('Saree');
+  const [currentMood, setCurrentMood] = useState('Happy');
+  const [framing, setFraming] = useState<'closeup' | 'half' | 'full'>('half');
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', text: 'வணக்கம் செல்லம்... நான் தான் SILK. சொல்லுடா என்ன பேசணும்?' }
+    { role: 'assistant', text: "Vanakkam! Naan SILK. How are you doing today? Ready to chat in Tamil, Tanglish, or English?" }
   ]);
   const [inputMessage, setInputMessage] = useState('');
-  const [currentLook, setCurrentLook] = useState('Traditional');
-  const [currentMood, setCurrentMood] = useState('Happy');
   const [isLoading, setIsLoading] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
-  const [apiStatus, setApiStatus] = useState<'Live' | 'API Error'>('Live');
+  const [errorBanner, setErrorBanner] = useState<string | null>(null);
 
-  const chatContainerRef = useRef<HTMLDivElement>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const avatarContainerRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Web Audio API refs with corrected TypeScript type
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const analyserRef = useRef<AnalyserNode | null>(null);
-  const sourceNodeRef = useRef<MediaElementAudioSourceNode | null>(null);
-  const animationFrameRef = useRef<number | null>(null);
-  const processedAudioElementsRef = useRef<WeakSet<HTMLAudioElement>>(new WeakSet());
+  const activeLookObj = LOOKS.find(l => l.name === currentLook) || LOOKS[0];
+  const imageSrc = activeLookObj.path;
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   useEffect(() => {
-    if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
-    }
+    scrollToBottom();
   }, [messages, isLoading]);
-
-  // Handle Audio-Reactive Animation Loop & Safe Single-Source Linking
-  const startAudioReactivity = (audioEl: HTMLAudioElement) => {
-    try {
-      if (!audioContextRef.current) {
-        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
-        audioContextRef.current = new AudioCtx();
-      }
-
-      if (audioContextRef.current.state === 'suspended') {
-        audioContextRef.current.resume();
-      }
-
-      if (!analyserRef.current && audioContextRef.current) {
-        analyserRef.current = audioContextRef.current.createAnalyser();
-        analyserRef.current.fftSize = 256;
-      }
-
-      // Ensure createMediaElementSource is NEVER called twice for the same HTMLAudioElement instance
-      if (!processedAudioElementsRef.current.has(audioEl)) {
-        if (sourceNodeRef.current) {
-          try {
-            sourceNodeRef.current.disconnect();
-          } catch (e) {
-            // ignore disconnect errors
-          }
-          sourceNodeRef.current = null;
-        }
-
-        if (audioContextRef.current && analyserRef.current) {
-          sourceNodeRef.current = audioContextRef.current.createMediaElementSource(audioEl);
-          sourceNodeRef.current.connect(analyserRef.current);
-          analyserRef.current.connect(audioContextRef.current.destination);
-          processedAudioElementsRef.current.add(audioEl);
-        }
-      }
-
-      const bufferLength = analyserRef.current?.frequencyBinCount || 128;
-      const dataArray = new Uint8Array(bufferLength);
-
-      const renderFrame = () => {
-        if (!analyserRef.current || !avatarContainerRef.current) return;
-        analyserRef.current.getByteFrequencyData(dataArray);
-
-        let sum = 0;
-        for (let i = 0; i < bufferLength; i++) {
-          sum += dataArray[i];
-        }
-        const average = sum / bufferLength;
-        const normalized = average / 255; // 0.0 to 1.0
-
-        // Audio-reactive scale, vertical drift, and dynamic glow
-        const scale = 1 + normalized * 0.035;
-        const translateY = -normalized * 5;
-        const glowAlpha = 0.2 + normalized * 0.5;
-
-        avatarContainerRef.current.style.transform = `scale(${scale}) translateY(${translateY}px)`;
-        avatarContainerRef.current.style.boxShadow = `0 0 ${15 + normalized * 30}px rgba(255, 105, 180, ${glowAlpha})`;
-
-        animationFrameRef.current = requestAnimationFrame(renderFrame);
-      };
-
-      renderFrame();
-    } catch (err) {
-      console.warn('Web Audio API initialization warning:', err);
-    }
-  };
-
-  const stopAudioReactivity = () => {
-    if (animationFrameRef.current) {
-      cancelAnimationFrame(animationFrameRef.current);
-      animationFrameRef.current = null;
-    }
-    if (avatarContainerRef.current) {
-      avatarContainerRef.current.style.transform = '';
-      avatarContainerRef.current.style.boxShadow = '';
-    }
-  };
-
-  const playAudio = (base64Audio: string | null) => {
-    if (!base64Audio) {
-      setIsSpeaking(false);
-      return;
-    }
-
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
-
-    const audio = new Audio(base64Audio);
-    audioRef.current = audio;
-
-    audio.onplay = () => {
-      setIsSpeaking(true);
-      startAudioReactivity(audio);
-    };
-
-    audio.onended = () => {
-      setIsSpeaking(false);
-      stopAudioReactivity();
-    };
-
-    audio.onerror = () => {
-      setIsSpeaking(false);
-      stopAudioReactivity();
-    };
-
-    audio.play().catch((e) => {
-      console.warn('Audio playback restricted or failed:', e);
-      setIsSpeaking(false);
-      stopAudioReactivity();
-    });
-  };
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -165,176 +48,221 @@ export default function SilkApp() {
 
     const userText = inputMessage.trim();
     setInputMessage('');
-    setMessages((prev) => [...prev, { role: 'user', text: userText }]);
+    setErrorBanner(null);
+
+    const updatedMessages: Message[] = [...messages, { role: 'user', text: userText }];
+    setMessages(updatedMessages);
     setIsLoading(true);
-    setApiStatus('Live');
 
     try {
-      const response = await fetch('/api/chat', {
+      const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           message: userText,
-          history: messages,
+          history: updatedMessages.slice(0, -1),
         }),
       });
 
-      const data = await response.json();
+      const data = await res.json();
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Server error occurred');
+      if (!res.ok) {
+        throw new Error(data.error || `Server error: ${res.status}`);
       }
 
-      setMessages((prev) => [...prev, { role: 'model', text: data.reply }]);
-      playAudio(data.audio);
+      setMessages([...updatedMessages, { role: 'assistant', text: data.reply }]);
+
+      if (data.audio) {
+        try {
+          const audio = new Audio(data.audio);
+          await audio.play();
+        } catch (audioErr) {
+          console.warn('Audio playback prevented or failed:', audioErr);
+        }
+      }
     } catch (err: any) {
-      console.error('Chat request failed:', err);
-      setApiStatus('API Error');
-      const fallbackReply = 'மன்னிக்கவும் செல்லம், இணைப்பில் சிறு தாராளப் பிரச்சனை. சிறிது நேரம் கழித்து பேசலாம்.';
-      setMessages((prev) => [...prev, { role: 'model', text: fallbackReply }]);
+      setErrorBanner(err.message || 'Failed to communicate with SILK.');
     } finally {
       setIsLoading(false);
     }
   };
 
-  const activeLookObj = LOOKS.find((l) => l.name === currentLook) || LOOKS[1];
-  const imageSrc = `/silk/${activeLookObj.file}`;
-
   return (
-    <main className="min-h-screen bg-[#0a050c] text-pink-100 flex flex-col justify-between p-4 font-sans select-none">
-      {/* Top Header */}
-      <header className="flex justify-between items-center border-b border-pink-900/40 pb-3 px-2">
-        <div>
-          <h1 className="text-2xl font-bold tracking-wider text-pink-400 font-serif">PROJECT SILK</h1>
-          <p className="text-xs text-pink-400/70 tracking-widest uppercase">Live Interactive Companion</p>
+    <main className="min-h-screen bg-slate-950 text-slate-100 flex flex-col items-center justify-between font-sans selection:bg-rose-500 selection:text-white">
+      <header className="w-full max-w-4xl bg-slate-900/80 backdrop-blur-md border-b border-slate-800 px-4 py-3 sticky top-0 z-30 flex items-center justify-between">
+        <div className="flex items-center space-x-3">
+          <div className="relative w-10 h-10 rounded-full bg-gradient-to-tr from-rose-500 to-amber-500 flex items-center justify-center font-bold text-lg shadow-lg">
+            S
+            <span className="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-slate-900 rounded-full animate-pulse"></span>
+          </div>
+          <div>
+            <h1 className="font-bold text-sm sm:text-base tracking-wide flex items-center gap-1.5">
+              SILK <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span className="text-[10px] bg-rose-950/80 text-rose-300 border border-rose-800/60 px-2 py-0.5 rounded-full font-normal">Live Companion</span>
+            </h1>
+            <p className="text-xs text-slate-400 font-medium">Mood: <span className="text-rose-300">{currentMood}</span> • Look: <span className="text-amber-300">{currentLook}</span></p>
+          </div>
         </div>
-        <div className="flex items-center gap-2 bg-black/40 px-3 py-1 rounded-full border border-pink-900/50 text-xs">
-          <span className={`w-2.5 h-2.5 rounded-full ${apiStatus === 'Live' ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
-          <span className={apiStatus === 'Live' ? 'text-emerald-400' : 'text-rose-400'}>{apiStatus}</span>
+
+        <div className="flex items-center gap-2">
+          <div className="hidden sm:flex items-center gap-1.5 bg-slate-950/60 px-3 py-1 rounded-full border border-slate-800 text-xs text-slate-300">
+            <Video className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+            <span>Virtual Call Active</span>
+          </div>
         </div>
       </header>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 my-4 flex-1">
-        {/* Left: Chat Log */}
-        <section className="bg-[#120816]/80 border border-pink-900/30 rounded-xl p-4 flex flex-col h-[520px] shadow-lg shadow-pink-950/20">
-          <h2 className="text-sm font-semibold text-pink-300 mb-3 flex items-center gap-2">
-            <span>💖</span> SILK Chat
-          </h2>
-          <div ref={chatContainerRef} className="flex-1 overflow-y-auto space-y-3 pr-2 scrollbar-thin">
-            {messages.map((msg, idx) => (
-              <div
-                key={idx}
-                className={`p-3 rounded-lg text-sm leading-relaxed ${
-                  msg.role === 'user'
-                    ? 'bg-pink-900/40 border border-pink-700/40 ml-6 text-pink-50'
-                    : 'bg-black/50 border border-pink-900/30 mr-6 text-pink-200'
-                }`}
-              >
-                <div className="text-[10px] uppercase tracking-wider text-pink-400/60 mb-1">
-                  {msg.role === 'user' ? 'You' : 'SILK'}
-                </div>
-                {msg.text}
-              </div>
-            ))}
-            {isLoading && (
-              <div className="bg-black/50 border border-pink-900/30 p-3 rounded-lg mr-6 text-xs text-pink-400 animate-pulse">
-                SILK is thinking & crafting response...
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Center: Avatar Stage */}
-        <section className="lg:col-span-2 flex flex-col items-center justify-center bg-[#0d0710] border border-pink-900/30 rounded-xl p-4 relative overflow-hidden shadow-2xl shadow-pink-950/40 h-[520px]">
-          <div
-            ref={avatarContainerRef}
-            className={`relative w-full max-w-[360px] h-[440px] rounded-2xl overflow-hidden border border-pink-800/40 transition-all duration-300 ${
-              isSpeaking ? 'audio-active-glow' : 'idle-breath'
-            }`}
-          >
-            <img
-              src={imageSrc}
-              alt={`SILK - ${currentLook}`}
-              className="w-full h-full object-contain object-center bg-black/80"
+      <div className="w-full max-w-4xl flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 p-3 sm:p-4 pb-24 lg:pb-6">
+        <div className="lg:col-span-6 flex flex-col gap-3">
+          <div className="relative w-full aspect-[3/4] sm:aspect-[4/5] lg:aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl border border-slate-800 bg-slate-900 flex items-center justify-center group">
+            <img 
+              src={imageSrc} 
+              alt={currentLook}
+              className={`w-full h-full transition-all duration-500 animate-pulse [animation-duration:6s] ${
+                framing === 'closeup' ? 'object-cover scale-125 object-top' :
+                framing === 'full' ? 'object-contain scale-95' : 'object-cover scale-100 object-center'
+              }`}
             />
-            <div className="absolute bottom-3 left-3 right-3 bg-black/70 backdrop-blur-md border border-pink-900/50 p-2.5 rounded-xl text-center">
-              <p className="text-xs text-pink-200 font-medium italic line-clamp-2">
-                {messages[messages.length - 1]?.role === 'model' ? messages[messages.length - 1].text : 'Ready to talk, செல்லம்...'}
-              </p>
+
+            <div className="absolute top-3 left-3 bg-slate-950/70 backdrop-blur-md px-3 py-1 rounded-full border border-slate-800 text-xs text-slate-300 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+              <span>SILK v20.1</span>
+            </div>
+
+            <div className="absolute bottom-3 right-3 flex bg-slate-950/80 backdrop-blur-md rounded-xl p-1 border border-slate-800 gap-1 text-xs z-10 shadow-lg">
+              <button 
+                type="button"
+                onClick={() => setFraming('closeup')}
+                className={`px-2.5 py-1 rounded-lg transition-all ${framing === 'closeup' ? 'bg-rose-600 text-white font-medium' : 'text-slate-400 hover:text-white'}`}
+              >
+                Close
+              </button>
+              <button 
+                type="button"
+                onClick={() => setFraming('half')}
+                className={`px-2.5 py-1 rounded-lg transition-all ${framing === 'half' ? 'bg-rose-600 text-white font-medium' : 'text-slate-400 hover:text-white'}`}
+              >
+                Half
+              </button>
+              <button 
+                type="button"
+                onClick={() => setFraming('full')}
+                className={`px-2.5 py-1 rounded-lg transition-all ${framing === 'full' ? 'bg-rose-600 text-white font-medium' : 'text-slate-400 hover:text-white'}`}
+              >
+                Full
+              </button>
             </div>
           </div>
-        </section>
 
-        {/* Right: Actions / Looks / Moods */}
-        <section className="bg-[#120816]/80 border border-pink-900/30 rounded-xl p-4 flex flex-col h-[520px] overflow-y-auto shadow-lg shadow-pink-950/20">
-          <h2 className="text-sm font-semibold text-pink-300 mb-3">SILK Actions</h2>
-
-          <div className="mb-4">
-            <label className="text-xs uppercase tracking-wider text-pink-400/70 block mb-2 font-semibold">Look</label>
-            <div className="space-y-1.5">
+          <div className="bg-slate-900/90 border border-slate-800 p-2.5 rounded-xl shadow-md">
+            <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2 px-1">Appearance Style</p>
+            <div className="grid grid-cols-5 gap-1.5">
               {LOOKS.map((look) => (
                 <button
                   key={look.name}
                   onClick={() => setCurrentLook(look.name)}
-                  className={`w-full text-left px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+                  className={`py-2 px-1 text-xs rounded-lg font-medium transition-all truncate ${
                     currentLook === look.name
-                      ? 'bg-pink-900/60 border border-pink-600 text-pink-100 shadow-sm'
-                      : 'bg-black/30 hover:bg-pink-950/30 text-pink-300/80 border border-transparent'
+                      ? 'bg-gradient-to-r from-rose-600 to-pink-600 text-white shadow-md shadow-rose-900/40'
+                      : 'bg-slate-950 text-slate-300 border border-slate-800 hover:bg-slate-800'
                   }`}
                 >
-                  👗 {look.name}
+                  {look.name}
                 </button>
               ))}
             </div>
           </div>
 
-          <div>
-            <label className="text-xs uppercase tracking-wider text-pink-400/70 block mb-2 font-semibold">Mood</label>
-            <div className="grid grid-cols-1 gap-1.5">
+          <div className="bg-slate-900/90 border border-slate-800 p-2.5 rounded-xl shadow-md">
+            <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2 px-1">Emotional State</p>
+            <div className="flex justify-between gap-1">
               {MOODS.map((mood) => (
                 <button
                   key={mood}
                   onClick={() => setCurrentMood(mood)}
-                  className={`text-left px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                  className={`flex-1 py-1.5 px-1 text-[11px] rounded-lg font-medium transition-all ${
                     currentMood === mood
-                      ? 'bg-pink-900/40 border border-pink-700 text-pink-200'
-                      : 'bg-black/30 hover:bg-pink-950/30 text-pink-300/70 border border-transparent'
+                      ? 'bg-rose-600 text-white shadow-md'
+                      : 'bg-slate-950 text-slate-400 border border-slate-800 hover:bg-slate-800'
                   }`}
                 >
-                  😊 {mood}
+                  {mood}
                 </button>
               ))}
             </div>
           </div>
-        </section>
-      </div>
-
-      {/* Footer Status Bar & Input Form */}
-      <footer className="mt-2">
-        <div className="flex justify-between items-center text-xs text-pink-400/60 px-2 mb-2">
-          <div><span className="text-pink-400 font-medium">Current Look:</span> {currentLook}</div>
-          <div><span className="text-pink-400 font-medium">Mode:</span> Live Interactive Companion</div>
-          <div><span className="text-pink-400 font-medium">Status:</span> {isSpeaking ? 'Speaking...' : 'Idle'}</div>
         </div>
 
-        <form onSubmit={handleSendMessage} className="flex gap-2 bg-[#120816] border border-pink-900/50 p-2 rounded-2xl shadow-lg">
-          <input
-            type="text"
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-            placeholder="பேசுடா செல்லம்... அல்லது type பண்ணு..."
-            className="flex-1 bg-transparent border-none outline-none px-4 text-sm text-pink-100 placeholder-pink-500/50"
-          />
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="bg-pink-700 hover:bg-pink-600 active:scale-95 text-pink-50 px-6 py-2.5 rounded-xl text-sm font-medium transition-all shadow-md shadow-pink-900/50 disabled:opacity-50"
-          >
-            {isLoading ? 'Thinking...' : 'Send'}
-          </button>
-        </form>
-      </footer>
+        <div className="lg:col-span-6 flex flex-col bg-slate-900/90 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden h-[450px] lg:h-[calc(100vh-130px)]">
+          <div className="bg-slate-950/80 border-b border-slate-800 px-4 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <h2 className="text-xs font-semibold tracking-wide text-slate-200 uppercase">Secure Conversation</h2>
+            </div>
+            <span className="text-[10px] text-rose-400 font-medium">Tamil / Tanglish / English</span>
+          </div>
+
+          {errorBanner && (
+            <div className="mx-3 mt-3 bg-rose-950/70 border border-rose-800 p-2.5 rounded-xl text-xs text-rose-200 flex items-start gap-2 shadow-md">
+              <ShieldAlert className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold">Notice</p>
+                <p>{errorBanner}</p>
+              </div>
+            </div>
+          )}
+
+          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+            {messages.map((msg, idx) => (
+              <div 
+                key={idx} 
+                className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              >
+                <div 
+                  className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-md ${
+                    msg.role === 'user' 
+                      ? 'bg-gradient-to-r from-rose-600 to-pink-600 text-white rounded-br-none' 
+                      : 'bg-slate-950 border border-slate-800 text-slate-100 rounded-bl-none'
+                  }`}
+                >
+                  {msg.text}
+                </div>
+              </div>
+            ))}
+
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="bg-slate-950 border border-slate-800 text-slate-400 rounded-2xl rounded-bl-none px-4 py-3 text-xs flex items-center gap-2 animate-pulse">
+                  <span className="w-2 h-2 rounded-full bg-rose-500 animate-bounce"></span>
+                  <span className="w-2 h-2 rounded-full bg-rose-500 animate-bounce [animation-delay:0.2s]"></span>
+                  <span className="w-2 h-2 rounded-full bg-rose-500 animate-bounce [animation-delay:0.4s]"></span>
+                  <span className="ml-1">Silk is replying...</span>
+                </div>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          <div className="p-3 bg-slate-950/90 border-t border-slate-800">
+            <form onSubmit={handleSendMessage} className="flex items-center gap-2">
+              <input 
+                type="text" 
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                placeholder="Type in Tamil, Tanglish, or English..."
+                className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-rose-500 transition-colors"
+              />
+              <button 
+                type="submit"
+                disabled={isLoading || !inputMessage.trim()}
+                className="bg-rose-600 hover:bg-rose-500 disabled:opacity-50 text-white p-3 rounded-xl transition-all shadow-lg shadow-rose-900/30 flex items-center justify-center"
+              >
+                <Send className="w-4 h-4" />
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
