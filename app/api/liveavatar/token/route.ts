@@ -18,10 +18,11 @@ export async function POST(req: NextRequest) {
     const body = await req.json().catch(() => ({}));
     const avatarId = body.avatarId || defaultAvatarId;
 
-    const res = await fetch('https://api.heygen.com/v1/streaming.create_token', {
+    // Call the dedicated LiveAvatar token endpoint on api.liveavatar.com
+    const res = await fetch('https://api.liveavatar.com/v1/sessions/token', {
       method: 'POST',
       headers: {
-        'x-api-key': apiKey,
+        'X-API-KEY': apiKey,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -32,17 +33,21 @@ export async function POST(req: NextRequest) {
     if (!res.ok) {
       const errText = await res.text();
       return NextResponse.json(
-        { error: `HeyGen API Token Error: ${errText}` },
+        { error: `LiveAvatar API Error (${res.status}): ${errText}` },
         { status: res.status }
       );
     }
 
     const responseData = await res.json();
-    const sessionToken = responseData.data?.token || responseData.token || responseData.data?.session_token;
+    const sessionToken =
+      responseData.data?.session_token ||
+      responseData.data?.token ||
+      responseData.session_token ||
+      responseData.token;
 
     if (!sessionToken) {
       return NextResponse.json(
-        { error: 'No token received from HeyGen API.' },
+        { error: 'No session token returned by LiveAvatar API.' },
         { status: 502 }
       );
     }
