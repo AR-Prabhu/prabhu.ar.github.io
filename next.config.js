@@ -1,3 +1,4 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
-module.exports = nextConfig;
+config: {
+  systemInstruction: SYSTEM_PROMPT,
+  maxOutputTokens: 500,
+},
