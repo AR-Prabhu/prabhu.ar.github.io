@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
     let response;
     try {
       response = await ai.models.generateContent({
-        model: 'gemini-1.5-flash',
+        model: 'gemini-2.0-flash',
         contents: contents,
         config: {
           systemInstruction: getSystemPrompt(currentMood),
@@ -84,7 +84,10 @@ export async function POST(req: NextRequest) {
     } catch (geminiErr: any) {
       console.error('Gemini API Exception:', geminiErr);
       const status = geminiErr.status || 500;
-      return NextResponse.json({ error: geminiErr.message || 'Gemini error', code: 'GEMINI_ERROR' }, { status: status >= 400 && status < 600 ? status : 500 });
+      return NextResponse.json(
+        { error: geminiErr.message || 'Gemini error', code: 'GEMINI_ERROR' },
+        { status: status >= 400 && status < 600 ? status : 500 }
+      );
     }
 
     const replyText = response.text ? response.text.trim() : '';
