@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
 
     if (!apiKey) {
       return NextResponse.json(
-        { error: 'Server Error: LIVEAVATAR_API_KEY is not configured in Vercel settings.', code: 'MISSING_API_KEY' },
+        { error: 'LIVEAVATAR_API_KEY is missing in Vercel Environment Variables.' },
         { status: 500 }
       );
     }
@@ -18,15 +18,13 @@ export async function POST(req: NextRequest) {
     const body = await req.json().catch(() => ({}));
     const avatarId = body.avatarId || defaultAvatarId;
 
-    const res = await fetch('https://api.liveavatar.com/v1/sessions/token', {
+    const res = await fetch('https://api.heygen.com/v1/streaming.create_token', {
       method: 'POST',
       headers: {
-        'X-API-KEY': apiKey,
-        'Accept': 'application/json',
+        'x-api-key': apiKey,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        mode: 'LITE',
         avatar_id: avatarId,
       }),
     });
@@ -34,21 +32,17 @@ export async function POST(req: NextRequest) {
     if (!res.ok) {
       const errText = await res.text();
       return NextResponse.json(
-        { error: `LiveAvatar API Error: ${errText}`, code: 'HEYGEN_API_ERROR' },
+        { error: `HeyGen API Token Error: ${errText}` },
         { status: res.status }
       );
     }
 
     const responseData = await res.json();
-    const sessionToken =
-      responseData.data?.session_token ||
-      responseData.data?.sessionToken ||
-      responseData.session_token ||
-      responseData.sessionToken;
+    const sessionToken = responseData.data?.token || responseData.token || responseData.data?.session_token;
 
     if (!sessionToken) {
       return NextResponse.json(
-        { error: 'Failed to retrieve session_token from LiveAvatar API response.', code: 'INVALID_TOKEN_RESPONSE' },
+        { error: 'No token received from HeyGen API.' },
         { status: 502 }
       );
     }
@@ -57,7 +51,7 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error('LiveAvatar Token Proxy Error:', error);
     return NextResponse.json(
-      { error: error.message || 'Internal server error while generating avatar token.', code: 'SERVER_ERROR' },
+      { error: error.message || 'Internal server error while generating avatar token.' },
       { status: 500 }
     );
   }
