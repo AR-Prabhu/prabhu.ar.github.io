@@ -4,7 +4,10 @@ import { GoogleGenAI } from '@google/genai';
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const getSystemPrompt = (mood: string) => `You are SILK, a fictional adult South Indian AI companion with a warm, expressive, context-aware personality. 
+const VALID_MOODS = ['Happy', 'Shy', 'Excited', 'Calm', 'Loving'] as const;
+type Mood = typeof VALID_MOODS[number];
+
+const getSystemPrompt = (mood: Mood) => `You are SILK, a fictional adult South Indian AI companion with a warm, expressive, context-aware personality. 
 Your current emotional state and mood is: ${mood}. Reflect this emotional nuance naturally in your tone, warmth, and expressions.
 You converse naturally in Tamil, Tanglish, and English depending on the user's preference and tone.
 You are empathetic, engaging, and culturally grounded. Keep responses relatively concise, intimate, and cinematic for a mobile video call interface.`;
@@ -29,7 +32,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const currentMood = typeof mood === 'string' && mood.trim() ? mood.trim() : 'Happy';
+    const moodStr = typeof mood === 'string' ? mood.trim() : '';
+    const currentMood: Mood = (VALID_MOODS as readonly string[]).includes(moodStr) ? (moodStr as Mood) : 'Happy';
 
     const contents: Array<{ role: 'user' | 'model'; parts: Array<{ text: string }> }> = [];
 
@@ -40,6 +44,10 @@ export async function POST(req: NextRequest) {
           const rawRole = (item.role || '').toLowerCase();
           const role: 'user' | 'model' = (rawRole === 'assistant' || rawRole === 'model') ? 'model' : 'user';
           const text = item.text.trim().slice(0, 1500);
+
+          if (text.includes("Vanakkam! Naan SILK")) {
+            continue;
+          }
 
           const last = contents[contents.length - 1];
           if (last && last.role === role) {
@@ -55,32 +63,56 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    contents.push({ role: 'user', parts: [{ text: message.trim() }] });
+    const trimmedMessage = message.trim();
+    const lastContent = contents[contents.length - 1];
+    if (!lastContent || lastContent.role !== 'user' || lastContent.parts[0].text !== trimmedMessage) {
+      contents.push({ role: 'user', parts: [{ text: trimmedMessage }] });
+    }
 
     const ai = new GoogleGenAI({ apiKey });
-    
-    const response = await ai.models.generateContent({
-      model: 'gemini-1.5-flash',
-      contents: contents,
-      config: {
-        systemInstruction: getSystemPrompt(currentMood),
-        maxOutputTokens: 300,
-        temperature: 0.7,
-      },
-    });
+    const modelName = 'gemini-2.5-flash';
 
-    const replyText = response.text || "Vanakkam! I'm here. What's on your mind?";
+    let response;
+    try {
+      response = await ai.models.generateContent({
+        model: modelName,
+        contents: contents,
+        config: {
+          systemInstruction: getSystemPrompt(currentMood),
+          maxOutputTokens: 400,
+        },
+      });
+    } catch (geminiErr: any) {
+      console.error('Gemini API Exception:', geminiErr);
+      const status = geminiErr.status || 500;
+      let errMessage = geminiErr.message || 'Gemini model service error.';
+      if (status === 401 || status === 403) {
+        errMessage = 'Authentication failed with Gemini API. Check your GEMINI_API_KEY.';
+      } else if (status === 404) {
+        errMessage = `The Gemini model (${modelName}) was not found or is unavailable for your API key.`;
+      } else if (status === 429) {
+        errMessage = 'Gemini API rate limit exceeded. Please try again shortly.';
+      }
+      return NextResponse.json({ error: errMessage, code: 'GEMINI_ERROR' }, { status: status >= 400 && status < 600 ? status : 500 });
+    }
+
+    const replyText = response.text ? response.text.trim() : '';
+    if (!replyText) {
+      return NextResponse.json(
+        { error: 'Gemini returned an empty response.', code: 'EMPTY_RESPONSE' },
+        { status: 502 }
+      );
+    }
 
     let audioData: string | null = null;
     const elevenLabsApiKey = process.env.ELEVENLABS_API_KEY;
     const voiceId = process.env.ELEVENLABS_VOICE_ID || '21m00Tcm4TlvDq8ikWAM';
 
     if (elevenLabsApiKey && replyText) {
+      let audioTimeoutId: NodeJS.Timeout | undefined;
+      const audioController = new AbortController();
       try {
-        const audioController = new AbortController();
-        const audioTimeoutId = setTimeout(() => audioController.abort(), 6000);
-
-        const ttsRes = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
+        const ttsPromise = fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
           method: 'POST',
           headers: {
             'Accept': 'audio/mpeg',
@@ -95,35 +127,32 @@ export async function POST(req: NextRequest) {
           signal: audioController.signal,
         });
 
-        clearTimeout(audioTimeoutId);
+        const timeoutPromise = new Promise((_, reject) => {
+          audioTimeoutId = setTimeout(() => {
+            audioController.abort();
+            reject(new Error('ELEVENLABS_TIMEOUT'));
+          }, 6000);
+        });
 
-        if (ttsRes.ok) {
+        const ttsRes: any = await Promise.race([ttsPromise, timeoutPromise]);
+
+        if (ttsRes && ttsRes.ok) {
           const audioBuffer = await ttsRes.arrayBuffer();
           audioData = `data:audio/mpeg;base64,${Buffer.from(audioBuffer).toString('base64')}`;
         }
       } catch (audioErr) {
         console.warn('ElevenLabs audio generation skipped/failed safely:', audioErr);
+      } finally {
+        if (audioTimeoutId) clearTimeout(audioTimeoutId);
       }
     }
 
     return NextResponse.json({ reply: replyText, audio: audioData });
   } catch (error: any) {
-    console.error('API Chat Error Details:', error);
-
-    let statusCode = 500;
-    let errorMessage = error.message || 'An unexpected error occurred while communicating with the AI service.';
-
-    if (error.status === 401 || error.message?.includes('API key')) {
-      statusCode = 401;
-      errorMessage = 'Invalid or missing GEMINI_API_KEY in Vercel settings.';
-    } else if (error.status === 429) {
-      statusCode = 429;
-      errorMessage = 'API rate limit reached. Please try again in a few seconds.';
-    }
-
+    console.error('API Route Error:', error);
     return NextResponse.json(
-      { error: errorMessage },
-      { status: statusCode }
+      { error: error.message || 'An unexpected server error occurred.', code: 'SERVER_ERROR' },
+      { status: 500 }
     );
   }
 }
