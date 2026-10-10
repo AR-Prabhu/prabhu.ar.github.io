@@ -140,7 +140,9 @@ export default function SilkCompanionPage() {
         voiceChat: { defaultMuted: true },
       });
 
-      session.on?.('connected', () => {
+      const sAny = session as any;
+
+      sAny.on?.('connected', () => {
         setAvatarActive(true);
         setAvatarLoading(false);
         if (videoElementRef.current && typeof session.attach === 'function') {
@@ -148,13 +150,13 @@ export default function SilkCompanionPage() {
         }
       });
 
-      session.on?.('disconnected', () => {
+      sAny.on?.('disconnected', () => {
         setAvatarActive(false);
         setAvatarLoading(false);
         setIsSpeaking(false);
       });
 
-      session.on?.('error', (err: any) => {
+      sAny.on?.('error', (err: any) => {
         console.error('LiveAvatar Session Error:', err);
         setErrorBanner(err.message || 'LiveAvatar stream error encountered.');
         setAvatarActive(false);
