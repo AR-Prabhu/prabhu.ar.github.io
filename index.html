@@ -540,6 +540,34 @@ h2 em,.s-head h2 em,.contact h2 em{font-weight:400}
  .xpp:not(.on){visibility:hidden}
  .xp-body{grid-template-columns:1fr}
 }
+
+/* ===== V7 scroll-driven roles ===== */
+.xp-scroll{position:relative;height:calc(100vh * 3.2)}
+.xp-scroll .xp{position:sticky;top:96px}
+.xp-scroll .xp-panels{min-height:min(600px,calc(100vh - 150px))}
+.xp-hint{display:flex;align-items:center;gap:10px;padding:16px 4px 0;font-size:13.5px;color:var(--mute)}
+.xp-hint .mouse{width:16px;height:24px;border:1.6px solid #94A3B8;border-radius:9px;position:relative;flex:none}
+.xp-hint .mouse:after{content:"";position:absolute;left:50%;top:4px;width:2px;height:5px;border-radius:2px;background:var(--or);transform:translateX(-50%);animation:wheel 1.6s infinite}
+.xt .xt-bar{animation:none!important;transition:width .15s linear}
+.xpp li{opacity:0;transform:translateX(18px);transition:opacity .45s ease,transform .45s ease}
+.xpp.on li{opacity:1;transform:none}
+.xpp.on li:nth-child(1){transition-delay:.12s}.xpp.on li:nth-child(2){transition-delay:.22s}.xpp.on li:nth-child(3){transition-delay:.32s}.xpp.on li:nth-child(4){transition-delay:.42s}.xpp.on li:nth-child(5){transition-delay:.52s}
+.xp-m{transition:transform .6s cubic-bezier(.2,.8,.2,1),opacity .6s}
+.xpp:not(.on) .xp-m{transform:scale(.92);opacity:0}
+.xp-wm{transition:transform 1.2s cubic-bezier(.2,.8,.2,1),opacity 1s}
+.xpp:not(.on) .xp-wm{transform:translateY(40px);opacity:0}
+.xp-counter{position:absolute;top:clamp(28px,3vw,48px);right:clamp(28px,3vw,48px);font:600 14px 'Geist';color:#94A3B8;letter-spacing:1px}
+.xp-counter b{color:#fff;font-size:20px}
+@media (max-width:980px){
+ .xp-scroll{height:auto}
+ .xp-scroll .xp{position:static}
+ .xp-tabs,.xp-hint{display:none}
+ .xp-panels{display:flex;flex-direction:column;gap:18px}
+ .xpp,.xpp:not(.on){position:relative;visibility:visible;opacity:1;transform:none;pointer-events:auto}
+ .xpp li,.xpp:not(.on) .xp-m,.xpp:not(.on) .xp-wm{opacity:1;transform:none}
+ .xp-counter{display:none}
+}
+@media (prefers-reduced-motion:reduce){.xpp li{opacity:1;transform:none}}
 </style>
 </head>
 <body>
@@ -643,23 +671,23 @@ h2 em,.s-head h2 em,.contact h2 em{font-weight:400}
 
 <section class="s" id="experience"><div class="wrap">
  <div class="s-head rv"><span class="eyebrow">Career</span><h2>Career <em>experience</em></h2><p>Five companies, six countries, one focus: commercial certainty.</p></div>
- <div class="xp rv"><div class="xp-tabs" role="tablist" aria-label="Career roles"><button class="xt on" role="tab" aria-selected="true" data-i="0"><span class="xt-y">Apr 2026 – Present</span><span class="xt-c">Kent PLC</span><span class="xt-r">Quantity Surveyor – Civil</span><i class="xt-bar"></i></button><button class="xt" role="tab" aria-selected="false" data-i="1"><span class="xt-y">Jul 2025 – Feb 2026</span><span class="xt-c">HEISCO</span><span class="xt-r">Quantity Surveyor – Civil</span><i class="xt-bar"></i></button><button class="xt" role="tab" aria-selected="false" data-i="2"><span class="xt-y">Dec 2022 – Jun 2025</span><span class="xt-c">Gulf Asia Engineering &amp; Projects</span><span class="xt-r">Senior Quantity Surveyor</span><i class="xt-bar"></i></button><button class="xt" role="tab" aria-selected="false" data-i="3"><span class="xt-y">Aug 2017 – Sep 2022</span><span class="xt-c">Tan Bock Kwee &amp; Sons Sdn Bhd</span><span class="xt-r">Quantity Surveyor</span><i class="xt-bar"></i></button><button class="xt" role="tab" aria-selected="false" data-i="4"><span class="xt-y">May 2013 – Jul 2017</span><span class="xt-c">Senthil Construction Corporation</span><span class="xt-r">Site Engineer</span><i class="xt-bar"></i></button></div><div class="xp-panels"><article class="xpp on" role="tabpanel" data-i="0"><span class="xp-wm">2026</span>
+ <div class="xp-scroll" id="xps"><div class="xp"><div class="xp-tabs" role="tablist" aria-label="Career roles"><button class="xt on" role="tab" aria-selected="true" data-i="0"><span class="xt-y">Apr 2026 – Present</span><span class="xt-c">Kent PLC</span><span class="xt-r">Quantity Surveyor – Civil</span><i class="xt-bar"></i></button><button class="xt" role="tab" aria-selected="false" data-i="1"><span class="xt-y">Jul 2025 – Feb 2026</span><span class="xt-c">HEISCO</span><span class="xt-r">Quantity Surveyor – Civil</span><i class="xt-bar"></i></button><button class="xt" role="tab" aria-selected="false" data-i="2"><span class="xt-y">Dec 2022 – Jun 2025</span><span class="xt-c">Gulf Asia Engineering &amp; Projects</span><span class="xt-r">Senior Quantity Surveyor</span><i class="xt-bar"></i></button><button class="xt" role="tab" aria-selected="false" data-i="3"><span class="xt-y">Aug 2017 – Sep 2022</span><span class="xt-c">Tan Bock Kwee &amp; Sons Sdn Bhd</span><span class="xt-r">Quantity Surveyor</span><i class="xt-bar"></i></button><button class="xt" role="tab" aria-selected="false" data-i="4"><span class="xt-y">May 2013 – Jul 2017</span><span class="xt-c">Senthil Construction Corporation</span><span class="xt-r">Site Engineer</span><i class="xt-bar"></i></button><div class="xp-hint"><span class="mouse"></span>Scroll to move through roles · or tap one</div></div><div class="xp-panels"><article class="xpp on" role="tabpanel" data-i="0"><span class="xp-wm">2026</span><span class="xp-counter"><b>01</b> / 05</span>
 <header class="xp-h"><div class="jlogo"><img src="assets/logos/kent.png" alt="Kent"></div><div><h3>Quantity Surveyor – Civil</h3><div class="co">Kent PLC · Abu Dhabi, UAE</div><div class="ctx">ADNOC BAB Far North Full Field Development (BFN) · EPCM</div></div></header>
 <div class="xp-body"><div class="xp-m"><b>USD 260M+</b><small>ADNOC EPCM packages supported</small><span class="xp-when">Apr 2026 – Present</span></div><ul><li>Support commercial controls across ADNOC BFN packages valued at <b>over USD 260M</b> (Packages 1, 3 and 16).</li> <li>Verify monthly contractor IPCs of <b>~USD 5.6M</b> on Package 1 (civil scope ~USD 82M) against IFC drawings, BOQs and day sheets.</li> <li>Review variation and quantity-growth requests against contract conditions; track insurance and bond compliance.</li> <li>Reconcile structural-steel quantities with Tekla outputs, member schedules and packing lists.</li></ul></div>
-<div class="kpi"><span>EPCM</span><span>ADNOC</span><span>IPC verification</span><span>Oracle Fusion</span></div></article><article class="xpp" role="tabpanel" data-i="1"><span class="xp-wm">2025</span>
+<div class="kpi"><span>EPCM</span><span>ADNOC</span><span>IPC verification</span><span>Oracle Fusion</span></div></article><article class="xpp" role="tabpanel" data-i="1"><span class="xp-wm">2025</span><span class="xp-counter"><b>02</b> / 05</span>
 <header class="xp-h"><div class="jlogo"><img src="assets/logos/heisco.png" alt="HEISCO"></div><div><h3>Quantity Surveyor – Civil</h3><div class="co">HEISCO · Saudi Arabia</div><div class="ctx">Qurayyah Expansion CCGT IPP · Power · ~USD 43M civil contract</div></div></header>
 <div class="xp-body"><div class="xp-m"><b>USD 43M</b><small>CCGT civil contract · 18 months</small><span class="xp-when">Jul 2025 – Feb 2026</span></div><ul><li>Prepared <b>VO quotations</b> and rate analyses from labour productivity and resource build-ups.</li> <li>Built <b>monthly cash-flow forecasts</b> for the 18-month contract; tracked planned vs actual claim values.</li> <li>Verified progress measurements and bills for <b>4 subcontractors</b>; supported monthly client payment applications.</li></ul></div>
-<div class="kpi"><span>Power</span><span>Cash-flow</span><span>VOs & FEWOs</span><span>Rate analysis</span></div></article><article class="xpp" role="tabpanel" data-i="2"><span class="xp-wm">2022</span>
+<div class="kpi"><span>Power</span><span>Cash-flow</span><span>VOs & FEWOs</span><span>Rate analysis</span></div></article><article class="xpp" role="tabpanel" data-i="2"><span class="xp-wm">2022</span><span class="xp-counter"><b>03</b> / 05</span>
 <header class="xp-h"><div class="jlogo"><img src="assets/logos/gulfasia.png" alt="Gulf Asia"></div><div><h3>Senior Quantity Surveyor</h3><div class="co">Gulf Asia Engineering &amp; Projects · UAE · KSA · Qatar · Bahrain</div><div class="ctx">EPC oil &amp; gas, refinery and petrochemical projects</div></div></header>
 <div class="xp-body"><div class="xp-m"><b>10</b><small>Junior QS led on GCC EPC bids</small><span class="xp-when">Dec 2022 – Jun 2025</span></div><ul><li><b>Led a team of 10 junior QS</b> checking bid pricing sheets and BOQs; allocated tasks and reviewed outputs.</li> <li>Prepared QTOs, MTOs, BOQs and BBS for multidisciplinary EPC projects <b>up to ~USD 115M</b>.</li> <li>Built cost estimates and rate build-ups; contributed to value-engineering reviews.</li> <li>Assessed variations and change orders; prepared claims and EOT documentation.</li></ul></div>
-<div class="kpi"><span>Team lead</span><span>EPC bids</span><span>Estimation</span><span>Value engineering</span></div></article><article class="xpp" role="tabpanel" data-i="3"><span class="xp-wm">2017</span>
+<div class="kpi"><span>Team lead</span><span>EPC bids</span><span>Estimation</span><span>Value engineering</span></div></article><article class="xpp" role="tabpanel" data-i="3"><span class="xp-wm">2017</span><span class="xp-counter"><b>04</b> / 05</span>
 <header class="xp-h"><div class="jlogo"><img src="assets/logos/tbk.png" alt="Tan Bock Kwee"></div><div><h3>Quantity Surveyor</h3><div class="co">Tan Bock Kwee &amp; Sons Sdn Bhd · Johor, Malaysia</div><div class="ctx">PETRONAS RAPID · refinery, industrial, infrastructure and building</div></div></header>
 <div class="xp-body"><div class="xp-m"><b>2,500+</b><small>FEWOs closed · ~MYR 90M</small><span class="xp-when">Aug 2017 – Sep 2022</span></div><ul><li><b>Evaluated and closed out 2,500+ FEWOs worth ~MYR 90M</b> on PETRONAS RAPID.</li> <li>Managed subcontract packages <b>through to close-out</b>: design submissions, variation follow-up and final handover.</li> <li>Prepared tender estimates and BOQs on projects <b>up to ~MYR 147M</b>; subcontract BOQs with terms and measurement rules.</li> <li>Prepared schedules and catch-up plans; negotiated quantity and rate disagreements using site records.</li></ul></div>
-<div class="kpi"><span>PETRONAS</span><span>FEWOs</span><span>Subcontract close-out</span><span>Final accounts</span></div></article><article class="xpp" role="tabpanel" data-i="4"><span class="xp-wm">2013</span>
+<div class="kpi"><span>PETRONAS</span><span>FEWOs</span><span>Subcontract close-out</span><span>Final accounts</span></div></article><article class="xpp" role="tabpanel" data-i="4"><span class="xp-wm">2013</span><span class="xp-counter"><b>05</b> / 05</span>
 <header class="xp-h"><div class="jlogo"><img src="assets/logos/senthil.png" alt="Senthil"></div><div><h3>Site Engineer</h3><div class="co">Senthil Construction Corporation · Tamil Nadu, India</div><div class="ctx">Building, villa and infrastructure projects</div></div></header>
 <div class="xp-body"><div class="xp-m"><b>INR 16 Cr</b><small>Typical project value</small><span class="xp-when">May 2013 – Jul 2017</span></div><ul><li>Handled quantity surveying on site: measured works and verified BOQs, RA bills and subcontractor payments on projects <b>up to ~INR 16 Cr</b>.</li> <li>Prepared DPR, DLR and MPR reports; supported work orders and material procurement.</li></ul></div>
 <div class="kpi"><span>Building</span><span>Infrastructure</span><span>RA bills</span><span>Site measurement</span></div></article></div></div>
-</div></section>
+</div></div></section>
 
 <section class="s alt" id="projects"><div class="wrap">
  <div class="s-head rv"><span class="eyebrow">Portfolio</span><h2>Selected <em>projects</em></h2><p>Flagship energy developments I've supported commercially.</p></div>
@@ -804,13 +832,17 @@ if(FINE&&!RM){const g=document.getElementById('glow');addEventListener('pointerm
 
 /* photo caption rotator */
 (function(){const r=document.getElementById('rot');if(!r)return;const it=[...r.children];let k=0;if(RM)return;setInterval(()=>{const a=it[k];a.classList.remove('on');a.classList.add('out');k=(k+1)%it.length;const b=it[k];b.classList.remove('out');b.classList.add('on');setTimeout(()=>a.classList.remove('out'),600)},3000)})();
-/* experience explorer */
-(function(){const xp=document.querySelector('.xp');if(!xp)return;const tabs=[...xp.querySelectorAll('.xt')],ps=[...xp.querySelectorAll('.xpp')];let k=0,timer=null;const DUR=7000;
- const show=i=>{k=i;tabs.forEach((t,j)=>{t.classList.toggle('on',j===i);t.setAttribute('aria-selected',j===i)});ps.forEach((p,j)=>p.classList.toggle('on',j===i));const t=tabs[i];t.querySelector('.xt-bar').style.animation='none';void t.offsetWidth;t.querySelector('.xt-bar').style.animation=''};
- const auto=()=>{clearInterval(timer);if(RM)return;timer=setInterval(()=>show((k+1)%tabs.length),DUR)};
- tabs.forEach((t,i)=>t.addEventListener('click',()=>{show(i);xp.classList.add('paused');clearInterval(timer)}));
- xp.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key==='ArrowRight'){show((k+1)%tabs.length);tabs[k].focus();e.preventDefault()}if(e.key==='ArrowUp'||e.key==='ArrowLeft'){show((k+tabs.length-1)%tabs.length);tabs[k].focus();e.preventDefault()}});
- new IntersectionObserver(e=>{if(e[0].isIntersecting&&!xp.classList.contains('paused'))auto();else clearInterval(timer)},{threshold:.3}).observe(xp)})();
+/* experience explorer: scroll-driven on desktop, click to jump */
+(function(){const wrap=document.getElementById('xps');if(!wrap)return;const xp=wrap.querySelector('.xp'),tabs=[...xp.querySelectorAll('.xt')],ps=[...xp.querySelectorAll('.xpp')],N=tabs.length;let k=-1;
+ const desk=()=>innerWidth>980;
+ const metricAnim=p=>{const b=p.querySelector('.xp-m b');if(!b||RM)return;const txt=b.dataset.t||(b.dataset.t=b.textContent);const m=txt.match(/[\d,.]+/);if(!m)return;const t=parseFloat(m[0].replace(/,/g,'')),dec=(m[0].split('.')[1]||'').length,st=performance.now();
+  const f=n=>{const q=Math.min((n-st)/900,1),v=t*(1-Math.pow(1-q,3));b.textContent=txt.replace(m[0],dec?v.toFixed(dec):Math.round(v).toLocaleString('en-US'));if(q<1)requestAnimationFrame(f)};requestAnimationFrame(f)};
+ const show=i=>{if(i===k)return;k=i;tabs.forEach((t,j)=>{t.classList.toggle('on',j===i);t.setAttribute('aria-selected',j===i)});ps.forEach((p,j)=>p.classList.toggle('on',j===i));metricAnim(ps[i])};
+ const onS=()=>{if(!desk())return;const r=wrap.getBoundingClientRect(),total=r.height-innerHeight;const p=Math.min(Math.max(-r.top/Math.max(total,1),0),.9999);const f=p*N,i=Math.floor(f);show(i);
+  tabs.forEach((t,j)=>{t.querySelector('.xt-bar').style.width=(j<i?100:j===i?(f-i)*100:0)+'%'})};
+ addEventListener('scroll',onS,{passive:true});addEventListener('resize',onS);
+ tabs.forEach((t,i)=>t.addEventListener('click',()=>{if(desk()){const r=wrap.getBoundingClientRect(),total=r.height-innerHeight;scrollTo({top:scrollY+r.top+total*(i+.05)/N,behavior:RM?'auto':'smooth'})}else show(i)}));
+ show(0);onS()})();
 </script>
 </body>
 </html>
