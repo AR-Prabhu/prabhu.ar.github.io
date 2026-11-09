@@ -600,6 +600,47 @@ h2 em,.s-head h2 em,.contact h2 em{font-weight:400}
 .cy-proof b:before{content:"✓ ";color:var(--or)}
 .cy-proof small{color:#94A3B8;font-size:14.5px}
 @media (max-width:980px){.cy{grid-template-columns:1fr}.cy-left{max-width:420px;margin:0 auto}.cy-cards{min-height:0;display:grid}.cy-card{position:relative;grid-area:1/1}.cy-card:not(.on){visibility:hidden}.cy-row{grid-template-columns:1fr;gap:4px}}
+
+/* ===== V9 career bar + bento ===== */
+.cbar{margin-bottom:34px}
+.cb-track{position:relative;height:64px;border-radius:12px;background:#F1F0EC;overflow:hidden}
+.cb-s{position:absolute;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center;padding:0 12px;color:#fff;overflow:hidden;white-space:nowrap;transform:scaleX(0);transform-origin:left;transition:transform .9s cubic-bezier(.2,.8,.2,1);border-right:2px solid #fff}
+.cbar.in .cb-s{transform:none}
+.cbar.in .cb-s.s2{transition-delay:.15s}.cbar.in .cb-s.s3{transition-delay:.3s}.cbar.in .cb-s.s4{transition-delay:.45s}.cbar.in .cb-s.s5{transition-delay:.6s}
+.cb-s.s1{background:#3A4E6B}.cb-s.s2{background:#24406A}.cb-s.s3{background:#1A3358}.cb-s.s4{background:#12284A}.cb-s.s5{background:linear-gradient(90deg,var(--or),#F5A04B);color:#1a1205}
+.cb-l{font:600 14.5px 'Geist';overflow:hidden;text-overflow:ellipsis}
+.cb-y{font:500 12.5px 'Geist';opacity:.8}
+.cb-ticks{position:relative;height:22px;margin-top:8px}
+.cb-ticks span{position:absolute;transform:translateX(-50%);font:600 12.5px 'Geist';color:var(--mute)}
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+.bc{position:relative;background:#fff;border:1px solid var(--line);border-radius:16px;padding:clamp(22px,2.2vw,34px);display:flex;flex-direction:column;gap:10px;transition:transform .35s,box-shadow .35s}
+.bc:hover{transform:translateY(-4px);box-shadow:0 28px 50px -30px rgba(15,23,42,.35)}
+.b-kent{grid-column:span 7}.b-heisco{grid-column:span 5}.b-ga{grid-column:span 5}.b-tbk{grid-column:span 7}.b-senthil{grid-column:span 12}
+.bc-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.bc .jlogo{width:48px;height:48px}
+.bc-when{font:600 13px 'Geist';letter-spacing:1px;text-transform:uppercase;color:var(--or)}
+.bt{margin-left:auto;font:600 12px 'Geist';letter-spacing:.6px;text-transform:uppercase;padding:6px 11px;border-radius:999px;background:#FFF1E3;color:#B4570F}
+.bc-m{margin:8px 0 4px}
+.bc-m b{display:block;font:600 clamp(34px,3.3vw,54px)/1 'Bricolage Grotesque';color:var(--ink);letter-spacing:-.035em}
+.bc-m small{display:block;margin-top:6px;font-size:15px;color:var(--mute)}
+.bc h3{font-size:clamp(20px,1.6vw,25px);font-weight:600;letter-spacing:-.02em;color:var(--ink);margin-top:4px}
+.bc-co{font-weight:600;font-size:16px;color:#334155}
+.bc-ctx{font-size:15px;color:var(--mute);font-style:italic}
+.bc ul{list-style:none;display:grid;gap:8px;margin-top:8px}
+.bc li{position:relative;padding-left:20px;font-size:16px;line-height:1.5;color:#334155}
+.bc li:before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;border-radius:2px;background:var(--or);transform:rotate(45deg)}
+.bc li b{color:var(--ink)}
+.bc .kpi{margin-top:auto;padding-top:10px}
+.bc.dark{background:linear-gradient(155deg,#0B1D36,#12305A);border-color:transparent;color:#CBD5E1}
+.bc.dark h3,.bc.dark .bc-m b{color:#fff}.bc.dark .bc-co{color:#E2E8F0}.bc.dark .bc-ctx,.bc.dark .bc-m small{color:#94A3B8}
+.bc.dark li{color:#D5DEEA}.bc.dark li b{color:#fff}
+.bc.dark .kpi span{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);color:#E2E8F0}
+.bc.dark .bt{background:rgba(52,211,153,.14);color:#6EE7B7}
+.bc.gold{background:linear-gradient(155deg,#FFF8F0,#FFFFFF 60%);border-color:#F6D3B0}
+.bc.gold .bc-m b{color:var(--or)}
+.bc.wide ul{grid-template-columns:1fr 1fr;column-gap:32px}
+@media (max-width:980px){.b-kent,.b-heisco,.b-ga,.b-tbk,.b-senthil{grid-column:span 12}.bc.wide ul{grid-template-columns:1fr}.cb-l{font-size:12px}.cb-s{padding:0 6px}}
+@media (max-width:600px){.cb-track{height:52px}.cb-y{display:none}.cb-s.s4 .cb-l,.cb-s.s5 .cb-l{display:none}}
 </style>
 </head>
 <body>
@@ -703,23 +744,24 @@ h2 em,.s-head h2 em,.contact h2 em{font-weight:400}
 
 <section class="s" id="experience"><div class="wrap">
  <div class="s-head rv"><span class="eyebrow">Career</span><h2>Career <em>experience</em></h2><p>Five companies, six countries, one focus: commercial certainty.</p></div>
- <div class="xp-scroll" id="xps"><div class="xp"><div class="xp-tabs" role="tablist" aria-label="Career roles"><button class="xt on" role="tab" aria-selected="true" data-i="0"><span class="xt-y">Apr 2026 – Present</span><span class="xt-c">Kent PLC</span><span class="xt-r">Quantity Surveyor – Civil</span><i class="xt-bar"></i></button><button class="xt" role="tab" aria-selected="false" data-i="1"><span class="xt-y">Jul 2025 – Feb 2026</span><span class="xt-c">HEISCO</span><span class="xt-r">Quantity Surveyor – Civil</span><i class="xt-bar"></i></button><button class="xt" role="tab" aria-selected="false" data-i="2"><span class="xt-y">Dec 2022 – Jun 2025</span><span class="xt-c">Gulf Asia Engineering &amp; Projects</span><span class="xt-r">Senior Quantity Surveyor</span><i class="xt-bar"></i></button><button class="xt" role="tab" aria-selected="false" data-i="3"><span class="xt-y">Aug 2017 – Sep 2022</span><span class="xt-c">Tan Bock Kwee &amp; Sons Sdn Bhd</span><span class="xt-r">Quantity Surveyor</span><i class="xt-bar"></i></button><button class="xt" role="tab" aria-selected="false" data-i="4"><span class="xt-y">May 2013 – Jul 2017</span><span class="xt-c">Senthil Construction Corporation</span><span class="xt-r">Site Engineer</span><i class="xt-bar"></i></button><div class="xp-hint"><span class="mouse"></span>Scroll to move through roles · or tap one</div></div><div class="xp-panels"><article class="xpp on" role="tabpanel" data-i="0"><span class="xp-wm">2026</span><span class="xp-counter"><b>01</b> / 05</span>
-<header class="xp-h"><div class="jlogo"><img src="assets/logos/kent.png" alt="Kent"></div><div><h3>Quantity Surveyor – Civil</h3><div class="co">Kent PLC · Abu Dhabi, UAE</div><div class="ctx">ADNOC BAB Far North Full Field Development (BFN) · EPCM</div></div></header>
-<div class="xp-body"><div class="xp-m"><b>USD 260M+</b><small>ADNOC EPCM packages supported</small><span class="xp-when">Apr 2026 – Present</span></div><ul><li>Support commercial controls across ADNOC BFN packages valued at <b>over USD 260M</b> (Packages 1, 3 and 16).</li> <li>Verify monthly contractor IPCs of <b>~USD 5.6M</b> on Package 1 (civil scope ~USD 82M) against IFC drawings, BOQs and day sheets.</li> <li>Review variation and quantity-growth requests against contract conditions; track insurance and bond compliance.</li> <li>Reconcile structural-steel quantities with Tekla outputs, member schedules and packing lists.</li></ul></div>
-<div class="kpi"><span>EPCM</span><span>ADNOC</span><span>IPC verification</span><span>Oracle Fusion</span></div></article><article class="xpp" role="tabpanel" data-i="1"><span class="xp-wm">2025</span><span class="xp-counter"><b>02</b> / 05</span>
-<header class="xp-h"><div class="jlogo"><img src="assets/logos/heisco.png" alt="HEISCO"></div><div><h3>Quantity Surveyor – Civil</h3><div class="co">HEISCO · Saudi Arabia</div><div class="ctx">Qurayyah Expansion CCGT IPP · Power · ~USD 43M civil contract</div></div></header>
-<div class="xp-body"><div class="xp-m"><b>USD 43M</b><small>CCGT civil contract · 18 months</small><span class="xp-when">Jul 2025 – Feb 2026</span></div><ul><li>Prepared <b>VO quotations</b> and rate analyses from labour productivity and resource build-ups.</li> <li>Built <b>monthly cash-flow forecasts</b> for the 18-month contract; tracked planned vs actual claim values.</li> <li>Verified progress measurements and bills for <b>4 subcontractors</b>; supported monthly client payment applications.</li></ul></div>
-<div class="kpi"><span>Power</span><span>Cash-flow</span><span>VOs & FEWOs</span><span>Rate analysis</span></div></article><article class="xpp" role="tabpanel" data-i="2"><span class="xp-wm">2022</span><span class="xp-counter"><b>03</b> / 05</span>
-<header class="xp-h"><div class="jlogo"><img src="assets/logos/gulfasia.png" alt="Gulf Asia"></div><div><h3>Senior Quantity Surveyor</h3><div class="co">Gulf Asia Engineering &amp; Projects · UAE · KSA · Qatar · Bahrain</div><div class="ctx">EPC oil &amp; gas, refinery and petrochemical projects</div></div></header>
-<div class="xp-body"><div class="xp-m"><b>10</b><small>Junior QS led on GCC EPC bids</small><span class="xp-when">Dec 2022 – Jun 2025</span></div><ul><li><b>Led a team of 10 junior QS</b> checking bid pricing sheets and BOQs; allocated tasks and reviewed outputs.</li> <li>Prepared QTOs, MTOs, BOQs and BBS for multidisciplinary EPC projects <b>up to ~USD 115M</b>.</li> <li>Built cost estimates and rate build-ups; contributed to value-engineering reviews.</li> <li>Assessed variations and change orders; prepared claims and EOT documentation.</li></ul></div>
-<div class="kpi"><span>Team lead</span><span>EPC bids</span><span>Estimation</span><span>Value engineering</span></div></article><article class="xpp" role="tabpanel" data-i="3"><span class="xp-wm">2017</span><span class="xp-counter"><b>04</b> / 05</span>
-<header class="xp-h"><div class="jlogo"><img src="assets/logos/tbk.png" alt="Tan Bock Kwee"></div><div><h3>Quantity Surveyor</h3><div class="co">Tan Bock Kwee &amp; Sons Sdn Bhd · Johor, Malaysia</div><div class="ctx">PETRONAS RAPID · refinery, industrial, infrastructure and building</div></div></header>
-<div class="xp-body"><div class="xp-m"><b>2,500+</b><small>FEWOs closed · ~MYR 90M</small><span class="xp-when">Aug 2017 – Sep 2022</span></div><ul><li><b>Evaluated and closed out 2,500+ FEWOs worth ~MYR 90M</b> on PETRONAS RAPID.</li> <li>Managed subcontract packages <b>through to close-out</b>: design submissions, variation follow-up and final handover.</li> <li>Prepared tender estimates and BOQs on projects <b>up to ~MYR 147M</b>; subcontract BOQs with terms and measurement rules.</li> <li>Prepared schedules and catch-up plans; negotiated quantity and rate disagreements using site records.</li></ul></div>
-<div class="kpi"><span>PETRONAS</span><span>FEWOs</span><span>Subcontract close-out</span><span>Final accounts</span></div></article><article class="xpp" role="tabpanel" data-i="4"><span class="xp-wm">2013</span><span class="xp-counter"><b>05</b> / 05</span>
-<header class="xp-h"><div class="jlogo"><img src="assets/logos/senthil.png" alt="Senthil"></div><div><h3>Site Engineer</h3><div class="co">Senthil Construction Corporation · Tamil Nadu, India</div><div class="ctx">Building, villa and infrastructure projects</div></div></header>
-<div class="xp-body"><div class="xp-m"><b>INR 16 Cr</b><small>Typical project value</small><span class="xp-when">May 2013 – Jul 2017</span></div><ul><li>Handled quantity surveying on site: measured works and verified BOQs, RA bills and subcontractor payments on projects <b>up to ~INR 16 Cr</b>.</li> <li>Prepared DPR, DLR and MPR reports; supported work orders and material procurement.</li></ul></div>
-<div class="kpi"><span>Building</span><span>Infrastructure</span><span>RA bills</span><span>Site measurement</span></div></article></div></div>
-</div></div></section>
+ <div class="cbar rv" aria-label="Career timeline 2013 to 2026"><div class="cb-track"><div class="cb-s s1" style="left:2.36%;width:29.79%"><span class="cb-l">Senthil</span><span class="cb-y">2013–17</span></div><div class="cb-s s2" style="left:32.86%;width:36.43%"><span class="cb-l">Tan Bock Kwee · Malaysia</span><span class="cb-y">2017–22</span></div><div class="cb-s s3" style="left:70.71%;width:18.21%"><span class="cb-l">Gulf Asia · GCC</span><span class="cb-y">2022–25</span></div><div class="cb-s s4" style="left:89.29%;width:4.29%"><span class="cb-l">HEISCO</span><span class="cb-y">25–26</span></div><div class="cb-s s5" style="left:94.64%;width:5.00%"><span class="cb-l">Kent</span><span class="cb-y">2026–</span></div></div><div class="cb-ticks"><span style="left:0.00%">2013</span><span style="left:14.29%">2015</span><span style="left:28.57%">2017</span><span style="left:42.86%">2019</span><span style="left:57.14%">2021</span><span style="left:71.43%">2023</span><span style="left:85.71%">2025</span><span style="left:100.00%">2027</span></div></div>
+<div class="bento"><article class="bc b-kent dark feat rv"><div class="bc-top"><div class="jlogo"><img src="assets/logos/kent.png" alt="Kent"></div><span class="bc-when">Apr 2026 – Present</span><span class="bt">Current role</span></div>
+<div class="bc-m"><b>USD 260M+</b><small>ADNOC EPCM packages supported</small></div>
+<h3>Quantity Surveyor – Civil</h3><div class="bc-co">Kent PLC · Abu Dhabi, UAE</div><div class="bc-ctx">ADNOC BAB Far North Full Field Development (BFN) · EPCM</div>
+<ul><li>Support commercial controls across ADNOC BFN packages valued at <b>over USD 260M</b> (Packages 1, 3 and 16).</li> <li>Verify monthly contractor IPCs of <b>~USD 5.6M</b> on Package 1 (civil scope ~USD 82M) against IFC drawings, BOQs and day sheets.</li> <li>Review variation and quantity-growth requests against contract conditions; track insurance and bond compliance.</li> <li>Reconcile structural-steel quantities with Tekla outputs, member schedules and packing lists.</li></ul><div class="kpi"><span>EPCM</span><span>ADNOC</span><span>IPC verification</span><span>Oracle Fusion</span></div></article><article class="bc b-heisco rv"><div class="bc-top"><div class="jlogo"><img src="assets/logos/heisco.png" alt="HEISCO"></div><span class="bc-when">Jul 2025 – Feb 2026</span></div>
+<div class="bc-m"><b>USD 43M</b><small>CCGT civil contract · 18 months</small></div>
+<h3>Quantity Surveyor – Civil</h3><div class="bc-co">HEISCO · Saudi Arabia</div><div class="bc-ctx">Qurayyah Expansion CCGT IPP · Power · ~USD 43M civil contract</div>
+<ul><li>Prepared <b>VO quotations</b> and rate analyses from labour productivity and resource build-ups.</li> <li>Built <b>monthly cash-flow forecasts</b> for the 18-month contract; tracked planned vs actual claim values.</li> <li>Verified progress measurements and bills for <b>4 subcontractors</b>; supported monthly client payment applications.</li></ul><div class="kpi"><span>Power</span><span>Cash-flow</span><span>VOs & FEWOs</span><span>Rate analysis</span></div></article><article class="bc b-ga rv"><div class="bc-top"><div class="jlogo"><img src="assets/logos/gulfasia.png" alt="Gulf Asia"></div><span class="bc-when">Dec 2022 – Jun 2025</span></div>
+<div class="bc-m"><b>10</b><small>Junior QS led on GCC EPC bids</small></div>
+<h3>Senior Quantity Surveyor</h3><div class="bc-co">Gulf Asia Engineering &amp; Projects · UAE · KSA · Qatar · Bahrain</div><div class="bc-ctx">EPC oil &amp; gas, refinery and petrochemical projects</div>
+<ul><li><b>Led a team of 10 junior QS</b> checking bid pricing sheets and BOQs; allocated tasks and reviewed outputs.</li> <li>Prepared QTOs, MTOs, BOQs and BBS for multidisciplinary EPC projects <b>up to ~USD 115M</b>.</li> <li>Built cost estimates and rate build-ups; contributed to value-engineering reviews.</li> <li>Assessed variations and change orders; prepared claims and EOT documentation.</li></ul><div class="kpi"><span>Team lead</span><span>EPC bids</span><span>Estimation</span><span>Value engineering</span></div></article><article class="bc b-tbk feat gold rv"><div class="bc-top"><div class="jlogo"><img src="assets/logos/tbk.png" alt="Tan Bock Kwee"></div><span class="bc-when">Aug 2017 – Sep 2022</span><span class="bt">Top achievement</span></div>
+<div class="bc-m"><b>2,500+</b><small>FEWOs closed · ~MYR 90M</small></div>
+<h3>Quantity Surveyor</h3><div class="bc-co">Tan Bock Kwee &amp; Sons Sdn Bhd · Johor, Malaysia</div><div class="bc-ctx">PETRONAS RAPID · refinery, industrial, infrastructure and building</div>
+<ul><li><b>Evaluated and closed out 2,500+ FEWOs worth ~MYR 90M</b> on PETRONAS RAPID.</li> <li>Managed subcontract packages <b>through to close-out</b>: design submissions, variation follow-up and final handover.</li> <li>Prepared tender estimates and BOQs on projects <b>up to ~MYR 147M</b>; subcontract BOQs with terms and measurement rules.</li> <li>Prepared schedules and catch-up plans; negotiated quantity and rate disagreements using site records.</li></ul><div class="kpi"><span>PETRONAS</span><span>FEWOs</span><span>Subcontract close-out</span><span>Final accounts</span></div></article><article class="bc b-senthil wide rv"><div class="bc-top"><div class="jlogo"><img src="assets/logos/senthil.png" alt="Senthil"></div><span class="bc-when">May 2013 – Jul 2017</span><span class="bt">Where it started</span></div>
+<div class="bc-m"><b>INR 16 Cr</b><small>Typical project value</small></div>
+<h3>Site Engineer</h3><div class="bc-co">Senthil Construction Corporation · Tamil Nadu, India</div><div class="bc-ctx">Building, villa and infrastructure projects</div>
+<ul><li>Handled quantity surveying on site: measured works and verified BOQs, RA bills and subcontractor payments on projects <b>up to ~INR 16 Cr</b>.</li> <li>Prepared DPR, DLR and MPR reports; supported work orders and material procurement.</li></ul><div class="kpi"><span>Building</span><span>Infrastructure</span><span>RA bills</span><span>Site measurement</span></div></article></div>
+</div></section>
 
 <section class="s alt" id="projects"><div class="wrap">
  <div class="s-head rv"><span class="eyebrow">Portfolio</span><h2>Selected <em>projects</em></h2><p>Flagship energy developments I've supported commercially.</p></div>
