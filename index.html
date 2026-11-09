@@ -754,6 +754,13 @@ h2 em,.s-head h2 em,.contact h2 em{font-weight:400}
 .pt-bar{background:var(--or-ink)}
 .s-head p{color:#475569}
 .job li b,.card h3{color:#0B1F3A}
+
+/* ===== V14 slider auto-height ===== */
+.ps-stage{display:grid;height:auto;min-height:clamp(560px,44vw,680px)}
+.ps{position:relative;grid-area:1/1}
+.ps-in{min-height:clamp(560px,44vw,680px);padding-bottom:clamp(110px,8vw,130px)}
+.ps-side{align-self:center}
+@media (max-width:1440px){.ps-side li{font-size:16px}.ps-side ul{gap:11px}}
 </style>
 </head>
 <body>
