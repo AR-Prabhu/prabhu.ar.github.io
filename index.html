@@ -10,19 +10,19 @@
 <meta property="og:image" content="assets/profile.jpg">
 <meta name="theme-color" content="#0A1A30">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&display=swap&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700&family=Geist:wght@300;400;500;600;700&display=swap&display=swap" rel="stylesheet">
 <style>
 :root{--navy:#0A1A30;--navy2:#10284A;--ink:#0F172A;--text:#334155;--mute:#64748B;--or:#F08A2C;--or2:#FFB766;--line:#E6E2DA;--soft:#F6F4EF;--card:#fff;--r:18px}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scroll-padding-top:80px}
-body{font-family:'Inter Tight',system-ui,sans-serif;color:var(--text);background:#fff;line-height:1.65;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{font-family:'Geist',system-ui,sans-serif;color:var(--text);background:#fff;line-height:1.65;font-size:17px;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none}
 .wrap{width:min(1180px,100% - 40px);margin-inline:auto}
-h1,h2,h3{font-family:'Inter Tight',sans-serif;color:var(--ink);line-height:1.15}
-.eyebrow{display:inline-flex;align-items:center;gap:10px;font:700 12.5px 'Inter Tight';letter-spacing:2.2px;text-transform:uppercase;color:var(--or)}
+h1,h2,h3{font-family:'Geist',sans-serif;color:var(--ink);line-height:1.15}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font:700 12.5px 'Geist';letter-spacing:2.2px;text-transform:uppercase;color:var(--or)}
 .eyebrow:before{content:"";width:26px;height:2px;background:var(--or)}
-.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:999px;font:600 15px 'Inter Tight';transition:.25s}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:999px;font:600 15px 'Geist';transition:.25s}
 .btn-or{background:linear-gradient(135deg,var(--or),#F5A04B);color:#1a1205;box-shadow:0 10px 30px -10px rgba(240,138,44,.7)}
 .btn-or:hover{transform:translateY(-2px);box-shadow:0 16px 36px -10px rgba(240,138,44,.85)}
 .btn-ghost{border:1.5px solid rgba(255,255,255,.35);color:#fff;backdrop-filter:blur(6px)}
@@ -33,8 +33,8 @@ svg.i{width:18px;height:18px;flex:none}
 nav{position:fixed;inset:0 0 auto 0;z-index:50;transition:.3s}
 nav .wrap{display:flex;align-items:center;justify-content:space-between;height:72px}
 nav.scrolled{background:rgba(10,26,48,.86);backdrop-filter:blur(14px);box-shadow:0 1px 0 rgba(255,255,255,.08)}
-.logo{font:600 20px 'Inter Tight';color:#fff;letter-spacing:.5px}.logo span{color:var(--or)}
-.links{display:flex;gap:28px;font:500 14.5px 'Inter Tight';color:#D6DEEA}
+.logo{font:600 20px 'Geist';color:#fff;letter-spacing:.5px}.logo span{color:var(--or)}
+.links{display:flex;gap:28px;font:500 14.5px 'Geist';color:#D6DEEA}
 .links a{position:relative;padding:4px 0}.links a:hover{color:#fff}
 .links a:after{content:"";position:absolute;left:0;bottom:-2px;width:0;height:2px;background:var(--or);transition:.25s}.links a:hover:after{width:100%}
 .nav-cta{padding:10px 18px;font-size:14px}
@@ -48,13 +48,13 @@ nav.scrolled{background:rgba(10,26,48,.86);backdrop-filter:blur(14px);box-shadow
 .grid-lines{position:absolute;inset:0;z-index:1;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse at 30% 50%,#000 30%,transparent 75%)}
 @keyframes zoom{to{transform:scale(1.14)}}
 .hero .wrap{position:relative;z-index:2;display:grid;grid-template-columns:1.25fr .85fr;gap:60px;align-items:center}
-.status{display:inline-flex;align-items:center;gap:10px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font:500 13.5px 'Inter Tight';color:#E2E8F0;margin-bottom:26px}
+.status{display:inline-flex;align-items:center;gap:10px;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);font:500 13.5px 'Geist';color:#E2E8F0;margin-bottom:26px}
 .dot{width:8px;height:8px;border-radius:50%;background:#34D399;box-shadow:0 0 0 0 rgba(52,211,153,.6);animation:pulse 2s infinite}
 @keyframes pulse{70%{box-shadow:0 0 0 10px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
 .hero h1{color:#fff;font-size:clamp(40px,6vw,72px);font-weight:800;letter-spacing:-1.5px}
 .hero h1 .accent{background:linear-gradient(90deg,var(--or),var(--or2));-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero .role{font:600 clamp(18px,2.2vw,24px) 'Inter Tight';color:#fff;margin:14px 0 6px}
-.hero .tags{font:500 15.5px 'Inter Tight';color:#CBD5E1}
+.hero .role{font:600 clamp(18px,2.2vw,24px) 'Geist';color:#fff;margin:14px 0 6px}
+.hero .tags{font:500 15.5px 'Geist';color:#CBD5E1}
 .hero p.lead{font-size:19px;color:#E2E8F0;max-width:600px;margin:22px 0 32px;line-height:1.7}
 .hero p.lead b{color:#fff}
 .ctas{display:flex;flex-wrap:wrap;gap:12px}
@@ -64,13 +64,13 @@ nav.scrolled{background:rgba(10,26,48,.86);backdrop-filter:blur(14px);box-shadow
 @keyframes spin{to{transform:rotate(360deg)}}
 .photo{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:5/6;border:1px solid rgba(255,255,255,.2);box-shadow:0 40px 80px -30px rgba(0,0,0,.8)}
 .photo img{width:100%;height:100%;object-fit:cover;object-position:50% 15%}
-.chip{position:absolute;display:flex;align-items:center;gap:10px;padding:11px 15px;border-radius:14px;background:rgba(255,255,255,.96);color:var(--ink);font:600 13.5px 'Inter Tight';box-shadow:0 18px 40px -16px rgba(0,0,0,.6);animation:float 5s ease-in-out infinite}
-.chip b{display:block;font:600 17px 'Inter Tight';color:var(--navy)}
+.chip{position:absolute;display:flex;align-items:center;gap:10px;padding:11px 15px;border-radius:14px;background:rgba(255,255,255,.96);color:var(--ink);font:600 13.5px 'Geist';box-shadow:0 18px 40px -16px rgba(0,0,0,.6);animation:float 5s ease-in-out infinite}
+.chip b{display:block;font:600 17px 'Geist';color:var(--navy)}
 .chip small{display:block;color:var(--mute);font-weight:500;font-size:12.5px}
 .chip .ic{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--or),var(--or2));display:grid;place-items:center;color:#fff}
 .chip1{left:-46px;top:16%}.chip2{right:-34px;bottom:12%;animation-delay:-2.5s}
 @keyframes float{50%{transform:translateY(-10px)}}
-.scroll-hint{position:absolute;z-index:2;left:50%;bottom:26px;transform:translateX(-50%);font:500 12px 'Inter Tight';letter-spacing:2px;color:#94A3B8;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px}
+.scroll-hint{position:absolute;z-index:2;left:50%;bottom:26px;transform:translateX(-50%);font:500 12px 'Geist';letter-spacing:2px;color:#94A3B8;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px}
 .scroll-hint i{width:22px;height:36px;border:2px solid #64748B;border-radius:12px;position:relative}
 .scroll-hint i:after{content:"";position:absolute;left:50%;top:7px;width:3px;height:7px;background:var(--or);border-radius:2px;transform:translateX(-50%);animation:wheel 1.6s infinite}
 @keyframes wheel{to{transform:translate(-50%,10px);opacity:0}}
@@ -81,9 +81,9 @@ nav.scrolled{background:rgba(10,26,48,.86);backdrop-filter:blur(14px);box-shadow
 .stat{background:linear-gradient(160deg,#132E54,#0E2240);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:26px 26px 24px;color:#fff;position:relative;overflow:hidden;transition:.3s}
 .stat:hover{transform:translateY(-4px);border-color:rgba(240,138,44,.5)}
 .stat:after{content:"";position:absolute;right:-40px;top:-40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(rgba(240,138,44,.22),transparent 70%)}
-.stat .v{font:600 clamp(30px,3.4vw,40px)/1 'Inter Tight';color:#fff}
+.stat .v{font:600 clamp(30px,3.4vw,40px)/1 'Geist';color:#fff}
 .stat .v em{font-style:normal;color:var(--or)}
-.stat .k{font:700 12.5px 'Inter Tight';letter-spacing:1.6px;text-transform:uppercase;color:var(--or2);margin:10px 0 6px}
+.stat .k{font:700 12.5px 'Geist';letter-spacing:1.6px;text-transform:uppercase;color:var(--or2);margin:10px 0 6px}
 .stat p{font-size:15.5px;color:#CBD5E1;line-height:1.5}
 
 /* SECTIONS */
@@ -97,8 +97,8 @@ section.s{padding:100px 0}
 .about p b{color:var(--ink)}
 .facts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .fact{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px}
-.fact small{display:block;font:700 12px 'Inter Tight';letter-spacing:1.4px;text-transform:uppercase;color:var(--or)}
-.fact b{font:600 16px 'Inter Tight';color:var(--ink)}
+.fact small{display:block;font:700 12px 'Geist';letter-spacing:1.4px;text-transform:uppercase;color:var(--or)}
+.fact b{font:600 16px 'Geist';color:var(--ink)}
 
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:28px;transition:.3s;position:relative}
@@ -112,20 +112,20 @@ section.s{padding:100px 0}
 .tl{position:relative;padding-left:0}
 .job{display:grid;grid-template-columns:200px 1fr;gap:36px;padding:34px 0;border-top:1px solid var(--line)}
 .job:last-child{border-bottom:1px solid var(--line)}
-.when{font:700 14px 'Inter Tight';color:var(--or)}
-.when small{display:block;font:500 14px 'Inter Tight';color:var(--mute);margin-top:4px}
+.when{font:700 14px 'Geist';color:var(--or)}
+.when small{display:block;font:500 14px 'Geist';color:var(--mute);margin-top:4px}
 .jhead{display:flex;gap:16px;align-items:center;margin-bottom:14px}
 .jlogo{width:58px;height:58px;border-radius:14px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;flex:none;overflow:hidden}
 .jlogo img{max-width:48px;max-height:48px;object-fit:contain}
 .job h3{font-size:21px}
-.job .co{font:600 15.5px 'Inter Tight';color:var(--text)}
+.job .co{font:600 15.5px 'Geist';color:var(--text)}
 .job .ctx{font-size:14.5px;color:var(--mute);font-style:italic}
 .job ul{list-style:none;display:grid;gap:9px}
 .job li{position:relative;padding-left:22px;font-size:16.5px}
 .job li:before{content:"";position:absolute;left:0;top:10px;width:8px;height:8px;border-radius:2px;background:var(--or);transform:rotate(45deg)}
 .job li b{color:var(--ink)}
 .kpi{display:inline-flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-.kpi span{font:600 13px 'Inter Tight';padding:6px 12px;border-radius:999px;background:var(--soft);color:var(--navy);border:1px solid var(--line)}
+.kpi span{font:600 13px 'Geist';padding:6px 12px;border-radius:999px;background:var(--soft);color:var(--navy);border:1px solid var(--line)}
 
 /* PROJECTS */
 .projects{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
@@ -134,10 +134,10 @@ section.s{padding:100px 0}
 .proj:hover img{transform:scale(1.07)}
 .proj:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(8,20,38,.15) 0%,rgba(8,20,38,.55) 45%,rgba(8,20,38,.96) 100%)}
 .proj .in{padding:28px}
-.proj .pill{display:inline-block;font:700 12px 'Inter Tight';letter-spacing:1.3px;text-transform:uppercase;padding:6px 11px;border-radius:999px;background:var(--or);color:#1a1205;margin-bottom:12px}
+.proj .pill{display:inline-block;font:700 12px 'Geist';letter-spacing:1.3px;text-transform:uppercase;padding:6px 11px;border-radius:999px;background:var(--or);color:#1a1205;margin-bottom:12px}
 .proj h3{color:#fff;font-size:24px;margin-bottom:6px}
 .proj p{color:#E2E8F0;font-size:15.5px}
-.proj .meta{margin-top:12px;font:600 14px 'Inter Tight';color:var(--or2)}
+.proj .meta{margin-top:12px;font:600 14px 'Geist';color:var(--or2)}
 .note{margin-top:14px;font-size:13.5px;color:var(--mute)}
 
 /* SKILLS */
@@ -145,20 +145,20 @@ section.s{padding:100px 0}
 .panel{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:30px}
 .panel h3{font-size:19px;margin-bottom:18px}
 .pills{display:flex;flex-wrap:wrap;gap:10px}
-.pills span{font:600 14.5px 'Inter Tight';padding:9px 15px;border-radius:999px;background:var(--navy);color:#fff}
+.pills span{font:600 14.5px 'Geist';padding:9px 15px;border-radius:999px;background:var(--navy);color:#fff}
 .pills span.o{background:#fff;color:var(--navy);border:1.5px solid #CBD5E1}
 .tools{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.tool{display:flex;align-items:center;gap:10px;font:600 15px 'Inter Tight';color:var(--ink);padding:12px 14px;border-radius:12px;background:var(--soft)}
+.tool{display:flex;align-items:center;gap:10px;font:600 15px 'Geist';color:var(--ink);padding:12px 14px;border-radius:12px;background:var(--soft)}
 .tool:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--or);flex:none}
 .ai{margin-top:28px;display:flex;gap:18px;align-items:flex-start;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#E2E8F0;border-radius:var(--r);padding:26px 28px}
-.ai b{color:#fff;font:700 17px 'Inter Tight';display:block;margin-bottom:4px}
+.ai b{color:#fff;font:700 17px 'Geist';display:block;margin-bottom:4px}
 .ai .ico{width:46px;height:46px;border-radius:12px;background:rgba(240,138,44,.16);color:var(--or);display:grid;place-items:center;flex:none}
 
 /* GROWTH */
 .road{display:grid;grid-template-columns:repeat(3,1fr);gap:0;position:relative;margin-top:10px}
 .road:before{content:"";position:absolute;left:16%;right:16%;top:27px;height:3px;background:linear-gradient(90deg,var(--or),#CBD5E1)}
 .step{text-align:center;padding:0 18px;position:relative}
-.step .n{width:56px;height:56px;border-radius:50%;margin:0 auto 18px;display:grid;place-items:center;font:600 18px 'Inter Tight';background:#fff;border:3px solid var(--or);color:var(--navy);position:relative}
+.step .n{width:56px;height:56px;border-radius:50%;margin:0 auto 18px;display:grid;place-items:center;font:600 18px 'Geist';background:#fff;border:3px solid var(--or);color:var(--navy);position:relative}
 .step.done .n{background:var(--or);color:#fff}
 .step h3{font-size:18px;margin-bottom:6px}
 .step p{font-size:15px;color:var(--mute)}
@@ -173,7 +173,7 @@ section.s{padding:100px 0}
 .cbox:hover{background:rgba(255,255,255,.12)}
 .cbox .ic{width:44px;height:44px;border-radius:12px;background:var(--or);color:#1a1205;display:grid;place-items:center;flex:none}
 .cbox small{display:block;color:#94A3B8;font-size:13px}
-.cbox b{font:600 15px 'Inter Tight';color:#fff;word-break:break-all}
+.cbox b{font:600 15px 'Geist';color:#fff;word-break:break-all}
 footer{padding:40px 0;text-align:center;color:var(--mute);font-size:14.5px}
 
 
@@ -183,7 +183,7 @@ footer{padding:40px 0;text-align:center;color:var(--mute);font-size:14.5px}
 .glow{position:fixed;width:520px;height:520px;border-radius:50%;pointer-events:none;z-index:0;left:0;top:0;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(240,138,44,.10),transparent 60%);transition:opacity .3s;mix-blend-mode:screen}
 .aurora{position:absolute;inset:-20%;z-index:1;pointer-events:none;background:radial-gradient(40% 35% at 75% 30%,rgba(240,138,44,.20),transparent 70%),radial-gradient(35% 40% at 20% 80%,rgba(56,120,220,.22),transparent 70%);animation:aur 16s ease-in-out infinite alternate;filter:blur(20px)}
 @keyframes aur{50%{transform:translate(4%,-3%) rotate(6deg)}100%{transform:translate(-3%,4%) rotate(-4deg)}}
-.typer{display:inline-flex;align-items:center;gap:10px;margin-top:10px;font:600 16px 'Inter Tight';color:#CBD5E1}
+.typer{display:inline-flex;align-items:center;gap:10px;margin-top:10px;font:600 16px 'Geist';color:#CBD5E1}
 .typer .tlbl{color:#94A3B8}
 .typer b{color:var(--or2);font-weight:700;min-height:1.4em}
 .typer b:after{content:"";display:inline-block;width:2px;height:1.05em;background:var(--or);margin-left:3px;vertical-align:-2px;animation:blink 1s steps(1) infinite}
@@ -196,7 +196,7 @@ footer{padding:40px 0;text-align:center;color:var(--mute);font-size:14.5px}
 .marquee:before{left:0;background:linear-gradient(90deg,#081426,transparent)}.marquee:after{right:0;background:linear-gradient(-90deg,#081426,transparent)}
 .track{display:flex;gap:48px;width:max-content;animation:mq 38s linear infinite}
 .marquee:hover .track{animation-play-state:paused}
-.track span{font:700 15px 'Inter Tight';letter-spacing:2px;text-transform:uppercase;color:#7C8BA3;white-space:nowrap;display:flex;align-items:center;gap:48px}
+.track span{font:700 15px 'Geist';letter-spacing:2px;text-transform:uppercase;color:#7C8BA3;white-space:nowrap;display:flex;align-items:center;gap:48px}
 .track span:after{content:"◆";color:var(--or);font-size:10px}
 @keyframes mq{to{transform:translateX(-50%)}}
 .tilt{transform-style:preserve-3d;will-change:transform}
@@ -238,25 +238,25 @@ footer{padding:40px 0;text-align:center;color:var(--mute);font-size:14.5px}
 .pt circle.c{fill:var(--or)}
 .pt circle.p{fill:none;stroke:var(--or);stroke-width:2;transform-box:fill-box;transform-origin:center;animation:ping 2.4s ease-out infinite}
 @keyframes ping{0%{transform:scale(.6);opacity:1}100%{transform:scale(3.4);opacity:0}}
-.lbl{font:700 24px 'Inter Tight';fill:#fff;paint-order:stroke;stroke:#0B1D36;stroke-width:5px;stroke-linejoin:round}.lbl tspan.y{fill:var(--or2);font-weight:600;font-size:18px}
+.lbl{font:700 24px 'Geist';fill:#fff;paint-order:stroke;stroke:#0B1D36;stroke-width:5px;stroke-linejoin:round}.lbl tspan.y{fill:var(--or2);font-weight:600;font-size:18px}
 .legend{display:grid;gap:12px}
 .leg{display:flex;gap:14px;align-items:center;padding:14px 16px;border-radius:14px;background:#fff;border:1px solid var(--line);transition:.3s}
 .leg:hover{transform:translateX(6px);border-color:var(--or)}
-.leg b{font:600 17px 'Inter Tight';color:var(--or);min-width:52px}
-.leg span{font:600 15.5px 'Inter Tight';color:var(--ink)}
+.leg b{font:600 17px 'Geist';color:var(--or);min-width:52px}
+.leg span{font:600 15.5px 'Geist';color:var(--ink)}
 .leg small{display:block;color:var(--mute);font-size:13.5px;font-weight:500}
 /* ===== DASHBOARD ===== */
 .dash{background:linear-gradient(160deg,#0B1D36,#0A1A30);border-radius:28px;padding:34px;color:#E2E8F0;border:1px solid rgba(255,255,255,.07);box-shadow:0 50px 90px -50px rgba(8,20,38,.8)}
 .dash-top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:24px}
 .dash-top h3{color:#fff;font-size:22px}
-.live{display:inline-flex;align-items:center;gap:8px;font:600 13px 'Inter Tight';color:#A7F3D0;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);padding:6px 12px;border-radius:999px}
+.live{display:inline-flex;align-items:center;gap:8px;font:600 13px 'Geist';color:#A7F3D0;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);padding:6px 12px;border-radius:999px}
 .dgrid{display:grid;grid-template-columns:1.5fr 1fr;gap:20px}
 .dcard{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:22px}
-.dcard h4{font:700 14px 'Inter Tight';letter-spacing:1.4px;text-transform:uppercase;color:#94A3B8;margin-bottom:14px;display:flex;justify-content:space-between}
+.dcard h4{font:700 14px 'Geist';letter-spacing:1.4px;text-transform:uppercase;color:#94A3B8;margin-bottom:14px;display:flex;justify-content:space-between}
 .dcard h4 em{font-style:normal;color:var(--or2);letter-spacing:0;text-transform:none}
 .dcard svg{width:100%;height:auto;display:block}
 .gridl{stroke:rgba(255,255,255,.07)}
-.ax{fill:#64748B;font:600 11px 'Inter Tight'}
+.ax{fill:#64748B;font:600 11px 'Geist'}
 .cv-plan{fill:none;stroke:#7DA7E8;stroke-width:2.4;stroke-dasharray:6 6}
 .cv-act{fill:none;stroke:var(--or);stroke-width:3.2;stroke-linecap:round;stroke-dasharray:900;stroke-dashoffset:900}
 .cv-area{fill:url(#areag);opacity:0;transition:opacity 1.2s .8s}
@@ -265,10 +265,10 @@ footer{padding:40px 0;text-align:center;color:var(--mute);font-size:14.5px}
 .dash.in .bar{transform:scaleY(1)}
 .dkpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:20px}
 .dk{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px 18px}
-.dk b{display:block;font:600 26px 'Inter Tight';color:#fff}.dk b em{font-style:normal;color:var(--or)}
+.dk b{display:block;font:600 26px 'Geist';color:#fff}.dk b em{font-style:normal;color:var(--or)}
 .dk small{color:#94A3B8;font-size:13.5px;font-weight:600}
 .flow{display:flex;align-items:center;gap:0;margin-top:20px;flex-wrap:wrap}
-.fs{flex:1;min-width:120px;text-align:center;padding:14px 8px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font:700 14.5px 'Inter Tight';color:#CBD5E1;transition:.4s;position:relative}
+.fs{flex:1;min-width:120px;text-align:center;padding:14px 8px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);font:700 14.5px 'Geist';color:#CBD5E1;transition:.4s;position:relative}
 .fs.on{background:linear-gradient(135deg,var(--or),#F5A04B);color:#1a1205;border-color:transparent;box-shadow:0 12px 30px -12px rgba(240,138,44,.8);transform:translateY(-3px)}
 .fa{color:#475569;padding:0 6px;font-weight:800}
 .disc{margin-top:14px;font-size:13px;color:#64748B}
@@ -294,36 +294,36 @@ h2 em,.hero .role em{font-family:'Instrument Serif',Georgia,serif;font-style:ita
 .contact h2 em{color:var(--or2)}
 /* ===== TOOL ORBIT ===== */
 .orbit{position:relative;width:min(340px,100%);aspect-ratio:1;margin:6px auto 4px}
-.orbit .core{position:absolute;inset:34%;border-radius:50%;background:linear-gradient(145deg,var(--navy),var(--navy2));display:grid;place-items:center;text-align:center;color:#fff;font:600 22px 'Inter Tight';box-shadow:0 0 0 10px rgba(240,138,44,.08),0 20px 40px -20px rgba(10,26,48,.7)}
-.orbit .core small{display:block;font:600 11.5px 'Inter Tight';color:var(--or2);letter-spacing:1.4px;text-transform:uppercase}
+.orbit .core{position:absolute;inset:34%;border-radius:50%;background:linear-gradient(145deg,var(--navy),var(--navy2));display:grid;place-items:center;text-align:center;color:#fff;font:600 22px 'Geist';box-shadow:0 0 0 10px rgba(240,138,44,.08),0 20px 40px -20px rgba(10,26,48,.7)}
+.orbit .core small{display:block;font:600 11.5px 'Geist';color:var(--or2);letter-spacing:1.4px;text-transform:uppercase}
 .ring{position:absolute;inset:0;border-radius:50%;border:1.5px dashed #CBD5E1;animation:rot 40s linear infinite}
 .ring.r2{inset:16%;border-color:#E2C9A8;animation-duration:28s;animation-direction:reverse}
 @keyframes rot{to{transform:rotate(360deg)}}
 .ring .tool-c{position:absolute;width:0;height:0}
-.ring .tool-c span{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;font:700 13px 'Inter Tight';color:var(--navy);background:#fff;border:1.5px solid var(--line);padding:7px 12px;border-radius:999px;box-shadow:0 8px 20px -10px rgba(15,23,42,.35);animation:unrot 40s linear infinite}
+.ring .tool-c span{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;font:700 13px 'Geist';color:var(--navy);background:#fff;border:1.5px solid var(--line);padding:7px 12px;border-radius:999px;box-shadow:0 8px 20px -10px rgba(15,23,42,.35);animation:unrot 40s linear infinite}
 @keyframes unrot{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(-360deg)}}
 @keyframes unrot2{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
 .ring.r2 .tool-c span{animation:unrot2 28s linear infinite;border-color:#F3D5B0}
 /* ===== ASK ASSISTANT ===== */
-.ask-btn{position:fixed;right:22px;bottom:22px;z-index:70;display:flex;align-items:center;gap:10px;padding:13px 18px 13px 14px;border:0;border-radius:999px;cursor:pointer;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;font:700 14.5px 'Inter Tight';box-shadow:0 16px 40px -12px rgba(10,26,48,.7),0 0 0 1px rgba(255,255,255,.08) inset}
+.ask-btn{position:fixed;right:22px;bottom:22px;z-index:70;display:flex;align-items:center;gap:10px;padding:13px 18px 13px 14px;border:0;border-radius:999px;cursor:pointer;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;font:700 14.5px 'Geist';box-shadow:0 16px 40px -12px rgba(10,26,48,.7),0 0 0 1px rgba(255,255,255,.08) inset}
 .ask-btn .orb{width:30px;height:30px;border-radius:50%;background:conic-gradient(from 0deg,var(--or),#FFD08A,#7DA7E8,var(--or));animation:rot 4s linear infinite;box-shadow:0 0 16px rgba(240,138,44,.7)}
 .ask-btn:hover{transform:translateY(-2px)}
 .ask{position:fixed;right:22px;bottom:90px;z-index:70;width:min(390px,calc(100vw - 32px));max-height:min(620px,calc(100vh - 120px));display:flex;flex-direction:column;background:#0B1D36;color:#E2E8F0;border-radius:22px;border:1px solid rgba(255,255,255,.1);box-shadow:0 40px 80px -30px rgba(0,0,0,.7);opacity:0;transform:translateY(16px) scale(.98);pointer-events:none;transition:.3s}
 .ask.open{opacity:1;transform:none;pointer-events:auto}
 .ask header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
-.ask header b{display:block;color:#fff;font:700 15.5px 'Inter Tight'}.ask header small{color:#94A3B8;font-size:12.5px}
+.ask header b{display:block;color:#fff;font:700 15.5px 'Geist'}.ask header small{color:#94A3B8;font-size:12.5px}
 .ask header button{margin-left:auto;background:none;border:0;color:#94A3B8;font-size:22px;cursor:pointer}
 .msgs{flex:1;overflow:auto;padding:16px 16px 6px;display:flex;flex-direction:column;gap:10px}
 .m{max-width:88%;padding:11px 14px;border-radius:16px;font-size:14.5px;line-height:1.55}
 .m.b{background:rgba(255,255,255,.06);border-bottom-left-radius:4px}.m.b b{color:var(--or2)}
 .m.u{align-self:flex-end;background:linear-gradient(135deg,var(--or),#F5A04B);color:#1a1205;font-weight:600;border-bottom-right-radius:4px}
 .sugg{display:flex;flex-wrap:wrap;gap:8px;padding:8px 16px 12px}
-.sugg button{font:600 12.5px 'Inter Tight';color:#E2E8F0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:7px 11px;border-radius:999px;cursor:pointer}
+.sugg button{font:600 12.5px 'Geist';color:#E2E8F0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);padding:7px 11px;border-radius:999px;cursor:pointer}
 .sugg button:hover{border-color:var(--or);color:#fff}
 .ask form{display:flex;gap:8px;padding:12px;border-top:1px solid rgba(255,255,255,.08)}
-.ask input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:11px 13px;color:#fff;font:500 14.5px 'Inter Tight';outline:none}
+.ask input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:11px 13px;color:#fff;font:500 14.5px 'Geist';outline:none}
 .ask input:focus{border-color:var(--or)}
-.ask form button{background:var(--or);border:0;border-radius:12px;padding:0 15px;font:700 14px 'Inter Tight';color:#1a1205;cursor:pointer}
+.ask form button{background:var(--or);border:0;border-radius:12px;padding:0 15px;font:700 14px 'Geist';color:#1a1205;cursor:pointer}
 .typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#94A3B8;margin:0 2px;animation:tw 1s infinite}.typing span:nth-child(2){animation-delay:.15s}.typing span:nth-child(3){animation-delay:.3s}
 @media (max-width:600px){.ask-btn span.t{display:none}.ask-btn{padding:12px}.sky{height:48%}}
 @media (prefers-reduced-motion:reduce){.sky .pulse{display:none}}
@@ -361,14 +361,14 @@ h2 em,.hero .role em{font-family:'Instrument Serif',Georgia,serif;font-style:ita
 
 /* ===================== V5 CORPORATE LAYER ===================== */
 :root{--g:clamp(20px,3.4vw,64px);--r:10px;--line:#E3E6EC}
-body{font-family:'Inter Tight',system-ui,sans-serif;font-size:18px;color:#3A4556;letter-spacing:-.1px}
-h1,h2,h3,h4{font-family:'Inter Tight',sans-serif;letter-spacing:-.6px}
+body{font-family:'Geist',system-ui,sans-serif;font-size:18px;color:#3A4556;letter-spacing:-.1px}
+h1,h2,h3,h4{font-family:'Geist',sans-serif;letter-spacing:-.6px}
 .wrap{width:calc(100% - 2*var(--g));max-width:1720px}
 /* nav */
 nav .wrap{height:76px}
 nav{border-bottom:1px solid rgba(255,255,255,.14)}
-.logo{font:600 22px 'Inter Tight';letter-spacing:1px}
-.links{gap:0;font:500 15.5px 'Inter Tight'}
+.logo{font:600 22px 'Geist';letter-spacing:1px}
+.links{gap:0;font:500 15.5px 'Geist'}
 .links a{padding:0 18px;line-height:76px;border-left:1px solid rgba(255,255,255,.12)}
 .links a:after{bottom:0;height:3px}
 .nav-cta{margin-left:18px}
@@ -376,7 +376,7 @@ nav{border-bottom:1px solid rgba(255,255,255,.14)}
 .hero{padding:120px 0 80px;align-items:flex-end}
 .hero .wrap{grid-template-columns:1fr auto;gap:5vw;align-items:end}
 .hero h1{font-size:clamp(64px,10.5vw,176px);font-weight:600;text-transform:uppercase;letter-spacing:-.04em;line-height:.9;margin-bottom:6px}
-.hero .role{font:500 clamp(20px,2vw,28px) 'Inter Tight';letter-spacing:-.3px;margin-top:22px;padding-top:22px;border-top:1px solid rgba(255,255,255,.18)}
+.hero .role{font:500 clamp(20px,2vw,28px) 'Geist';letter-spacing:-.3px;margin-top:22px;padding-top:22px;border-top:1px solid rgba(255,255,255,.18)}
 .hero .tags{font-size:16.5px}
 .hero p.lead{font-size:clamp(18px,1.35vw,21px);max-width:760px}
 .photo-wrap{width:clamp(260px,24vw,400px)}
@@ -389,7 +389,7 @@ section.s{padding:clamp(80px,9vw,150px) 0}
 .s-head p{grid-column:2;font-size:clamp(17px,1.25vw,20px);line-height:1.6;margin:0}
 h2 em,.s-head h2 em,.contact h2 em{font-family:inherit;font-style:normal;font-weight:300;color:#8C99AD;font-size:1em;letter-spacing:inherit}
 .contact h2 em{color:#9FB2CC}
-.eyebrow{font:600 13.5px 'Inter Tight';letter-spacing:2.6px}
+.eyebrow{font:600 13.5px 'Geist';letter-spacing:2.6px}
 /* impact as hairline grid */
 .impact{padding:0 0 110px}
 .impact .grid{gap:0;border-top:1px solid rgba(255,255,255,.12)}
@@ -400,7 +400,7 @@ h2 em,.s-head h2 em,.contact h2 em{font-family:inherit;font-style:normal;font-we
 .stat .v{font-size:clamp(46px,5vw,84px);font-weight:500;letter-spacing:-.04em}
 .stat .k{font-size:13.5px;margin:14px 0 8px}
 .stat p{font-size:16px;max-width:360px}
-.marquee{padding:22px 0}.track span{font:600 16px 'Inter Tight';letter-spacing:3px}
+.marquee{padding:22px 0}.track span{font:600 16px 'Geist';letter-spacing:3px}
 /* about */
 .about{grid-template-columns:1.2fr 1fr;gap:6vw}
 .about p{font-size:clamp(18px,1.3vw,21px)}
@@ -466,6 +466,80 @@ footer{padding:34px var(--g);text-align:left;display:flex;justify-content:space-
 .about .s-head h2{font-size:clamp(40px,4.4vw,76px)}
 .about .s-head{grid-template-columns:1fr;border-bottom:0;margin-bottom:28px;padding-bottom:0}
 .ai{margin-top:24px;padding:30px 34px;font-size:17px}
+
+/* ===================== V6 ===================== */
+body{font-family:'Geist','Inter',system-ui,sans-serif}
+h1,h2,h3,.logo,.stat .v,.dk b,.leg b,.xp-m b,.xt-c,.big,.contact h2{font-family:'Bricolage Grotesque','Geist',sans-serif}
+h1,h2{font-variation-settings:"opsz" 96}
+.hero h1{font-size:clamp(48px,6.4vw,112px);font-weight:600;letter-spacing:-.03em;line-height:.95}
+.hero{padding:110px 0 70px;min-height:92vh}
+.hero .role{margin-top:18px;padding-top:18px}
+section.s{padding:clamp(64px,6.5vw,104px) 0}
+.s-head{margin-bottom:40px;padding-bottom:26px}
+.s-head h2{font-size:clamp(38px,4.6vw,76px);font-weight:600;letter-spacing:-.035em}
+h2 em,.s-head h2 em,.contact h2 em{font-weight:400}
+.about .s-head h2{font-size:clamp(34px,3.6vw,60px)}
+.contact h2{font-size:clamp(38px,4.6vw,76px);font-weight:600;letter-spacing:-.035em}
+.impact{padding:0 0 80px}
+.stat{padding:34px 32px 30px}
+.stat .v{font-size:clamp(40px,4vw,66px);font-weight:600;letter-spacing:-.035em}
+/* photo */
+.photo-wrap:before,.photo-wrap:after{display:none}
+.photo{padding:1.5px;border:0;background:conic-gradient(from var(--pa,0deg),rgba(255,255,255,.15),var(--or) 20%,rgba(255,255,255,.15) 40%,rgba(125,167,232,.6) 70%,rgba(255,255,255,.15));animation:pa 8s linear infinite}
+@property --pa{syntax:'<angle>';inherits:false;initial-value:0deg}
+@keyframes pa{to{--pa:360deg}}
+.photo img{border-radius:22px}
+.pcap{position:absolute;left:14px;right:14px;bottom:14px;display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;background:rgba(8,18,34,.62);backdrop-filter:blur(14px) saturate(140%);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.14);color:#fff;font:600 14.5px 'Geist';overflow:hidden}
+.ldot{width:9px;height:9px;border-radius:50%;background:#34D399;flex:none;box-shadow:0 0 0 0 rgba(52,211,153,.6);animation:pulse 2s infinite}
+.rot{position:relative;height:22px;flex:1}
+.rot span{position:absolute;inset:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0;transform:translateY(12px);transition:.5s}
+.rot span.on{opacity:1;transform:none}
+.rot span.out{opacity:0;transform:translateY(-12px)}
+/* experience explorer */
+.xp{display:grid;grid-template-columns:minmax(260px,360px) 1fr;gap:28px;align-items:stretch}
+.xp-tabs{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.xt{position:relative;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:20px 18px 20px 22px;cursor:pointer;display:grid;gap:3px;transition:.3s;font-family:'Geist'}
+.xt:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;transition:.3s}
+.xt:hover{background:#F8F7F3}
+.xt.on{background:#fff;box-shadow:0 18px 40px -26px rgba(15,23,42,.35)}
+.xt.on:before{background:var(--or)}
+.xt-y{font:600 13px 'Geist';letter-spacing:1px;text-transform:uppercase;color:var(--or)}
+.xt-c{font-size:19px;font-weight:600;color:var(--ink);letter-spacing:-.3px}
+.xt-r{font-size:15px;color:var(--mute)}
+.xt-bar{position:absolute;left:0;bottom:-1px;height:2px;width:0;background:var(--or)}
+.xt.on .xt-bar{animation:fillbar var(--dur,7s) linear forwards}
+.xp.paused .xt.on .xt-bar{animation:none;width:100%}
+@keyframes fillbar{to{width:100%}}
+.xp-panels{position:relative;min-height:520px}
+.xpp{position:absolute;inset:0;background:linear-gradient(160deg,#0B1D36,#0A1A30);color:#CBD5E1;border-radius:var(--r);padding:clamp(28px,3vw,48px);overflow:hidden;opacity:0;transform:translateX(30px);pointer-events:none;transition:opacity .5s,transform .6s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;gap:24px}
+.xpp.on{opacity:1;transform:none;pointer-events:auto}
+.xp-wm{position:absolute;right:-10px;bottom:-40px;font:700 clamp(140px,16vw,260px)/1 'Bricolage Grotesque';color:transparent;-webkit-text-stroke:1.5px rgba(125,167,232,.14);letter-spacing:-.04em;pointer-events:none}
+.xp-h{display:flex;gap:18px;align-items:center;position:relative}
+.xp-h .jlogo{width:64px;height:64px;border:0}
+.xp-h h3{color:#fff;font-size:clamp(24px,2.2vw,34px);font-weight:600;letter-spacing:-.02em}
+.xp-h .co{color:#E2E8F0;font-weight:600;font-size:16.5px}
+.xp-h .ctx{color:#94A3B8;font-size:15.5px}
+.xp-body{display:grid;grid-template-columns:220px 1fr;gap:32px;position:relative;align-items:start}
+.xp-m{padding:22px;border-radius:14px;background:rgba(240,138,44,.1);border:1px solid rgba(240,138,44,.35)}
+.xp-m b{display:block;font-size:clamp(30px,2.6vw,42px);font-weight:700;color:#fff;letter-spacing:-.03em;line-height:1}
+.xp-m small{display:block;margin-top:10px;color:#FFD3A6;font-size:14.5px;line-height:1.45}
+.xp-when{display:block;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.12);font-size:13.5px;color:#94A3B8}
+.xpp ul{list-style:none;display:grid;gap:12px}
+.xpp li{position:relative;padding-left:24px;font-size:17px;line-height:1.55;color:#D5DEEA}
+.xpp li:before{content:"";position:absolute;left:0;top:9px;width:9px;height:9px;border-radius:2px;background:var(--or);transform:rotate(45deg)}
+.xpp li b{color:#fff}
+.xpp .kpi{margin-top:auto;position:relative}
+.xpp .kpi span{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);color:#E2E8F0}
+@media (max-width:980px){
+ .xp{grid-template-columns:1fr}
+ .xp-tabs{flex-direction:row;overflow-x:auto;border-top:0;gap:8px;scrollbar-width:none;padding-bottom:4px}
+ .xt{flex:0 0 auto;border:1px solid var(--line);border-radius:12px;padding:12px 16px;min-width:200px}
+ .xt:before{display:none}.xt.on{border-color:var(--or)}
+ .xp-panels{min-height:0;display:grid}
+ .xpp{position:relative;grid-area:1/1;transform:none}
+ .xpp:not(.on){visibility:hidden}
+ .xp-body{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
@@ -515,8 +589,7 @@ footer{padding:34px var(--g);text-align:left;display:flex;justify-content:space-
   </div>
   <div class="photo-wrap rv">
    <div class="photo"><img src="assets/profile.jpg" alt="Prabhu A R, Senior Quantity Surveyor"></div>
-   <div class="chip chip1"><span class="ic"><svg class="i"><use href="#check"/></svg></span><div><b>2,500+</b><small>FEWOs closed</small></div></div>
-   <div class="chip chip2"><span class="ic"><svg class="i"><use href="#coin"/></svg></span><div><b>USD 260M+</b><small>ADNOC packages</small></div></div>
+   <div class="pcap"><span class="ldot"></span><div class="rot" id="rot"><span class="on">Now · ADNOC BFN with Kent (EPCM)</span><span>2,500+ FEWOs closed · PETRONAS RAPID</span><span>USD 260M+ EPCM packages supported</span><span>13+ years · 6 countries</span></div></div>
   </div>
  </div>
  <div class="scroll-hint"><i></i>Scroll</div>
@@ -570,43 +643,22 @@ footer{padding:34px var(--g);text-align:left;display:flex;justify-content:space-
 
 <section class="s" id="experience"><div class="wrap">
  <div class="s-head rv"><span class="eyebrow">Career</span><h2>Career <em>experience</em></h2><p>Five companies, six countries, one focus: commercial certainty.</p></div>
- <div class="tl" id="tl"><div class="rail"><i id="railfill"></i></div>
-  <div class="job rv"><div class="when">Apr 2026 – Present<small>Abu Dhabi, UAE</small></div><div>
-   <div class="jhead"><div class="jlogo"><img src="assets/logos/kent.png" alt="Kent"></div><div><h3>Quantity Surveyor – Civil</h3><div class="co">Kent PLC</div><div class="ctx">ADNOC BAB Far North Full Field Development (BFN) · EPCM</div></div></div>
-   <ul><li>Support commercial controls across ADNOC BFN packages valued at <b>over USD 260M</b> (Packages 1, 3 and 16).</li>
-   <li>Verify monthly contractor IPCs of <b>~USD 5.6M</b> on Package 1 (civil scope ~USD 82M) against IFC drawings, BOQs and day sheets.</li>
-   <li>Review variation and quantity-growth requests against contract conditions; track insurance and bond compliance.</li>
-   <li>Reconcile structural-steel quantities with Tekla outputs, member schedules and packing lists.</li></ul>
-   <div class="kpi"><span>EPCM</span><span>ADNOC</span><span>IPC</span><span>Oracle Fusion</span></div></div></div>
-
-  <div class="job rv"><div class="when">Jul 2025 – Feb 2026<small>Saudi Arabia</small></div><div>
-   <div class="jhead"><div class="jlogo"><img src="assets/logos/heisco.png" alt="HEISCO"></div><div><h3>Quantity Surveyor – Civil</h3><div class="co">HEISCO</div><div class="ctx">Qurayyah Expansion CCGT IPP · Power · ~USD 43M civil contract</div></div></div>
-   <ul><li>Prepared <b>VO quotations</b> and rate analyses from labour productivity and resource build-ups.</li>
-   <li>Built <b>monthly cash-flow forecasts</b> for the 18-month contract; tracked planned vs actual claim values.</li>
-   <li>Verified progress measurements and bills for <b>4 subcontractors</b>; supported monthly client payment applications.</li></ul>
-   <div class="kpi"><span>Power</span><span>Cash flow</span><span>VOs &amp; FEWOs</span></div></div></div>
-
-  <div class="job rv"><div class="when">Dec 2022 – Jun 2025<small>UAE · KSA · Qatar · Bahrain</small></div><div>
-   <div class="jhead"><div class="jlogo"><img src="assets/logos/gulfasia.png" alt="Gulf Asia"></div><div><h3>Senior Quantity Surveyor</h3><div class="co">Gulf Asia Engineering &amp; Projects</div><div class="ctx">EPC oil &amp; gas, refinery and petrochemical projects</div></div></div>
-   <ul><li><b>Led a team of 10 junior QS</b> checking bid pricing sheets and BOQs; allocated tasks and reviewed outputs.</li>
-   <li>Prepared QTOs, MTOs, BOQs and BBS for multidisciplinary EPC projects <b>up to ~USD 115M</b>.</li>
-   <li>Built cost estimates and rate build-ups; contributed to value-engineering reviews.</li>
-   <li>Assessed variations and change orders; prepared claims and EOT documentation.</li></ul>
-   <div class="kpi"><span>Team lead</span><span>EPC bids</span><span>Value engineering</span></div></div></div>
-
-  <div class="job rv"><div class="when">Aug 2017 – Sep 2022<small>Johor, Malaysia</small></div><div>
-   <div class="jhead"><div class="jlogo"><img src="assets/logos/tbk.png" alt="Tan Bock Kwee"></div><div><h3>Quantity Surveyor</h3><div class="co">Tan Bock Kwee &amp; Sons Sdn Bhd</div><div class="ctx">PETRONAS RAPID · refinery, industrial, infrastructure and building</div></div></div>
-   <ul><li><b>Evaluated and closed out 2,500+ FEWOs worth ~MYR 90M</b> on PETRONAS RAPID.</li>
-   <li>Managed subcontract packages <b>through to close-out</b>: design submissions, variation follow-up and final handover.</li>
-   <li>Prepared tender estimates and BOQs on projects <b>up to ~MYR 147M</b>; subcontract BOQs with terms and measurement rules.</li>
-   <li>Prepared schedules and catch-up plans; negotiated quantity and rate disagreements using site records.</li></ul>
-   <div class="kpi"><span>PETRONAS</span><span>FEWOs</span><span>Final accounts</span></div></div></div>
-
-  <div class="job rv"><div class="when">May 2013 – Jul 2017<small>Tamil Nadu, India</small></div><div>
-   <div class="jhead"><div class="jlogo"><img src="assets/logos/senthil.png" alt="Senthil"></div><div><h3>Site Engineer</h3><div class="co">Senthil Construction Corporation</div><div class="ctx">Building, villa and infrastructure projects</div></div></div>
-   <ul><li>Handled quantity surveying on site: measured works and verified BOQs, RA bills and subcontractor payments on projects <b>up to ~INR 16 Cr</b>.</li>
-   <li>Prepared DPR, DLR and MPR reports; supported work orders and material procurement.</li></ul></div></div>
- </div>
+ <div class="xp rv"><div class="xp-tabs" role="tablist" aria-label="Career roles"><button class="xt on" role="tab" aria-selected="true" data-i="0"><span class="xt-y">Apr 2026 – Present</span><span class="xt-c">Kent PLC</span><span class="xt-r">Quantity Surveyor – Civil</span><i class="xt-bar"></i></button><button class="xt" role="tab" aria-selected="false" data-i="1"><span class="xt-y">Jul 2025 – Feb 2026</span><span class="xt-c">HEISCO</span><span class="xt-r">Quantity Surveyor – Civil</span><i class="xt-bar"></i></button><button class="xt" role="tab" aria-selected="false" data-i="2"><span class="xt-y">Dec 2022 – Jun 2025</span><span class="xt-c">Gulf Asia Engineering &amp; Projects</span><span class="xt-r">Senior Quantity Surveyor</span><i class="xt-bar"></i></button><button class="xt" role="tab" aria-selected="false" data-i="3"><span class="xt-y">Aug 2017 – Sep 2022</span><span class="xt-c">Tan Bock Kwee &amp; Sons Sdn Bhd</span><span class="xt-r">Quantity Surveyor</span><i class="xt-bar"></i></button><button class="xt" role="tab" aria-selected="false" data-i="4"><span class="xt-y">May 2013 – Jul 2017</span><span class="xt-c">Senthil Construction Corporation</span><span class="xt-r">Site Engineer</span><i class="xt-bar"></i></button></div><div class="xp-panels"><article class="xpp on" role="tabpanel" data-i="0"><span class="xp-wm">2026</span>
+<header class="xp-h"><div class="jlogo"><img src="assets/logos/kent.png" alt="Kent"></div><div><h3>Quantity Surveyor – Civil</h3><div class="co">Kent PLC · Abu Dhabi, UAE</div><div class="ctx">ADNOC BAB Far North Full Field Development (BFN) · EPCM</div></div></header>
+<div class="xp-body"><div class="xp-m"><b>USD 260M+</b><small>ADNOC EPCM packages supported</small><span class="xp-when">Apr 2026 – Present</span></div><ul><li>Support commercial controls across ADNOC BFN packages valued at <b>over USD 260M</b> (Packages 1, 3 and 16).</li> <li>Verify monthly contractor IPCs of <b>~USD 5.6M</b> on Package 1 (civil scope ~USD 82M) against IFC drawings, BOQs and day sheets.</li> <li>Review variation and quantity-growth requests against contract conditions; track insurance and bond compliance.</li> <li>Reconcile structural-steel quantities with Tekla outputs, member schedules and packing lists.</li></ul></div>
+<div class="kpi"><span>EPCM</span><span>ADNOC</span><span>IPC verification</span><span>Oracle Fusion</span></div></article><article class="xpp" role="tabpanel" data-i="1"><span class="xp-wm">2025</span>
+<header class="xp-h"><div class="jlogo"><img src="assets/logos/heisco.png" alt="HEISCO"></div><div><h3>Quantity Surveyor – Civil</h3><div class="co">HEISCO · Saudi Arabia</div><div class="ctx">Qurayyah Expansion CCGT IPP · Power · ~USD 43M civil contract</div></div></header>
+<div class="xp-body"><div class="xp-m"><b>USD 43M</b><small>CCGT civil contract · 18 months</small><span class="xp-when">Jul 2025 – Feb 2026</span></div><ul><li>Prepared <b>VO quotations</b> and rate analyses from labour productivity and resource build-ups.</li> <li>Built <b>monthly cash-flow forecasts</b> for the 18-month contract; tracked planned vs actual claim values.</li> <li>Verified progress measurements and bills for <b>4 subcontractors</b>; supported monthly client payment applications.</li></ul></div>
+<div class="kpi"><span>Power</span><span>Cash-flow</span><span>VOs & FEWOs</span><span>Rate analysis</span></div></article><article class="xpp" role="tabpanel" data-i="2"><span class="xp-wm">2022</span>
+<header class="xp-h"><div class="jlogo"><img src="assets/logos/gulfasia.png" alt="Gulf Asia"></div><div><h3>Senior Quantity Surveyor</h3><div class="co">Gulf Asia Engineering &amp; Projects · UAE · KSA · Qatar · Bahrain</div><div class="ctx">EPC oil &amp; gas, refinery and petrochemical projects</div></div></header>
+<div class="xp-body"><div class="xp-m"><b>10</b><small>Junior QS led on GCC EPC bids</small><span class="xp-when">Dec 2022 – Jun 2025</span></div><ul><li><b>Led a team of 10 junior QS</b> checking bid pricing sheets and BOQs; allocated tasks and reviewed outputs.</li> <li>Prepared QTOs, MTOs, BOQs and BBS for multidisciplinary EPC projects <b>up to ~USD 115M</b>.</li> <li>Built cost estimates and rate build-ups; contributed to value-engineering reviews.</li> <li>Assessed variations and change orders; prepared claims and EOT documentation.</li></ul></div>
+<div class="kpi"><span>Team lead</span><span>EPC bids</span><span>Estimation</span><span>Value engineering</span></div></article><article class="xpp" role="tabpanel" data-i="3"><span class="xp-wm">2017</span>
+<header class="xp-h"><div class="jlogo"><img src="assets/logos/tbk.png" alt="Tan Bock Kwee"></div><div><h3>Quantity Surveyor</h3><div class="co">Tan Bock Kwee &amp; Sons Sdn Bhd · Johor, Malaysia</div><div class="ctx">PETRONAS RAPID · refinery, industrial, infrastructure and building</div></div></header>
+<div class="xp-body"><div class="xp-m"><b>2,500+</b><small>FEWOs closed · ~MYR 90M</small><span class="xp-when">Aug 2017 – Sep 2022</span></div><ul><li><b>Evaluated and closed out 2,500+ FEWOs worth ~MYR 90M</b> on PETRONAS RAPID.</li> <li>Managed subcontract packages <b>through to close-out</b>: design submissions, variation follow-up and final handover.</li> <li>Prepared tender estimates and BOQs on projects <b>up to ~MYR 147M</b>; subcontract BOQs with terms and measurement rules.</li> <li>Prepared schedules and catch-up plans; negotiated quantity and rate disagreements using site records.</li></ul></div>
+<div class="kpi"><span>PETRONAS</span><span>FEWOs</span><span>Subcontract close-out</span><span>Final accounts</span></div></article><article class="xpp" role="tabpanel" data-i="4"><span class="xp-wm">2013</span>
+<header class="xp-h"><div class="jlogo"><img src="assets/logos/senthil.png" alt="Senthil"></div><div><h3>Site Engineer</h3><div class="co">Senthil Construction Corporation · Tamil Nadu, India</div><div class="ctx">Building, villa and infrastructure projects</div></div></header>
+<div class="xp-body"><div class="xp-m"><b>INR 16 Cr</b><small>Typical project value</small><span class="xp-when">May 2013 – Jul 2017</span></div><ul><li>Handled quantity surveying on site: measured works and verified BOQs, RA bills and subcontractor payments on projects <b>up to ~INR 16 Cr</b>.</li> <li>Prepared DPR, DLR and MPR reports; supported work orders and material procurement.</li></ul></div>
+<div class="kpi"><span>Building</span><span>Infrastructure</span><span>RA bills</span><span>Site measurement</span></div></article></div></div>
 </div></section>
 
 <section class="s alt" id="projects"><div class="wrap">
@@ -749,6 +801,16 @@ if(FINE&&!RM){const g=document.getElementById('glow');addEventListener('pointerm
  document.getElementById('askBtn').onclick=()=>open(!box.classList.contains('open'));document.getElementById('askX').onclick=()=>open(false);
  document.getElementById('askF').onsubmit=e=>{e.preventDefault();const v=inp.value.trim();if(v){answer(v);inp.value=''}};
 })();
+
+/* photo caption rotator */
+(function(){const r=document.getElementById('rot');if(!r)return;const it=[...r.children];let k=0;if(RM)return;setInterval(()=>{const a=it[k];a.classList.remove('on');a.classList.add('out');k=(k+1)%it.length;const b=it[k];b.classList.remove('out');b.classList.add('on');setTimeout(()=>a.classList.remove('out'),600)},3000)})();
+/* experience explorer */
+(function(){const xp=document.querySelector('.xp');if(!xp)return;const tabs=[...xp.querySelectorAll('.xt')],ps=[...xp.querySelectorAll('.xpp')];let k=0,timer=null;const DUR=7000;
+ const show=i=>{k=i;tabs.forEach((t,j)=>{t.classList.toggle('on',j===i);t.setAttribute('aria-selected',j===i)});ps.forEach((p,j)=>p.classList.toggle('on',j===i));const t=tabs[i];t.querySelector('.xt-bar').style.animation='none';void t.offsetWidth;t.querySelector('.xt-bar').style.animation=''};
+ const auto=()=>{clearInterval(timer);if(RM)return;timer=setInterval(()=>show((k+1)%tabs.length),DUR)};
+ tabs.forEach((t,i)=>t.addEventListener('click',()=>{show(i);xp.classList.add('paused');clearInterval(timer)}));
+ xp.addEventListener('keydown',e=>{if(e.key==='ArrowDown'||e.key==='ArrowRight'){show((k+1)%tabs.length);tabs[k].focus();e.preventDefault()}if(e.key==='ArrowUp'||e.key==='ArrowLeft'){show((k+tabs.length-1)%tabs.length);tabs[k].focus();e.preventDefault()}});
+ new IntersectionObserver(e=>{if(e[0].isIntersecting&&!xp.classList.contains('paused'))auto();else clearInterval(timer)},{threshold:.3}).observe(xp)})();
 </script>
 </body>
 </html>
