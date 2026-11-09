@@ -732,6 +732,28 @@ h2 em,.s-head h2 em,.contact h2 em{font-weight:400}
 .pt{grid-template-columns:auto 1fr;column-gap:12px;align-items:center}
 .pt-lg{grid-row:1/4;width:40px;height:40px;border-radius:10px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;overflow:hidden}
 .pt-lg img{max-width:34px;max-height:34px;object-fit:contain}
+
+/* ===== V13 readability ===== */
+:root{--or-ink:#C2530F}
+/* glass description panel */
+.ps-side{background:rgba(6,16,32,.86);border-color:rgba(255,255,255,.16);padding:clamp(22px,2vw,30px) clamp(22px,2.2vw,32px)}
+.ps-side ul{gap:14px}
+.ps-side li{font-size:clamp(16px,1.2vw,18px);line-height:1.6;color:#F8FAFC;font-weight:450;padding-left:24px}
+.ps-side li:before{top:10px;width:8px;height:8px}
+.ps-side li b{color:#FFB766;font-weight:700}
+.ps-side .kpi span{font-size:13.5px;color:#fff;background:rgba(240,138,44,.14);border-color:rgba(240,138,44,.45)}
+.ps-metric span{color:#F1F5F9;font-weight:500}
+.ps-eye{font-size:15px;color:#FFB766}
+/* orange text on light backgrounds: deeper + bolder for contrast */
+.eyebrow{color:var(--or-ink);font-weight:700;font-size:14px}
+.eyebrow:before{background:var(--or-ink)}
+.pt-y,.xt-y,.bc-when,.cy-step,.when,.fact small,.ed small,.leg b{color:var(--or-ink)!important;font-weight:700}
+.pt-y{font-size:13.5px}
+.pt-c{font-size:16.5px}.pt-m{font-size:14.5px;color:#475569}
+.pt.on{border-color:var(--or-ink);box-shadow:0 14px 30px -18px rgba(194,83,15,.6)}
+.pt-bar{background:var(--or-ink)}
+.s-head p{color:#475569}
+.job li b,.card h3{color:#0B1F3A}
 </style>
 </head>
 <body>
